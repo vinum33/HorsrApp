@@ -1,0 +1,1 @@
+../../../EMEmojiableBtn/Pod/Classes/EMEmojiableBtnConfig.h

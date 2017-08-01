@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="DroidSans.ttf">
+            <string>DroidSans</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateGameViewController"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Coq-ap-e7X">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.27498427013422821" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="cdq-l8-LpF"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wo-rZ-ACf">
+                    <rect key="frame" x="167" y="627" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="3Zt-A8-CG0"/>
+                        <constraint firstAttribute="height" constant="40" id="cS5-XY-0eh"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4YC-e9-5JC">
+                    <rect key="frame" x="0.0" y="627" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="Duv-63-B1f"/>
+                        <constraint firstAttribute="height" constant="40" id="ecQ-55-wMm"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:15" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rxH-vb-aGS">
+                    <rect key="frame" x="330" y="639.5" width="35" height="16.5"/>
+                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="4YC-e9-5JC" secondAttribute="bottom" id="0eT-9G-gOI"/>
+                <constraint firstAttribute="trailing" secondItem="Coq-ap-e7X" secondAttribute="trailing" id="4hr-Qc-k00"/>
+                <constraint firstItem="Coq-ap-e7X" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5L9-bP-a3E"/>
+                <constraint firstAttribute="trailing" secondItem="rxH-vb-aGS" secondAttribute="trailing" constant="10" id="Lh8-fI-IQ1"/>
+                <constraint firstItem="4YC-e9-5JC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PtC-oO-XUd"/>
+                <constraint firstAttribute="bottom" secondItem="Coq-ap-e7X" secondAttribute="bottom" id="R6o-u2-Pcs"/>
+                <constraint firstAttribute="bottom" secondItem="0wo-rZ-ACf" secondAttribute="bottom" id="bWA-Db-CHF"/>
+                <constraint firstItem="0wo-rZ-ACf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="eP6-Ao-VmU"/>
+                <constraint firstItem="rxH-vb-aGS" firstAttribute="centerY" secondItem="0wo-rZ-ACf" secondAttribute="centerY" id="gPe-p9-aOg"/>
+            </constraints>
+            <point key="canvasLocation" x="33.5" y="104.5"/>
+        </view>
+    </objects>
+</document>
