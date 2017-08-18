@@ -21,6 +21,7 @@ typedef enum{
 #import "InviteOthersViewController.h"
 #import "Constants.h"
 #import "InviteOthersCell.h"
+#import "ProfileViewController.h"
 
 @interface InviteOthersViewController (){
     
@@ -55,6 +56,7 @@ typedef enum{
 
 -(void)setUp{
     
+    if (_isFromTagFriends) lblTitle.text = @"Tag Friends";
     currentPage = 1;
     arrDataSource = [NSMutableArray new];
     
@@ -365,6 +367,10 @@ typedef enum{
     [[self delegate]userInvitedWithList:selections];
     [[self navigationController]popViewControllerAnimated:YES];
 }
+
+
+
+
 
 -(IBAction)goBack:(id)sender{
     

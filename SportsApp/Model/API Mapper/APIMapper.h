@@ -51,9 +51,9 @@
 
 + (void)uploadGameMediasWith:(NSURL*)videoURL thumbnail:(UIImage*)thumbnail type:(NSString*)strType Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)createGameWithGameID:(NSString*)gameID gameType:(NSString*)gameType mediaFileName:(NSString*)mediaFileName thumbFileName:(NSString*)thumbFileName invites:(NSMutableArray*)invites OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)createGameWithGameID:(NSString*)gameID gameType:(NSString*)gameType mediaFileName:(NSString*)mediaFileName thumbFileName:(NSString*)thumbFileName invites:(NSMutableArray*)invites statusMsg:(NSString*)statusMsg OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)getAllGamesWithpageNumber:(NSInteger)pageno Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)getAllGamesWithpageNumber:(NSInteger)pageno gameType:(NSInteger)gameType Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failuree;
 
 + (void)getPlayedGameDetailsWithGameID:(NSString*)gameID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
@@ -66,5 +66,29 @@
 + (void)updateUserSettingsWithNotifyValue:(BOOL)notifyStatus inviteStatus:(BOOL)inviteStatus Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)updateGameRequestWithStatus:(NSInteger)status requestID:(NSString*)reqID Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getGameZoneDetailsWithGameID:(NSString*)gameID Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)submitGameWithGameID:(NSString*)gameID mediaFileName:(NSString*)mediaFileName thumbFileName:(NSString*)thumbFileName trickID:(NSString*)trickID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)verifyVideoWithTrickID:(NSString*)trickID status:(BOOL)status videoID:(NSString*)videoID gameID:(NSString*)gameID nextUserID:(NSString*)nextID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)deleteChatWithIDs:(NSArray*)ids success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
+
++ (void)loadChatHistoryWithGameID:(NSString*)gameID toUserID:(NSString*)strToUserID page:(NSInteger)pageNo success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
+
++ (void)postChatMessageWithGameID:(NSString*)gameID toUserID:(NSString*)toUserID message:(NSString*)message success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)shareVideoWithVideoID:(NSString*)videoID location:(NSString*)location address:(NSString*)strAddress message:(NSString*)message frieds:(NSArray*)friends success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getAllSharedVideosWithPageNumber:(NSInteger)pageno OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)likeVideoWithVideoID:(NSString*)videoID type:(NSString*)type emojiCode:(NSInteger)emojiCode OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)deleteSharedVideoWithVideoID:(NSString*)videoID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
+
 
 @end

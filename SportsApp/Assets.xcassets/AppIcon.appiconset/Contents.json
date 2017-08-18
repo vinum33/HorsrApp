@@ -3,67 +3,67 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "moza40.png",
+      "filename" : "ios-launcher-app-icon40.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "moza60.png",
+      "filename" : "ios-launcher-app-icon60.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "moza29.png",
+      "filename" : "ios-launcher-app-icon29.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "moza58.png",
+      "filename" : "ios-launcher-app-icon58.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "moza87.png",
+      "filename" : "ios-launcher-app-icon87.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "moza180 copy.png",
+      "filename" : "ios-launcher-app-icon80.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "moza120.png",
+      "filename" : "ios-launcher-app-icon120.png",
       "scale" : "3x"
     },
     {
       "size" : "57x57",
       "idiom" : "iphone",
-      "filename" : "moza57.png",
+      "filename" : "ios-launcher-app-icon57.png",
       "scale" : "1x"
     },
     {
       "size" : "57x57",
       "idiom" : "iphone",
-      "filename" : "moza114.png",
+      "filename" : "ios-launcher-app-icon114.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "moza120-1.png",
+      "filename" : "ios-launcher-app-icon120-1.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "moza180.png",
+      "filename" : "ios-launcher-app-icon180.png",
       "scale" : "3x"
     }
   ],

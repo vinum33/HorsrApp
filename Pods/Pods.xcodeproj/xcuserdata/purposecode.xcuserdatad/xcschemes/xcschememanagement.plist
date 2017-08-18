@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>BSStackView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>EMEmojiableBtn.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -34,7 +39,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-SportsApp.xcscheme</key>
+		<key>Pods-HORSE APP.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -62,12 +67,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2E1506D4FE3E291CAFDCF3CE76418BFA</key>
+		<key>2CE8A5FF24B467C558B21819D1D83A20</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3142D2090394470F86ABE07EC5C51ABD</key>
+		<key>39A5DF40BB1FFB97DDC8D2E2364793A1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -82,22 +87,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>AF8610F47A8462986931C404D04F5AE6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AFAFB55453D161D2BB5CFB30C68A54D5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D0D8B78F55C134A1E7EB0F00C144B686</key>
+		<key>BA54BC1EAD49B568F379B1AE1F2DA6AE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C0E134C4723F48093F1423ABD4CE34DB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>D58DF41F6D347C0CA0B9B76C23281826</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D84E738176DD32358934BE6960A58D09</key>
 		<dict>
 			<key>primary</key>
 			<true/>

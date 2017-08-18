@@ -25,5 +25,6 @@
 +(void)hideLoadingScreenFromView:(UIView*)view;
 +(UIImage*)getThumbNailFromVideoURL:(NSURL*)videoURL;
 + (UIImage *)fixrotation:(UIImage *)image;
++(NSString*)getDateDescriptionForChat:(double)timeInSeconds;
 
 @end

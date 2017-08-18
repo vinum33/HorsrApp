@@ -170,10 +170,9 @@
     [btnSend addTarget:self action:@selector(saveSettings)
       forControlEvents:UIControlEventTouchUpInside];
     btnSend.layer.borderColor = [UIColor clearColor].CGColor;
-    btnSend.titleLabel.font = [UIFont fontWithName:CommonFontBold size:16];
+    btnSend.titleLabel.font = [UIFont fontWithName:CommonFontBold size:15];
     [btnSend setTitle:@"SAVE SETTINGS" forState:UIControlStateNormal];
     [btnSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnSend setBackgroundColor:[UIColor getThemeColor]];
     [vwFooter addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[btnSend]-20-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(btnSend)]];
     [vwFooter addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[btnSend]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(btnSend)]];
     btnSend.layer.borderColor = [[UIColor clearColor] CGColor];

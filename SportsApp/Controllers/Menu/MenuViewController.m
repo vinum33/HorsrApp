@@ -88,7 +88,6 @@
     [arrCategories addObject:@"Start New Game"];
     [arrCategories addObject:@"Shared Video"];
     [arrCategories addObject:@"All Games"];
-    [arrCategories addObject:@"Game Zone"];
     [arrCategories addObject:@"Notifications"];
     [arrCategories addObject:@"Settings"];
     [arrCategories addObject:@"Logout"];
@@ -121,7 +120,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return arrCategories.count - 1;
+        return 5;
     }else{
         return 1;
     }
@@ -171,7 +170,6 @@
                 imgIcon.image = [UIImage imageNamed:@"Settings"];
                 break;
            
-                
             default:
                 break;
         }
@@ -209,7 +207,11 @@
         NSArray *viewControllers = navController.viewControllers;
         if (viewControllers.count) {
             HomeViewController *homeVC = viewControllers[0];
-            [homeVC showSelectedCategoryDetailsFromMenuList:indexPath.row];
+            NSInteger clickdIndex = indexPath.row;
+            if (indexPath.section == 1) {
+                 clickdIndex += arrCategories.count - 1;
+            }
+            [homeVC showSelectedCategoryDetailsFromMenuList:clickdIndex];
         }
     }
     [self.revealViewController revealToggleAnimated:YES];

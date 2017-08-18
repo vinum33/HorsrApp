@@ -153,6 +153,7 @@ typedef enum{
              cell.entryField.tag = eFieldEmail;
              cell.entryField.text = email;
              cell.imgIcon.image = [UIImage imageNamed:@"Icon_Email"];
+             cell.entryField.keyboardType = UIKeyboardTypeEmailAddress;
              break;
             
         case eFieldPhoneNumber:
@@ -457,7 +458,6 @@ typedef enum{
     
     inputAccView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 40.0)];
     [inputAccView setBackgroundColor:[UIColor lightGrayColor]];
-    [inputAccView setAlpha: 1];
     
     UIButton *btnPrev = [UIButton buttonWithType: UIButtonTypeCustom];
     [btnPrev setFrame: CGRectMake(0.0, 1.0, 80.0, 38.0)];
@@ -577,6 +577,7 @@ typedef enum{
 -(IBAction)showLocationPikcer{
     
     [self.view endEditing:YES];
+     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSForegroundColorAttributeName:[UIColor getBlackTextColor]}];
     GMSAutocompleteViewController *acController = [[GMSAutocompleteViewController alloc] init];
     acController.delegate = self;
     acController.autocompleteFilter.type = kGMSPlacesAutocompleteTypeFilterCity;

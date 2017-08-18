@@ -11,9 +11,10 @@ typedef enum{
     
     eCellGameName       = 0,
     eCellGameType       = 1,
-    eCellGameRecord     = 2,
-    eCellThumb          = 3,
-    eCellInvite         = 4,
+    eCellStatusMsg      = 2,
+    eCellGameRecord     = 3,
+    eCellThumb          = 4,
+    eCellInvite         = 5,
     
     
 }eSectionType;
@@ -43,6 +44,7 @@ typedef enum{
     float tagCellHeight;
     NSMutableArray *arrInvites;
     NSString *strGameID;
+    NSString *strStatusMsg;
     NSInteger gameType;
     UIImage *thumbImage;
     NSURL *recordedVideoURL;
@@ -102,7 +104,7 @@ typedef enum{
 
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rows = 5;
+    NSInteger rows = 6;
     return rows;
 }
 
@@ -121,7 +123,7 @@ typedef enum{
             if ([vwContainer viewWithTag:2]) {
                 UITextField *txtGameName = (UITextField*)[vwContainer viewWithTag:2];
                 if ([txtGameName respondsToSelector:@selector(setAttributedPlaceholder:)]) {
-                    UIColor *color = [UIColor grayColor];
+                    UIColor *color = [UIColor lightGrayColor];
                     txtGameName.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter game name" attributes:@{NSForegroundColorAttributeName: color}];
                 }
                 if (strGameID.length) {
@@ -133,6 +135,7 @@ typedef enum{
         }
        
     }
+   
     if (indexPath.row == eCellGameType) {
         static NSString *CellIdentifier = @"GameTypeCell";
         cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -161,6 +164,26 @@ typedef enum{
             }
             
         }
+    }
+    if (indexPath.row == eCellStatusMsg) {
+        static NSString *CellIdentifier = @"GameStatus";
+        cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if ([[cell contentView]viewWithTag:1]) {
+            UIView *vwContainer = (UIImageView*)[[cell contentView]viewWithTag:1];
+            vwContainer.layer.cornerRadius = 5.f;
+            vwContainer.layer.borderWidth = 1.f;
+            vwContainer.backgroundColor = [UIColor whiteColor];
+            vwContainer.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+            if ([vwContainer viewWithTag:2]) {
+                UITextView *txtGameName = (UITextView*)[vwContainer viewWithTag:2];
+                if (strStatusMsg.length) {
+                    txtGameName.text = strStatusMsg;
+                }
+                
+            }
+            
+        }
+        
     }
     if (indexPath.row == eCellGameRecord) {
         static NSString *CellIdentifier = @"RecordVideo";
@@ -349,11 +372,69 @@ typedef enum{
     
 }
 
+#pragma mark - UITextView delegate methods
+
+
+-(void)textViewDidEndEditing:(UITextView *)textField
+{
+    [textField resignFirstResponder];
+    
+    if ([textField.superview.superview.superview isKindOfClass:[UITableViewCell class]])
+    {
+        CGPoint buttonPosition = [textField convertPoint:CGPointZero toView:tableView];
+        NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:buttonPosition];
+        [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:TRUE];
+    }
+    
+}
+
+
+-(BOOL)textViewShouldEndEditing:(UITextView *)textField
+{
+    [textField resignFirstResponder];
+    if ([textField.superview.superview.superview isKindOfClass:[UITableViewCell class]])
+    {
+        CGPoint buttonPosition = [textField convertPoint:CGPointZero toView:tableView];
+        NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:buttonPosition];
+        [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:TRUE];
+        [self getStatusMsgFromNameField:textField];
+    }
+    
+    return YES;
+}
+
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textField {
+    
+    [textField setInputAccessoryView:inputAccView];
+    NSIndexPath *indexPath;
+    if ([textField.superview.superview.superview isKindOfClass:[UITableViewCell class]])
+    {
+        CGPoint buttonPosition = [textField convertPoint:CGPointZero toView:tableView];
+        indexPath = [tableView indexPathForRowAtPoint:buttonPosition];
+    }
+    CGPoint pointInTable = [textField.superview.superview convertPoint:textField.frame.origin toView:tableView];
+    CGPoint contentOffset = tableView.contentOffset;
+    contentOffset.y = (pointInTable.y - textField.inputAccessoryView.frame.size.height);
+    [tableView setContentOffset:contentOffset animated:YES];
+    
+    
+    return YES;
+    
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textField {
+    
+    CGPoint pointInTable = [textField.superview.superview convertPoint:textField.frame.origin toView:tableView];
+    CGPoint contentOffset = tableView.contentOffset;
+    contentOffset.y = (pointInTable.y - textField.inputAccessoryView.frame.size.height);
+    [tableView setContentOffset:contentOffset animated:YES];
+    
+}
+
 -(void)createInputAccessoryView{
     
     inputAccView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 40.0)];
     [inputAccView setBackgroundColor:[UIColor lightGrayColor]];
-    [inputAccView setAlpha:1];
     
     UIButton *btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnDone setFrame:CGRectMake(inputAccView.frame.size.width - 85, 1.0f, 85.0f, 38.0f)];
@@ -377,6 +458,12 @@ typedef enum{
 -(void)getTextFromNameField:(UITextField*)textView{
     
     strGameID = textView.text;
+    [tableView reloadData];
+}
+
+-(void)getStatusMsgFromNameField:(UITextView*)textView{
+    
+    strStatusMsg = textView.text;
     [tableView reloadData];
 }
 
@@ -574,7 +661,6 @@ typedef enum{
     }
     else
     {
-        NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
     }
     
 }
@@ -601,7 +687,7 @@ typedef enum{
             for (AHTag *tag in arrInvites) {
                 [invites addObject:tag.userID];
             }
-            [APIMapper createGameWithGameID:strGameID gameType:[NSString stringWithFormat:@"%ld",(long)gameType] mediaFileName:[data objectForKey:@"media_file"] thumbFileName:[data objectForKey:@"thumb_file"] invites:invites OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [APIMapper createGameWithGameID:strGameID gameType:[NSString stringWithFormat:@"%ld",(long)gameType] mediaFileName:[data objectForKey:@"media_file"] thumbFileName:[data objectForKey:@"thumb_file"] invites:invites statusMsg:strStatusMsg OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 [Utility hideLoadingScreenFromView:self.view];
                 if ([responseObject objectForKey:@"text"]) {

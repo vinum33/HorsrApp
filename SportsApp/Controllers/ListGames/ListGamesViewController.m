@@ -6,13 +6,24 @@
 //  Copyright © 2017 Purpose Code. All rights reserved.
 //
 
+typedef enum{
+    
+    eTypePlaying      = 0,
+    eTypeCreated      = 1,
+    eTypeCompleted    = 2,
+    
+    
+}eGameType;
+
 #import "ListGamesViewController.h"
-#import "ListGamesCell.h"
+#import "PlayerReqListCell.h"
 #import "Constants.h"
 #import "PlayedGameDetailPageViewController.h"
+#import "GameZoneViewController.h"
 
-@interface ListGamesViewController (){
+@interface ListGamesViewController () <GameZoneDelegate>{
     
+    IBOutlet UISegmentedControl *segmentControll;
     IBOutlet NSLayoutConstraint *constraintForNavBg;
     IBOutlet UITableView* tableView;
     NSMutableArray *arrDataSource;
@@ -21,6 +32,7 @@
     NSInteger totalPages;
     NSInteger currentPage;
     NSString *strAPIErrorMsg;
+    eGameType gameType;
 }
 
 @end
@@ -36,6 +48,7 @@
 
 -(void)setUp{
     
+    currentPage = 1;
     tableView.hidden = true;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     tableView.rowHeight = UITableViewAutomaticDimension;
@@ -54,7 +67,43 @@
     constraintForNavBg.constant = imageHeight;
     
     arrDataSource = [NSMutableArray new];
+    gameType = eTypePlaying;
+    segmentControll.tintColor = [UIColor whiteColor];
+    NSDictionary *attributes1 = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [UIFont fontWithName:CommonFont size:14], NSFontAttributeName,
+                                 [UIColor whiteColor], NSForegroundColorAttributeName, nil];
+    NSDictionary *attributes2 = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [UIFont fontWithName:CommonFont size:14], NSFontAttributeName,
+                                 [UIColor getBlackTextColor], NSForegroundColorAttributeName, nil];
+    
+    [segmentControll setTitleTextAttributes:attributes1 forState:UIControlStateNormal];
+    [segmentControll setTitleTextAttributes:attributes2 forState:UIControlStateSelected];
 }
+
+-(IBAction)segmentChanged:(UISegmentedControl*)sender{
+    
+    [arrDataSource removeAllObjects];
+    currentPage = 1;
+    
+    switch ([sender selectedSegmentIndex]) {
+        case eTypeCreated:
+            gameType = eTypeCreated;
+            break;
+        case eTypePlaying:
+            gameType = eTypePlaying;
+            break;
+        case eTypeCompleted:
+             gameType = eTypeCompleted;
+            break;
+            
+        default:
+            break;
+    }
+   
+     [self getAllGamesByPage:currentPage isPagination:NO];
+    
+}
+
 
 -(void)getAllGamesByPage:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
     
@@ -62,12 +111,17 @@
         [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
     }
     
-    [APIMapper getAllGamesWithpageNumber:pageNumber Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper getAllGamesWithpageNumber:pageNumber gameType:gameType Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         tableView.hidden = false;
         isPageRefresing = false;
         [self showAllGamesWithJSON:responseObject];
         [Utility hideLoadingScreenFromView:self.view];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!isPagination) {
+                [tableView setContentOffset:CGPointZero animated:NO];
+            }
+        });
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
@@ -125,20 +179,28 @@
         return cell;
     }
     
-    static NSString *CellIdentifier = @"ListGamesCell";
-    ListGamesCell *cell = (ListGamesCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    PlayerReqListCell *cell = (PlayerReqListCell*)[tableView dequeueReusableCellWithIdentifier:@"PlayerReqListCell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row < arrDataSource.count) {
         [cell.indicator startAnimating];
         NSDictionary *game = arrDataSource[indexPath.row];
-        cell.lblTitle.text = [game objectForKey:@"gameId"];
-        cell.lblDate.text = [self getDaysBetweenTwoDatesWith:[[game objectForKey:@"gameadded_date"] doubleValue]] ;
-        [cell.imgGame sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"imageurl"]]
-                        placeholderImage:[UIImage imageNamed:@"NoImage"]
+        cell.btnPlayVideo.tag = indexPath.row;
+        cell.btnAcceptInvite.tag = indexPath.row;
+        cell.btnRejectInvite.tag = indexPath.row;
+        cell.lblKey.text = [game objectForKey:@"gameId"];
+        cell.lblName.text = [game objectForKey:@"name"];
+        cell.lblDateTime.text = [self getDaysBetweenTwoDatesWith:[[game objectForKey:@"gameadded_date"] doubleValue]];
+        [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"profileurl"]]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                   [cell.indicator stopAnimating];
                                    
                                }];
+        [cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"imageurl"]]
+                         placeholderImage:[UIImage imageNamed:@"NoImage"]
+                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                    
+                                    [cell.indicator stopAnimating];
+                                }];
     }
     return cell;
 
@@ -147,7 +209,35 @@
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSIndexPath *path = [tableView indexPathForSelectedRow];
+    if (path.row < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[path.row];
+        if ((gameType == eTypeCreated) || (gameType == eTypeCompleted) ) {
+            
+            PlayedGameDetailPageViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForPlayedGameDetail];
+            games.strGameID = [details objectForKey:@"id"];
+            [[self navigationController]pushViewController:games animated:YES];
+            
+        }
+        else{
+            
+            GameZoneViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForPlayedGameZone];
+            games.strGameID = [details objectForKey:@"id"];
+            games.delegate = self;
+            [[self navigationController]pushViewController:games animated:YES];
+            
+        }
+    }
     
+}
+
+-(void)gameZoneCompleted{
+    
+    [segmentControll setSelectedSegmentIndex:0];
+    [arrDataSource removeAllObjects];
+    currentPage = 1;
+    gameType = eTypePlaying;
+    [self getAllGamesByPage:currentPage isPagination:NO];
 }
 
 -(void)displayErrorMessgeWithDetails:(NSData*)responseData{
@@ -178,25 +268,37 @@
                  interval:NULL forDate:refDate];
     [calendar rangeOfUnit:NSCalendarUnitDay startDate:&toDate
                  interval:NULL forDate:today];
-    //    NSDateComponents *difference = [calendar components:NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute
-    //                                               fromDate:fromDate toDate:toDate options:0];
+    NSDateComponents *difference = [calendar components:NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute
+                                                  fromDate:fromDate toDate:toDate options:0];
     NSString *msgDate;
     NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
-    [dateformater setDateFormat:@"d MMM, EE h:mm a"];
+    [dateformater setDateFormat:@"d MMM,yyyy EE h:mm a"];
     msgDate = [dateformater stringFromDate:refDate];
+    
+     NSInteger days = [difference day];
+     if (days > 7) {
+     NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
+     [dateformater setDateFormat:@"d MMM,yyyy EE h:mm a"];
+     msgDate = [dateformater stringFromDate:refDate];
+     }
+     else if (days <= 0) {
+     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+     [dateFormatter setDateFormat:@"h:mm a"];
+     NSDate *date = refDate;
+     msgDate = [dateFormatter stringFromDate:date];
+     }else{
+     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+     [dateFormatter setDateFormat:@"EE h:mm a"];
+     msgDate = [dateFormatter stringFromDate:refDate];
+     }
+    
     return msgDate;
     
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *path = [tableView indexPathForSelectedRow];
-    if (path.row < arrDataSource.count) {
-        NSDictionary *details = arrDataSource[path.row];
-        PlayedGameDetailPageViewController *vc = segue.destinationViewController;
-        vc.strGameID = [details objectForKey:@"id"];
-    }
-  
-}
+
+
+
 
 
 -(IBAction)goBack:(id)sender{

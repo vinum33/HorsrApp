@@ -32,7 +32,7 @@ const CGFloat kJCNotificationBannerViewMarginY = 10.0;
     self.iconImageView.layer.borderWidth = 1.f;
     self.iconImageView.layer.borderColor = [UIColor clearColor].CGColor;
     [self addSubview:self.iconImageView];
-    self.iconImageView.image = [UIImage imageNamed:@"Logo.png"];
+    self.iconImageView.image = [UIImage imageNamed:@"Icon.png"];
     self.titleLabel = [UILabel new];
     self.titleLabel.font = [UIFont fontWithName:CommonFont size:16];
     self.titleLabel.textColor = [UIColor whiteColor];

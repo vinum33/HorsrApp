@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "score-trans100.png",
+      "filename" : "scorebkg-borderonly (1).png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "score-trans200.png",
+      "filename" : "scorebkg-borderonly (1)-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "score-trans300.png",
+      "filename" : "scorebkg-borderonly (1)-2.png",
       "scale" : "3x"
     }
   ],

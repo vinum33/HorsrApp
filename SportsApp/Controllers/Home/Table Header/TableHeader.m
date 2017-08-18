@@ -105,7 +105,7 @@
 
 -(IBAction)menuSelectedwithIndex:(UIButton*)sender{
     
-    [self animate:_btnMenu];
+    if (isOpened) [self animate:_btnMenu];
     [[self delegate]radialMenuClickedWithIndex:sender.tag];
 }
 

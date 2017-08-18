@@ -281,4 +281,42 @@
     
 }
 
++(NSString*)getDateDescriptionForChat:(double)timeInSeconds{
+    
+    NSDate * today = [NSDate date];
+    NSDate * refDate = [NSDate dateWithTimeIntervalSince1970:timeInSeconds];
+    NSDate *fromDate;
+    NSDate *toDate;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    [calendar rangeOfUnit:NSCalendarUnitDay startDate:&fromDate
+                 interval:NULL forDate:refDate];
+    [calendar rangeOfUnit:NSCalendarUnitDay startDate:&toDate
+                 interval:NULL forDate:today];
+    
+    NSDateComponents *difference = [calendar components:NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute
+                                               fromDate:fromDate toDate:toDate options:0];
+    
+    NSString *msgDate;
+    NSInteger days = [difference day];
+    if (days > 7) {
+        NSDateFormatter *dateformater = [[NSDateFormatter alloc]init];
+        [dateformater setDateFormat:@"d MMM,yyyy"];
+        msgDate = [dateformater stringFromDate:refDate];
+    }
+    else if (days <= 0) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        NSDate *date = refDate;
+        msgDate = [dateFormatter stringFromDate:date];
+    }else{
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"EE h:mm a"];
+        msgDate = [dateFormatter stringFromDate:refDate];
+    }
+    
+    return msgDate;
+    
+}
+
+
 @end

@@ -89,6 +89,11 @@
               [tmpAssets addObject:result];
           }
           
+          dispatch_async(dispatch_get_main_queue(),^{
+            self.assets = tmpAssets;
+            [self.collectionView reloadData];
+        });
+       
       }
     }];
     
@@ -98,13 +103,9 @@
     {
       [self displayErrorOnMainQueue:@"Photo Access Disabled" message:@"Please allow Photo Access in System Settings"];
     }
+      
   }];
-  self.assets = tmpAssets;
-  dispatch_time_t popTime1 = dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC);
-  dispatch_after(popTime1, dispatch_get_main_queue(), ^(void){
-    [self.collectionView reloadData];
-  });
-
+  
   // });
   nextButton.layer.borderColor = [[UIColor whiteColor] CGColor];
   nextButton.layer.borderWidth = 1.0f;

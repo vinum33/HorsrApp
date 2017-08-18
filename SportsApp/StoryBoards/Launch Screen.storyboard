@@ -21,15 +21,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DefaultScreen1" translatesAutoresizingMaskIntoConstraints="NO" id="yaS-EP-idi">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="yaS-EP-idi">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_Orange" translatesAutoresizingMaskIntoConstraints="NO" id="VdR-VI-9SA">
+                                <rect key="frame" x="112" y="70" width="150" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="Wqq-TZ-OiW"/>
+                                    <constraint firstAttribute="height" constant="32" id="fxw-pS-Vkd"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="yaS-EP-idi" secondAttribute="bottom" id="DU6-Nu-c9S"/>
                             <constraint firstAttribute="trailing" secondItem="yaS-EP-idi" secondAttribute="trailing" id="P1A-om-93T"/>
+                            <constraint firstItem="VdR-VI-9SA" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="50" id="RrT-Do-6Ax"/>
                             <constraint firstItem="yaS-EP-idi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Y9r-VC-7PA"/>
+                            <constraint firstItem="VdR-VI-9SA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="aps-Kg-bGd"/>
                             <constraint firstItem="yaS-EP-idi" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="mrN-GO-AqP"/>
                         </constraints>
                     </view>
@@ -40,6 +49,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="DefaultScreen1" width="360" height="640"/>
+        <image name="Logo_Orange" width="175" height="37"/>
+        <image name="SplashScreen" width="360" height="640"/>
     </resources>
 </document>

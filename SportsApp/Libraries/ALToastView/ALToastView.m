@@ -64,20 +64,20 @@ static NSMutableArray *toasts;
 		// Add corner radius
 		self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.6];
 		self.layer.cornerRadius = 5;
-		self.autoresizingMask = UIViewAutoresizingNone;
-		self.autoresizesSubviews = NO;
-		
+		self.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
 		// Init and add label
 		_textLabel = [[UILabel alloc] init];
 		_textLabel.text = text;
+        _textLabel.numberOfLines = 0;
 		_textLabel.font = [UIFont systemFontOfSize:14];
 		_textLabel.textColor = [UIColor whiteColor];
-		_textLabel.adjustsFontSizeToFitWidth = NO;
 		_textLabel.backgroundColor = [UIColor clearColor];
-		[_textLabel sizeToFit];
-		
+        _textLabel.translatesAutoresizingMaskIntoConstraints = NO;
 		[self addSubview:_textLabel];
-		_textLabel.frame = CGRectOffset(_textLabel.frame, 10, 5);
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_textLabel]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_textLabel)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_textLabel]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_textLabel)]];
 	}
 	
 	return self;
@@ -95,14 +95,6 @@ static NSMutableArray *toasts;
 + (void)toastInView:(UIView *)parentView withText:(NSString *)text {
 	// Add new instance to queue
 	ALToastView *view = [[ALToastView alloc] initWithText:text];
-  
-	CGFloat lWidth = view.textLabel.frame.size.width;
-	CGFloat lHeight = view.textLabel.frame.size.height;
-	CGFloat pWidth = parentView.frame.size.width;
-	CGFloat pHeight = parentView.frame.size.height;
-	
-	// Change toastview frame
-	view.frame = CGRectMake((pWidth - lWidth - 20) / 2., pHeight - lHeight - 60, lWidth + 20, lHeight + 10);
 	view.alpha = 0.0f;
 	
 	if (toasts == nil) {
@@ -148,6 +140,22 @@ static NSMutableArray *toasts;
     
 		// Fade into parent view
 		[parentView addSubview:view];
+        [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[view]-5-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(view)]];
+        [parentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:parentView
+                                                                   attribute:NSLayoutAttributeBottom
+                                                                  multiplier:1.0
+                                                                    constant:-10]];
+        [parentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                   attribute:NSLayoutAttributeTop
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:view.textLabel
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0
+                                                                    constant:-10]];
+
     [UIView animateWithDuration:.5  delay:0 options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
       view.alpha = 1.0;

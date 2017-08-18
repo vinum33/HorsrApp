@@ -402,6 +402,7 @@ typedef enum{
     if(position == eUserName){
         cell.imgIcon.image = [UIImage imageNamed:@"Icon_Email"];
         cell.txtField.secureTextEntry = NO;
+        cell.txtField.keyboardType = UIKeyboardTypeEmailAddress;
         if ([cell.txtField respondsToSelector:@selector(setAttributedPlaceholder:)]) {
             UIColor *color = [UIColor whiteColor];
             cell.txtField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
@@ -440,7 +441,6 @@ typedef enum{
     
     inputAccView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 40.0)];
     [inputAccView setBackgroundColor:[UIColor lightGrayColor]];
-    [inputAccView setAlpha: 0.8];
     
     UIButton *btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnDone setFrame:CGRectMake(inputAccView.frame.size.width - 85, 1.0f, 85.0f, 38.0f)];
@@ -496,9 +496,9 @@ typedef enum{
 }
 
 -(IBAction)tapToLogin:(id)sender{
+    [self byPassLogin];
+    return;
     
-   [self byPassLogin];
-   return;
     [self.view endEditing:YES];
     [self checkAllFieldsAreValid:^{
          [self showLoadingScreen];

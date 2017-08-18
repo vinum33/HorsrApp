@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <array key="DroidSans-Bold.ttf">
             <string>DroidSans-Bold</string>
         </array>
-        <array key="DroidSansMerged-Regular.ttf">
+        <array key="DroidSans.ttf">
             <string>DroidSans</string>
         </array>
     </customFonts>
@@ -163,11 +163,25 @@
                                             <segue destination="Lq0-o9-Fkl" kind="show" id="Bvn-F7-Zfg"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MTS-qI-JSP">
+                                        <rect key="frame" x="235" y="5" width="100" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="orf-kN-ONo"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                                        <state key="normal" title="Create Game"/>
+                                        <connections>
+                                            <action selector="createGame" destination="Xx2-uh-t1F" eventType="touchUpInside" id="Z4t-c8-AO4"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="h7t-Fo-qnH" firstAttribute="leading" secondItem="MTS-qI-JSP" secondAttribute="trailing" id="Bez-EO-BIJ"/>
+                                    <constraint firstItem="MTS-qI-JSP" firstAttribute="top" secondItem="Jyn-yL-g9X" secondAttribute="top" constant="5" id="J1L-hI-1hF"/>
                                     <constraint firstItem="kNe-ef-fbt" firstAttribute="leading" secondItem="jsg-jq-cma" secondAttribute="trailing" id="Q6z-Qq-Cps"/>
                                     <constraint firstAttribute="height" constant="45" id="R2T-dG-7Dh"/>
+                                    <constraint firstAttribute="bottom" secondItem="MTS-qI-JSP" secondAttribute="bottom" constant="5" id="TVV-Pk-0u1"/>
                                     <constraint firstItem="jsg-jq-cma" firstAttribute="leading" secondItem="Jyn-yL-g9X" secondAttribute="leading" id="YmD-iA-lqJ"/>
                                     <constraint firstItem="kNe-ef-fbt" firstAttribute="centerY" secondItem="Jyn-yL-g9X" secondAttribute="centerY" id="cJS-8c-RfT"/>
                                     <constraint firstItem="h7t-Fo-qnH" firstAttribute="centerY" secondItem="Jyn-yL-g9X" secondAttribute="centerY" id="pQg-1o-XxS"/>
@@ -195,16 +209,16 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWU-Kg-iT2">
-                                                    <rect key="frame" x="153" y="140" width="40" height="18"/>
+                                                    <rect key="frame" x="153.5" y="140" width="39.5" height="18"/>
                                                     <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qUi-fq-lTs">
-                                                    <rect key="frame" x="77" y="168" width="191" height="28"/>
+                                                    <rect key="frame" x="77.5" y="168" width="190.5" height="28"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="fjkdfhjdsj djsfdfgdfjkh jk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ex-8G-fb0">
-                                                            <rect key="frame" x="20" y="6" width="151" height="17"/>
+                                                            <rect key="frame" x="20" y="6" width="150.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -252,19 +266,29 @@
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8p2-iv-ILc">
+                                                    <rect key="frame" x="133" y="50" width="80" height="80"/>
+                                                    <connections>
+                                                        <action selector="showUserPhotoGallery" destination="Xx2-uh-t1F" eventType="touchUpInside" id="TNU-EM-KBu"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="8p2-iv-ILc" firstAttribute="height" secondItem="2Zb-j2-l3j" secondAttribute="height" id="1nF-HX-zre"/>
+                                                <constraint firstItem="8p2-iv-ILc" firstAttribute="top" secondItem="2Zb-j2-l3j" secondAttribute="top" id="2uF-bn-yef"/>
                                                 <constraint firstItem="qUi-fq-lTs" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="Aal-4V-RCS"/>
                                                 <constraint firstItem="gri-M1-kLl" firstAttribute="top" secondItem="Uxa-kv-cJ6" secondAttribute="bottom" constant="10" id="P45-pG-jaL"/>
                                                 <constraint firstItem="gri-M1-kLl" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="RtY-D1-aEk"/>
                                                 <constraint firstItem="Uxa-kv-cJ6" firstAttribute="top" secondItem="qUi-fq-lTs" secondAttribute="bottom" constant="10" id="Vh5-qK-sgk"/>
                                                 <constraint firstItem="2Zb-j2-l3j" firstAttribute="top" secondItem="a3W-xo-AU7" secondAttribute="top" constant="50" id="W86-8L-n8t"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gri-M1-kLl" secondAttribute="bottom" constant="50" id="Wh8-o2-c72"/>
+                                                <constraint firstItem="8p2-iv-ILc" firstAttribute="leading" secondItem="2Zb-j2-l3j" secondAttribute="leading" id="acD-Dm-LBh"/>
                                                 <constraint firstItem="qUi-fq-lTs" firstAttribute="top" secondItem="sWU-Kg-iT2" secondAttribute="bottom" constant="10" id="cbh-7S-aP3"/>
                                                 <constraint firstItem="Uxa-kv-cJ6" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="iAc-of-Xcz"/>
                                                 <constraint firstItem="sWU-Kg-iT2" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="j8J-Fr-acl"/>
                                                 <constraint firstItem="2Zb-j2-l3j" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="nbx-VZ-63B"/>
                                                 <constraint firstItem="sWU-Kg-iT2" firstAttribute="top" secondItem="2Zb-j2-l3j" secondAttribute="bottom" constant="10" id="tgf-t7-VgY"/>
+                                                <constraint firstItem="8p2-iv-ILc" firstAttribute="width" secondItem="2Zb-j2-l3j" secondAttribute="width" id="xej-Kw-GAg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -284,7 +308,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFR-N2-7Qb">
-                                                    <rect key="frame" x="113" y="20" width="120" height="276"/>
+                                                    <rect key="frame" x="113.5" y="20" width="119.5" height="276"/>
                                                     <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="1" green="0.50588235290000005" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -343,6 +367,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnCreateGame" destination="MTS-qI-JSP" id="8Jl-uu-RX0"/>
                         <outlet property="btnEdit" destination="h7t-Fo-qnH" id="XKo-N2-t3e"/>
                         <outlet property="constraintForNavBg" destination="JTJ-pI-2aU" id="qge-gG-YRO"/>
                         <outlet property="tableView" destination="7k9-Q9-FA0" id="w1h-zR-c6A"/>
@@ -374,7 +399,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gL-rU-GWJ">
-                                        <rect key="frame" x="50" y="13" width="79" height="19"/>
+                                        <rect key="frame" x="50" y="13" width="78.5" height="19"/>
                                         <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -433,10 +458,10 @@
                                                     </constraints>
                                                 </imageView>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JR3-JJ-ep1">
-                                                    <rect key="frame" x="77" y="180" width="191" height="28"/>
+                                                    <rect key="frame" x="77.5" y="180" width="190.5" height="28"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="fjkdfhjdsj djsfdfgdfjkh jk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YB4-Cp-mu1">
-                                                            <rect key="frame" x="20" y="6" width="151" height="17"/>
+                                                            <rect key="frame" x="20" y="6" width="150.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                                                             <color key="textColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -674,7 +699,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLO-Ze-yCf">
-                                                    <rect key="frame" x="153" y="140" width="40" height="18"/>
+                                                    <rect key="frame" x="153" y="140" width="39.5" height="18"/>
                                                     <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -896,7 +921,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAa-g9-rLC">
-                                                    <rect key="frame" x="153" y="140" width="40" height="18"/>
+                                                    <rect key="frame" x="153" y="140" width="39.5" height="18"/>
                                                     <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1045,6 +1070,92 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2n4-H7-cWQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4364" y="156"/>
+        </scene>
+        <!--Score Board View Controller-->
+        <scene sceneID="B81-pw-JRu">
+            <objects>
+                <viewController storyboardIdentifier="ScoreBoard" id="w4A-Bv-btB" customClass="ScoreBoardViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wkk-HE-zN3"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ehd-8a-5t0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gH9-eU-ydn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Nav_Bg" translatesAutoresizingMaskIntoConstraints="NO" id="Csk-4E-cyD">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="240" id="RDk-Kc-2sJ"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gV8-t1-bm6" userLabel="Nav">
+                                <rect key="frame" x="0.0" y="20" width="375" height="45"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scores" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gAb-qR-Par">
+                                        <rect key="frame" x="50" y="13" width="47.5" height="19"/>
+                                        <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="16"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpH-xt-1Al">
+                                        <rect key="frame" x="0.0" y="2" width="50" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="lJJ-f4-xf0"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="-9" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" image="BackArrow"/>
+                                        <connections>
+                                            <action selector="goBack:" destination="w4A-Bv-btB" eventType="touchUpInside" id="LJQ-xN-dsL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="gAb-qR-Par" firstAttribute="centerY" secondItem="hpH-xt-1Al" secondAttribute="centerY" id="2aY-Ys-lg7"/>
+                                    <constraint firstAttribute="height" constant="45" id="ErK-hn-N67"/>
+                                    <constraint firstItem="gAb-qR-Par" firstAttribute="leading" secondItem="hpH-xt-1Al" secondAttribute="trailing" id="fXp-lJ-HGG"/>
+                                    <constraint firstItem="hpH-xt-1Al" firstAttribute="centerY" secondItem="gV8-t1-bm6" secondAttribute="centerY" id="fxp-ep-gM7"/>
+                                    <constraint firstItem="hpH-xt-1Al" firstAttribute="leading" secondItem="gV8-t1-bm6" secondAttribute="leading" id="oIU-61-fpS"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qUC-W3-DRG" customClass="BSStackView">
+                                <rect key="frame" x="15" y="75" width="345" height="300"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="EUI-Ld-LBR"/>
+                                </constraints>
+                            </view>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="HxT-Ae-twW">
+                                <rect key="frame" x="152" y="445" width="71" height="37"/>
+                                <color key="pageIndicatorTintColor" red="1" green="0.50588235290000005" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="currentPageIndicatorTintColor" red="0.94509803920000002" green="0.75686274509999996" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </pageControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HxT-Ae-twW" firstAttribute="centerX" secondItem="gH9-eU-ydn" secondAttribute="centerX" id="7Gt-ID-BNE"/>
+                            <constraint firstItem="HxT-Ae-twW" firstAttribute="top" secondItem="qUC-W3-DRG" secondAttribute="bottom" constant="70" id="GGY-VY-1eE"/>
+                            <constraint firstAttribute="trailing" secondItem="Csk-4E-cyD" secondAttribute="trailing" id="OMe-9a-lQs"/>
+                            <constraint firstItem="Csk-4E-cyD" firstAttribute="top" secondItem="gH9-eU-ydn" secondAttribute="top" id="SLB-7K-Ttn"/>
+                            <constraint firstItem="qUC-W3-DRG" firstAttribute="top" secondItem="gV8-t1-bm6" secondAttribute="bottom" constant="10" id="Tql-kG-pF8"/>
+                            <constraint firstItem="qUC-W3-DRG" firstAttribute="leading" secondItem="gH9-eU-ydn" secondAttribute="leading" constant="15" id="UUF-jU-vE1"/>
+                            <constraint firstItem="Csk-4E-cyD" firstAttribute="leading" secondItem="gH9-eU-ydn" secondAttribute="leading" id="WuQ-WB-Bpj"/>
+                            <constraint firstAttribute="trailing" secondItem="qUC-W3-DRG" secondAttribute="trailing" constant="15" id="aBc-cJ-8dC"/>
+                            <constraint firstAttribute="trailing" secondItem="gV8-t1-bm6" secondAttribute="trailing" id="bgA-Qz-aud"/>
+                            <constraint firstItem="gV8-t1-bm6" firstAttribute="leading" secondItem="gH9-eU-ydn" secondAttribute="leading" id="c4h-xH-bfh"/>
+                            <constraint firstItem="gV8-t1-bm6" firstAttribute="top" secondItem="Wkk-HE-zN3" secondAttribute="bottom" id="qJE-Ns-ENu"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="constraintForNavBg" destination="RDk-Kc-2sJ" id="mJB-p0-YNa"/>
+                        <outlet property="pageControl" destination="HxT-Ae-twW" id="sPY-Wq-ACV"/>
+                        <outlet property="stackView" destination="qUC-W3-DRG" id="rJm-LV-lvd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="do6-uE-8Wq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5185" y="147"/>
         </scene>
     </scenes>
     <resources>

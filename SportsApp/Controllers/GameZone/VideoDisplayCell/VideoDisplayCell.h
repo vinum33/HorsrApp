@@ -12,6 +12,11 @@
 
 @property (nonatomic,weak) IBOutlet UIImageView *imgThumb;
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView *indicator;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *constarintImgHeight;
 @property (nonatomic,weak) IBOutlet UIButton *btnRecord;
+@property (nonatomic,weak) IBOutlet UIButton *btnVideoPlay;
+
+@property (nonatomic,weak) IBOutlet UIButton *btnSuccess;
+@property (nonatomic,weak) IBOutlet UIButton *btnFailure;
 
 @end

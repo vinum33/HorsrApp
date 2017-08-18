@@ -5,7 +5,7 @@
 NSString * const StoryboardForSlider = @"StoryBoardForSlider";
 NSString * const StoryboardForLogin = @"Login&RegisterStoryBoard";
 NSString * const GeneralStoryBoard = @"General";
-NSString * const PROJECT_NAME = @"SPORTS";
+NSString * const PROJECT_NAME = @"HorseApp";
 
 NSString * const CommonFont = @"DroidSans";
 NSString * const CommonFontBold = @"DroidSans-Bold";
@@ -33,3 +33,10 @@ NSString * const StoryBoardIdentifierForProfile = @"Profile";
 NSString * const StoryBoardIdentifierForSettings = @"Settings";
 NSString * const StoryBoardIdentifierForInvitedGames = @"InvitedGames";
 NSString * const StoryBoardIdentifierForPlayedGameDetail = @"PlayedGameDetail";
+NSString * const StoryBoardIdentifierForPlayedGameZone = @"GameZone";
+NSString * const StoryBoardIdentifierForScoreBoard = @"ScoreBoard";
+NSString * const StoryBoardIdentifierForShareGame = @"ShareGame";
+NSString * const StoryBoardIdentifierForNotifications = @"Notifications";
+NSString * const StoryBoardIdentifierForChatComposer = @"ChatComposer";
+NSString * const StoryBoardIdentifierForInviteOthers = @"InviteOthers";
+NSString * const StoryBoardIdentifierForContactPicker = @"ContactPicker";

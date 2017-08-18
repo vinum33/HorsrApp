@@ -17,4 +17,7 @@
 -(void)clearUserSessions;
 -(IBAction)revealSlider;
 -(IBAction)showProfilePageWithID:(id)sender;
+-(void)refreshGameZoneWithInfo:(NSDictionary*)info;
+-(void)manageGroupChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG;
+-(void)managePrivateChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG;
 @end

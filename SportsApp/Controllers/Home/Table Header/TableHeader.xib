@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="DroidSansMerged-Regular.ttf">
+        <array key="DroidSans.ttf">
             <string>DroidSans</string>
         </array>
     </customFonts>
@@ -59,7 +59,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECENTLY ADDED GAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l05-sk-9ac">
-                    <rect key="frame" x="112" y="148" width="152.5" height="16.5"/>
+                    <rect key="frame" x="111.5" y="148" width="152.5" height="16.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -187,17 +187,14 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B3C-TW-tUU" userLabel="Vw Animation">
                     <rect key="frame" x="265" y="-5" width="160" height="160"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ac-9F-CqK">
-                            <rect key="frame" x="36" y="10" width="69" height="33"/>
-                            <string key="text">Start
-New Game</string>
-                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8j-Gb-NJQ">
-                            <rect key="frame" x="36" y="10" width="69" height="33"/>
+                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8j-Gb-NJQ">
+                            <rect key="frame" x="60" y="10" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="q47-rh-bPd"/>
+                                <constraint firstAttribute="height" constant="40" id="x5v-eZ-SAg"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
+                            <state key="normal" image="contact_icon"/>
                             <connections>
                                 <action selector="menuSelectedwithIndex:" destination="iN0-l3-epB" eventType="touchUpInside" id="Wse-sb-Bhc"/>
                             </connections>
@@ -227,18 +224,14 @@ New Game</string>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="W8j-Gb-NJQ" firstAttribute="top" secondItem="3Ac-9F-CqK" secondAttribute="top" id="19n-a8-jNS"/>
                         <constraint firstAttribute="bottom" secondItem="Rbl-2R-bTQ" secondAttribute="bottom" constant="10" id="2Km-2z-ZTe"/>
                         <constraint firstItem="DSE-jJ-GuA" firstAttribute="leading" secondItem="B3C-TW-tUU" secondAttribute="leading" constant="10" id="3uQ-m4-ew2"/>
-                        <constraint firstItem="W8j-Gb-NJQ" firstAttribute="leading" secondItem="3Ac-9F-CqK" secondAttribute="leading" id="6O4-UP-011"/>
-                        <constraint firstItem="3Ac-9F-CqK" firstAttribute="top" secondItem="B3C-TW-tUU" secondAttribute="top" constant="10" id="C2F-mN-YzD"/>
                         <constraint firstAttribute="height" constant="160" id="DbI-5d-BxC"/>
-                        <constraint firstAttribute="trailing" secondItem="3Ac-9F-CqK" secondAttribute="trailing" constant="55" id="HMc-My-CZZ"/>
-                        <constraint firstItem="W8j-Gb-NJQ" firstAttribute="height" secondItem="3Ac-9F-CqK" secondAttribute="height" id="INj-gC-TtI"/>
+                        <constraint firstItem="W8j-Gb-NJQ" firstAttribute="centerX" secondItem="B3C-TW-tUU" secondAttribute="centerX" id="Wvi-iy-hAV"/>
+                        <constraint firstItem="W8j-Gb-NJQ" firstAttribute="top" secondItem="B3C-TW-tUU" secondAttribute="top" constant="10" id="Xfn-xE-vkO"/>
                         <constraint firstItem="DSE-jJ-GuA" firstAttribute="centerY" secondItem="B3C-TW-tUU" secondAttribute="centerY" id="cXK-jV-KY3"/>
                         <constraint firstItem="Rbl-2R-bTQ" firstAttribute="centerX" secondItem="B3C-TW-tUU" secondAttribute="centerX" id="nbE-3a-bLk"/>
                         <constraint firstAttribute="width" constant="160" id="qLv-cr-0XJ"/>
-                        <constraint firstItem="W8j-Gb-NJQ" firstAttribute="width" secondItem="3Ac-9F-CqK" secondAttribute="width" id="rVl-kg-MFT"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA2-7a-Hb4">
@@ -317,5 +310,6 @@ New Game</string>
         <image name="Round_Menu" width="30" height="30"/>
         <image name="Share_Video" width="30" height="30"/>
         <image name="Video_Icon" width="30" height="30"/>
+        <image name="contact_icon" width="15" height="11"/>
     </resources>
 </document>

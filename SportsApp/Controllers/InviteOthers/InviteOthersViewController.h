@@ -28,5 +28,6 @@
 
 @property (nonatomic,weak)  id<InviteUserDeleagte>delegate;
 @property (nonatomic,strong) NSArray *selectedUsers ;
+@property (nonatomic,assign) BOOL isFromTagFriends ;
 
 @end

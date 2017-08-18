@@ -17,6 +17,10 @@
     _imgUser.layer.borderWidth = 1.f;
     _imgUser.backgroundColor = [UIColor whiteColor];
     _imgUser.layer.borderColor = [UIColor clearColor].CGColor;
+    
+
+    
+    
 
     // Initialization code
 }

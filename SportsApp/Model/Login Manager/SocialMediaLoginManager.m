@@ -24,6 +24,7 @@
 
 -(void)doFBLoginFromViewController:(UIViewController*)viewcontroller{
     
+    [self showLoadingScreen];
     btnFBSignin = [[FBSDKLoginButton alloc] init];
     btnFBSignin.delegate = self;
     btnFBSignin.hidden = true;
@@ -38,6 +39,7 @@
         login.loginBehavior = FBSDKLoginBehaviorSystemAccount;
         [login logInWithReadPermissions:@[@"public_profile",@"email"] fromViewController:viewcontroller handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
             
+            [self hideLoadingScreen];
             if (!error)[self getFacebookData];
             
         }];
@@ -57,7 +59,6 @@
                  NSString *email;
                  NSString *fname;
                  NSString *fbID;
-                 NSString *gender;
                  if (NULL_TO_NIL([result objectForKey:@"email"])) {
                      email = [result objectForKey:@"email"];
                  }

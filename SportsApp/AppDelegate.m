@@ -6,7 +6,9 @@
 //  Copyright © 2017 Purpose Code. All rights reserved.
 //
 
-#define NOTIFICATION_TYPE_COMMON        @"common"
+#define NOTIFICATION_TYPE_GAME_UPLOAD               @"game_upload"
+#define NOTIFICATION_TYPE_GROUP_CHAT                @"chat"
+#define NOTIFICATION_TYPE_PRIVATE_CHAT              @"privatechat"
 
 
 typedef enum{
@@ -33,12 +35,14 @@ typedef enum{
 #import "JCNotificationCenter.h"
 #import "JCNotificationBannerPresenterIOSStyle.h"
 #import "LoginViewController.h"
+#import "Reachability.h"
 
 @interface AppDelegate () <UITabBarControllerDelegate,SWRevealViewControllerDelegate,UIAlertViewDelegate>{
     
     BOOL isAlertInProgress;
     UITabBarController *tabBarController;
     UIButton *btnSlideMenu;
+    Reachability *internetReachability;
 
 }
 
@@ -49,6 +53,7 @@ typedef enum{
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+     [self reachability];
     [Utility setUpGoogleMapConfiguration];
     [self checkUserStatus];
     [self configureGoogleLoginIn];
@@ -243,9 +248,91 @@ typedef enum{
     [self resetBadgeCount];
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (!userExists) return;
-   }
+    if(application.applicationState == UIApplicationStateInactive) {
+        [self handleNotificationWith:userInfo isBackground:YES];
+        completionHandler(UIBackgroundFetchResultNewData);
+        
+    } else if (application.applicationState == UIApplicationStateBackground) {
+        completionHandler(UIBackgroundFetchResultNewData);
+        
+    } else {
+        [self handleNotificationWith:userInfo isBackground:NO];
+        completionHandler(UIBackgroundFetchResultNewData);
+        
+    }
+
+}
+
+-(void)handleNotificationWith:(NSDictionary*)userInfo isBackground:(BOOL)isBackground{
+     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
+     if (userExists) {
+        if (NULL_TO_NIL([userInfo objectForKey:@"data"])) {
+            if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_GAME_UPLOAD]){
+                [_homeVC refreshGameZoneWithInfo:userInfo];
+            }
+            else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_GROUP_CHAT]){
+                [_homeVC manageGroupChatInfoFromForeGround:[userInfo objectForKey:@"data"] isBBg:isBackground];
+            }
+            else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_PRIVATE_CHAT]){
+                [_homeVC managePrivateChatInfoFromForeGround:[userInfo objectForKey:@"data"] isBBg:isBackground];
+            }
+        }
+    }
+    
+}
 
 
+#pragma mark - Reachability
+
+-(void)reachability{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    internetReachability = [Reachability reachabilityForInternetConnection];
+    [internetReachability startNotifier];
+}
+
+- (void) reachabilityChanged:(NSNotification *)note
+{
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    NetworkStatus netStatus = [internetReachability currentReachabilityStatus];
+    NSString* statusString = @"";
+    switch (netStatus)
+    {
+        case NotReachable:        {
+            statusString = @"The internet is down.";
+            break;
+        }
+            
+        case ReachableViaWWAN:        {
+            statusString = @"The internet is working via WWAN.";
+            break;
+        }
+        case ReachableViaWiFi:        {
+            statusString= @"The internet is working via WIFI.";
+            break;
+        }
+    }
+    
+    UIAlertController * alert=   [UIAlertController
+                                  alertControllerWithTitle:@"Internet"
+                                  message:statusString
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                             
+                             
+                         }];
+    [alert addAction:ok];
+    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    
+    
+}
 
 -(void)resetBadgeCount{
     

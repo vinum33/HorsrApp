@@ -99,7 +99,7 @@
                                 verticalFittingPriority:UILayoutPriorityFittingSizeLevel];
         view.frame = CGRectMake(0, 0, size.width + 20, size.height);
         [cell.contentView addSubview:view];
-        
+        [view setupConstraints];
         UIImage *image = view.image;
         NSTextAttachment *attachment = [NSTextAttachment new];
         attachment.image = image;

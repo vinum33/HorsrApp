@@ -16,7 +16,7 @@
 @property (nonatomic,strong) User *currentUser;
 @property (nonatomic,strong) HomeViewController *homeVC;
 @property (nonatomic,strong) UINavigationController *navOutOfTab;
-@property (nonatomic,strong)SWRevealViewController *revealController;
+@property (nonatomic,strong) SWRevealViewController *revealController;
 
 
 -(void)enablePushNotification;

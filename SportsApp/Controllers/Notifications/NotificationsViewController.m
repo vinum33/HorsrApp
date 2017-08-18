@@ -199,7 +199,7 @@
                              withRowAnimation:UITableViewRowAnimationRight];
             [tableView endUpdates];
             [Utility hideLoadingScreenFromView:self.view];
-            
+            btnClaer.hidden = true;
             
         } completion:^(BOOL finished) {
             // code

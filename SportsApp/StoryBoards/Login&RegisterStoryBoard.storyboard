@@ -346,7 +346,7 @@
     </scenes>
     <resources>
         <image name="LoginBG" width="360" height="640"/>
-        <image name="Logo" width="112" height="37"/>
+        <image name="Logo" width="175" height="37"/>
         <image name="Or" width="30" height="30"/>
         <image name="Radio_Active" width="30" height="30"/>
         <image name="Radio_Inactive" width="30" height="30"/>

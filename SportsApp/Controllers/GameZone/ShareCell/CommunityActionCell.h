@@ -13,6 +13,7 @@
 
 @property (nonatomic,weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic,weak) IBOutlet EMEmojiableBtn *btnEmoji;
+@property (nonatomic,weak) IBOutlet UIButton *btnShare;
 
 
 @end

@@ -16,6 +16,8 @@
     float frameWidth;
     int totalPages;
     int _currentPage;
+    NSArray *players;
+    NSInteger selectedIndex;
     
 }
 
@@ -32,6 +34,7 @@
 
 -(void)setDataSourceWithArray:(NSArray*)source{
 
+    players = source;
     [_collectionView reloadData];
     
    
@@ -43,19 +46,22 @@
     btnPrev.enabled = false;
     frameWidth = width;
     float collectionViewWidth = frameWidth - 30 - 80;
-    float pages = floor ((10*60 + 10*5) / collectionViewWidth) + 1;
+    float pages = floor ((players.count * 60 + players.count * 5) / collectionViewWidth) + 1;
     _currentPage = 0;
     totalPages = pages;
-    if (pages > 0) {
+    if (pages > 1) {
         btnNext.enabled = true;
     }
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedIndex inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+
 }
 
 #pragma mark - UICollectionViewDataSource Methods
 
 -(NSInteger)collectionView:(UICollectionView *)_collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 10;
+    return players.count;
     
 }
 
@@ -63,12 +69,22 @@
 {
     
     UserCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserCollectionViewCell" forIndexPath:indexPath];
-    [[cell indicator] startAnimating];
-    [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[User sharedManager].profileurl]
-                    placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
-                           completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                               [[cell indicator] stopAnimating];
-                           }];
+    if (indexPath.row < players.count) {
+        NSDictionary *userInfo = players[indexPath.row];
+        cell.imgBall.hidden = [[userInfo objectForKey:@"turn"] boolValue] ? false : true;
+        cell.imgUser.layer.borderColor = [UIColor colorWithRed:0.97 green:0.89 blue:0.82 alpha:1.0].CGColor;
+        [[cell indicator] startAnimating];
+        [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[userInfo objectForKey:@"profileurl"]]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
+                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                   [[cell indicator] stopAnimating];
+                                  
+                               }];
+        if (_selectedIndex == indexPath.row) {
+              cell.imgUser.layer.borderColor = [UIColor redColor].CGColor;
+        }
+    }
+    
     return cell;
 }
 
@@ -81,6 +97,13 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
     return 5;
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    _selectedIndex = indexPath.row;
+    [collectionView reloadData];
+    [[self delegate]userSelectedWithIndex:indexPath.row];
+    
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{

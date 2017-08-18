@@ -299,7 +299,6 @@
     
     inputAccView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 40.0)];
     [inputAccView setBackgroundColor:[UIColor lightGrayColor]];
-    [inputAccView setAlpha:1];
     
     UIButton *btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnDone setFrame:CGRectMake(inputAccView.frame.size.width - 85, 1.0f, 85.0f, 38.0f)];
@@ -337,6 +336,7 @@
 -(IBAction)showLocationPikcer{
     
     [self.view endEditing:YES];
+     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSForegroundColorAttributeName:[UIColor getBlackTextColor]}];
     GMSAutocompleteViewController *acController = [[GMSAutocompleteViewController alloc] init];
     acController.delegate = self;
     acController.autocompleteFilter.type = kGMSPlacesAutocompleteTypeFilterCity;

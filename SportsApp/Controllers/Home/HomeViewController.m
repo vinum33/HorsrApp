@@ -13,11 +13,11 @@ typedef enum{
     eMenuCreateGame    = 0,
     eMenuSharedVideo  = 1,
     eMenuAllGames  = 2,
-    eMenuInvitedGames  = 3,
-    eMenuNotifications = 4,
-    eMenuSettings = 5,
-    eMenuLogout = 6,
-    eMenuProfile = 7
+    eMenuNotifications = 3,
+    eMenuSettings = 4,
+    eMenuLogout = 5,
+    eMenuProfile = 6,
+    eMenuConatct = 7
     
     
 }eMenuType;
@@ -52,6 +52,7 @@ typedef enum{
 #define kHeightForFooter        5
 #define kDefaultNumberOfCells   1
 #define kDefaultNavHeight       105
+#define kLimitReached           406
 
 #import <AVFoundation/AVFoundation.h>
 #import "HomeViewController.h"
@@ -73,14 +74,20 @@ typedef enum{
 #import <AVKit/AVKit.h>
 #import "ProfileViewController.h"
 #import "SettingsViewController.h"
-#import "InvitedGamesViewController.h"
 #import "PlayedGameDetailPageViewController.h"
+#import "GameZoneViewController.h"
+#import "NotificationsViewController.h"
+#import "ChatComposeViewController.h"
+#import "JCNotificationCenter.h"
+#import "JCNotificationBannerPresenterIOSStyle.h"
+#import "ContactPickerViewController.h"
 
 @interface HomeViewController ()<SWRevealViewControllerDelegate,UITabBarControllerDelegate,RadialMenuDelegate>{
     
     IBOutlet UIView *vwOverLay;
     IBOutlet UIButton* btnSlideMenu;
     IBOutlet UITableView* tableView;
+    IBOutlet UIButton *btnCreateGame;
     NSMutableArray *arrPeople;
     NSArray *arrRecentGame;
     NSMutableArray *arrGameRequests;
@@ -120,10 +127,11 @@ typedef enum{
 
 -(void)setUpInitials{
     
+    [tableView setContentInset:UIEdgeInsetsMake(0,0,60,0)];
     tableView.hidden = true;
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 50;
+    tableView.estimatedRowHeight = 500;
     refreshController = [[UIRefreshControl alloc] init];
     [refreshController addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:refreshController];
@@ -134,6 +142,12 @@ typedef enum{
     float ratio = width / height;
     bgImgHeight = (self.view.frame.size.width) / ratio;
    
+    btnCreateGame.clipsToBounds = YES;
+    btnCreateGame.layer.cornerRadius = 5.f;
+    btnCreateGame.layer.borderWidth = 1.f;
+    btnCreateGame.backgroundColor = [UIColor getThemeColor];
+    btnCreateGame.layer.borderColor = [UIColor clearColor].CGColor;
+
     
     
 }
@@ -167,6 +181,7 @@ typedef enum{
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
+        userInfo = nil;
         if (task.responseData)
             [self displayErrorMessgeWithDetails:task.responseData];
         else
@@ -298,10 +313,12 @@ typedef enum{
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (indexPath.row < arrGameRequests.count) {
             [cell.indicator startAnimating];
+            [cell closeExpandedMenu];
             NSDictionary *game = arrGameRequests[indexPath.row];
             cell.btnPlayVideo.tag = indexPath.row;
             cell.btnAcceptInvite.tag = indexPath.row;
             cell.btnRejectInvite.tag = indexPath.row;
+            cell.btnProfile.tag = indexPath.row;
             cell.lblKey.text = [game objectForKey:@"gameId"];
             cell.lblName.text = [game objectForKey:@"name"];
             cell.lblLocation.text = [game objectForKey:@"location"];
@@ -445,20 +462,23 @@ typedef enum{
     
     NSInteger tag = index;
     switch (tag) {
+            
         case eMenuCreateGame:
             [self createGame];
             break;
+            
         case eMenuSharedVideo:
             [self showSharedVideos];
             break;
+            
         case eMenuAllGames:
             [self listAllGames];
             break;
-        case eMenuInvitedGames:
-            [self showInvitedGames];
-            break;
+       
         case eMenuNotifications:
+            [self showNotifications];
             break;
+            
         case eMenuSettings:
             [self showSettings];
             break;
@@ -466,9 +486,15 @@ typedef enum{
         case eMenuProfile:
             [self showProfilePageWithID:[User sharedManager].userId];
             break;
+            
         case eMenuLogout:
             [self logoutUser];
             break;
+            
+        case eMenuConatct:
+            [self showContactPicker];
+            break;
+            
             
         default:
             break;
@@ -481,10 +507,11 @@ typedef enum{
      ListGamesViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForListGames];
     [[self navigationController]pushViewController:games animated:YES];
 }
--(void)createGame{
+-(IBAction)createGame{
     
     CreateGameViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCreateGame];
     [[self navigationController]pushViewController:games animated:YES];
+    
 }
 -(void)showSharedVideos{
     
@@ -520,12 +547,18 @@ typedef enum{
     [[self navigationController]pushViewController:games animated:YES];
 }
 
--(IBAction)showInvitedGames{
+-(IBAction)showNotifications{
     
-    InvitedGamesViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForInvitedGames];
+    NotificationsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
     [[self navigationController]pushViewController:games animated:YES];
 }
 
+
+-(IBAction)showContactPicker{
+    
+    ContactPickerViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForContactPicker];
+    [[self navigationController]pushViewController:games animated:YES];
+}
 
 
 -(void)logoutUser{
@@ -568,7 +601,6 @@ typedef enum{
             [[GIDSignIn sharedInstance] signOut];
             FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
             [loginManager logOut];
-            
             AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             if (defaults && [defaults objectForKey:@"USER"])
@@ -598,6 +630,226 @@ typedef enum{
         [app.window.rootViewController presentViewController:alert animated:YES completion:nil];
         [self hideLoadingScreen];
     }];
+    
+}
+
+#pragma mark - Chat manage
+
+-(void)refreshGameZoneWithInfo:(NSDictionary*)info{
+    
+    BOOL isGameOpen = false;
+    for (UIViewController*vc in [self.navigationController viewControllers]) {
+        if ([vc isKindOfClass: [GameZoneViewController class]]){
+            isGameOpen = true;
+            GameZoneViewController *gameZone = (GameZoneViewController*)vc;
+            if ([gameZone.strGameID isEqualToString:[[info objectForKey:@"data"] objectForKey:@"id"]]) {
+                [gameZone getGameZoneDetails];
+                [gameZone showToastWithMessage:[[info objectForKey:@"aps"] objectForKey:@"alert"]];
+            }
+            
+            break;
+        }
+    }
+    if (!isGameOpen) {
+        if ([[info objectForKey:@"data"] objectForKey:@"game_id"]) {
+             [self goToGameZoneWithGameID:[[info objectForKey:@"data"] objectForKey:@"game_id"]];
+        }
+       
+    }
+   
+}
+
+-(void)manageGroupChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG{
+    
+    if (isBG) {
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            ChatComposeViewController *chatView = (ChatComposeViewController*)[self.navigationController.viewControllers lastObject];
+            if ([chatView.strGameID isEqualToString:[_userInfo objectForKey:@"game_id"]]) {
+                
+                /*! If chat notification comes with a same user !*/
+                
+                [chatView newChatHasReceivedWithDetails:_userInfo];
+                
+            }else{
+                
+                /*! If chat notification comes with a defefrent user !*/
+                
+                ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+                chatCompose.strGameID = [_userInfo objectForKey:@"game_id"];
+                [self.navigationController pushViewController:chatCompose animated:YES];
+                
+            }
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+            chatCompose.strGameID = [_userInfo objectForKey:@"game_id"];
+            [self.navigationController pushViewController:chatCompose animated:YES];
+            
+            
+        }
+        
+    }else{
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            ChatComposeViewController *chatView = (ChatComposeViewController*)[self.navigationController.viewControllers lastObject];
+            if ([chatView.strGameID isEqualToString:[_userInfo objectForKey:@"game_id"]]) {
+                
+                /*! If chat notification comes with a same user !*/
+                
+                [chatView newChatHasReceivedWithDetails:_userInfo];
+                
+            }else{
+                
+                /*! If chat notification comes with a defefrent user !*/
+                
+                
+                NSString *appName = PROJECT_NAME;
+                NSString *message = [NSString stringWithFormat:@"%@ : %@",[_userInfo objectForKey:@"name"],[_userInfo objectForKey:@"msg"]];
+                [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+                [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+                        chatCompose.strGameID = [_userInfo objectForKey:@"game_id"];
+                        [self.navigationController pushViewController:chatCompose animated:YES];
+                        NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                        [allViewControllers removeObjectAtIndex:allViewControllers.count - 2];
+                        self.navigationController.viewControllers = allViewControllers;
+                    });
+                    
+                }];
+                
+            }
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            NSString *appName = PROJECT_NAME;
+            NSString *message = [NSString stringWithFormat:@"%@ : %@",[_userInfo objectForKey:@"name"],[_userInfo objectForKey:@"msg"]];
+            [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+            [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    
+                    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+                    
+                    chatCompose.strGameID = [_userInfo objectForKey:@"game_id"];
+                    [self.navigationController pushViewController:chatCompose animated:YES];
+                });
+                
+            }];
+            
+            
+            
+        }
+    }
+   
+    
+}
+
+-(void)managePrivateChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG{
+    
+    if (isBG) {
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            ChatComposeViewController *chatView = (ChatComposeViewController*)[self.navigationController.viewControllers lastObject];
+            if ([chatView.strUserID isEqualToString:[_userInfo objectForKey:@"user_id"]]) {
+                
+                /*! If chat notification comes with a same user !*/
+                
+                [chatView newChatHasReceivedWithDetails:_userInfo];
+                
+            }else{
+                
+                /*! If chat notification comes with a defefrent user !*/
+                
+                ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+                chatCompose.strUserID = [_userInfo objectForKey:@"user_id"];
+                [self.navigationController pushViewController:chatCompose animated:YES];
+                
+            }
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+            chatCompose.strUserID = [_userInfo objectForKey:@"user_id"];
+            [self.navigationController pushViewController:chatCompose animated:YES];
+            
+            
+        }
+        
+    }else{
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[ChatComposeViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            ChatComposeViewController *chatView = (ChatComposeViewController*)[self.navigationController.viewControllers lastObject];
+            if ([chatView.strUserID isEqualToString:[_userInfo objectForKey:@"user_id"]]) {
+                
+                /*! If chat notification comes with a same user !*/
+                
+                [chatView newChatHasReceivedWithDetails:_userInfo];
+                
+            }else{
+                
+                /*! If chat notification comes with a defefrent user !*/
+                
+                
+                NSString *appName = PROJECT_NAME;
+                NSString *message = [NSString stringWithFormat:@"%@ : %@",[_userInfo objectForKey:@"name"],[_userInfo objectForKey:@"msg"]];
+                [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+                [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+                        chatCompose.strUserID = [_userInfo objectForKey:@"user_id"];
+                        [self.navigationController pushViewController:chatCompose animated:YES];
+                        NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                        [allViewControllers removeObjectAtIndex:allViewControllers.count - 2];
+                        self.navigationController.viewControllers = allViewControllers;
+                    });
+                    
+                }];
+                
+            }
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            NSString *appName = PROJECT_NAME;
+            NSString *message = [NSString stringWithFormat:@"%@ : %@",[_userInfo objectForKey:@"name"],[_userInfo objectForKey:@"msg"]];
+            [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+            [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    
+                    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+                    
+                    chatCompose.strUserID = [_userInfo objectForKey:@"user_id"];
+                    [self.navigationController pushViewController:chatCompose animated:YES];
+                });
+                
+            }];
+            
+            
+            
+        }
+    }
+    
     
 }
 
@@ -690,10 +942,46 @@ typedef enum{
             [Utility hideLoadingScreenFromView:self.view];
             [arrGameRequests removeObjectAtIndex:sender.tag];
             [tableView reloadData];
+            [self goToGameZoneWithGameID:[people objectForKey:@"game_id"]];
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
             
-             [Utility hideLoadingScreenFromView:self.view];
+            [Utility hideLoadingScreenFromView:self.view];
+            NSString *title = @"ERROR";
+            NSString *errormsg = error.localizedDescription;
+            if (task.responseData) {
+                if ([task.response statusCode] == kLimitReached) {
+                    title = @"LIMIT REACHED";
+                    [arrGameRequests removeObjectAtIndex:sender.tag];
+                    [tableView reloadData];
+                }
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:task.responseData
+                                                                     options:kNilOptions
+                                                                       error:&error];
+                if (NULL_TO_NIL([json objectForKey:@"text"])) errormsg = [json objectForKey:@"text"];
+               
+
+            }
+            
+            UIAlertController * alert=   [UIAlertController
+                                          alertControllerWithTitle:title
+                                          message:errormsg
+                                          preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* ok = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+            
+            
+            [alert addAction:ok];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
         }];
         
         
@@ -816,6 +1104,31 @@ typedef enum{
 
 
 #pragma mark - Generic Methods
+
+-(IBAction)showUserProfileWithIndex:(UIButton*)sender{
+    if (sender.tag < arrGameRequests.count) {
+        NSDictionary *user = arrGameRequests[sender.tag];
+        ProfileViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GeneralStoryBoard Identifier:StoryBoardIdentifierForProfile];
+        [[self navigationController]pushViewController:games animated:YES];
+        games.strUserID = [user objectForKey:@"user_id"];
+    }
+}
+
+-(void)goToChatWithGameID:(NSString*)gameID{
+    
+    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+    chatCompose.strGameID = gameID;
+    [[self navigationController]pushViewController:chatCompose animated:YES];
+   
+}
+
+
+-(void)goToGameZoneWithGameID:(NSString*)gameID{
+    
+    GameZoneViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForPlayedGameZone];
+    games.strGameID = gameID;
+    [[self navigationController]pushViewController:games animated:YES];
+}
 
 -(void)displayErrorMessgeWithDetails:(NSData*)responseData{
     if (responseData.length) {

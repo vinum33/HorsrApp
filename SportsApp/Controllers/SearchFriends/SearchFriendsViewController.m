@@ -31,6 +31,7 @@ typedef enum{
 #import "SearchFriendsViewController.h"
 #import "Constants.h"
 #import "PlayerListTableViewCell.h"
+#import "ProfileViewController.h"
 
 @interface SearchFriendsViewController () {
     
@@ -67,14 +68,12 @@ typedef enum{
     UITextField *searchTextField = [searchBar valueForKey:@"_searchField"];
     if ([searchTextField respondsToSelector:@selector(setAttributedPlaceholder:)]) {
         UIColor *color = [UIColor whiteColor];
-        [searchTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Search friends" attributes:@{NSForegroundColorAttributeName: color}]];
+        [searchTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Search People" attributes:@{NSForegroundColorAttributeName: color}]];
     }
     [searchBar setImage:[UIImage imageNamed:@"Search_50"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     [searchBar setImage:[UIImage imageNamed:@"Clear"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:CommonFont size:14]];
-    
    
-    
     currentPage = 1;
     arrDataSource = [NSMutableArray new];
     
@@ -133,7 +132,7 @@ typedef enum{
         totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
     if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
         currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
-    if (isDataAvailable) [searchBar becomeFirstResponder];
+    //if (isDataAvailable) [searchBar becomeFirstResponder];
     
     [tableView reloadData];
     
@@ -488,7 +487,6 @@ typedef enum{
     }
 
 }
-
 
 -(IBAction)goBack:(id)sender{
     

@@ -154,6 +154,7 @@
 
 - (IBAction)showPlaceSearchPage {
     [indicator startAnimating];
+     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSForegroundColorAttributeName:[UIColor getBlackTextColor]}];
     GMSAutocompleteViewController *acController = [[GMSAutocompleteViewController alloc] init];
     acController.autocompleteFilter.type = kGMSPlacesAutocompleteTypeFilterCity;
     acController.delegate = self;

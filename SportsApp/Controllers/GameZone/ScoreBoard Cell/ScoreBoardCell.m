@@ -7,38 +7,97 @@
 //
 
 #import "ScoreBoardCell.h"
+#import "ScoreCollectionViewCell.h"
+
+@interface ScoreBoardCell(){
+    
+    float frameWidth;
+    NSArray *arrPlayers;
+}
+
+@end
 
 @implementation ScoreBoardCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    float width = self.contentView.frame.size.width - 20;
-    UIColor *topColor = [UIColor colorWithRed:1.00 green:0.80 blue:0.16 alpha:1.0];
-    UIColor * bottomColor = [UIColor colorWithRed:1.00 green:0.52 blue:0.16 alpha:1.0];
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = CGRectMake(0, 0, width, 80);
-    gradient.colors = [NSArray arrayWithObjects:(id)topColor.CGColor, (id)bottomColor.CGColor, nil];
-    gradient.startPoint = CGPointMake(0.0, 0.5);
-    gradient.endPoint = CGPointMake(1.0, 0.5);
-
-    [_vwScoreBG.layer addSublayer:gradient];
-    [_vwScoreBG.layer insertSublayer:gradient atIndex:0];
-    
-    _imgUser.clipsToBounds = YES;
-    _imgUser.layer.cornerRadius = 25.f;
-    _imgUser.layer.borderWidth = 2.f;
-    _imgUser.backgroundColor = [UIColor clearColor];
-    _imgUser.layer.borderColor =[UIColor colorWithRed:0.97 green:0.89 blue:0.82 alpha:1.0].CGColor;
-    
-
-    // Initialization code
 }
+
+-(void)setDataSourceWithArray:(NSArray*)source{
+    
+    arrPlayers = source;
+    [_collectionView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedIndex inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+}
+
+-(void)setUpPagingWithFrame:(float)width{
+    
+    frameWidth = width;
+    
+    
+}
+
+#pragma mark - UICollectionViewDataSource Methods
+
+-(NSInteger)collectionView:(UICollectionView *)_collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return arrPlayers.count;
+    
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    ScoreCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ScoreCollectionViewCell" forIndexPath:indexPath];
+    [cell setUpBgWithFrame:frameWidth];
+    if (indexPath.row < arrPlayers.count) {
+        NSDictionary *userInfo = arrPlayers[indexPath.row];
+        [cell setScoreWithLetters:[userInfo objectForKey:@"score"] andGameType:[[userInfo objectForKey:@"gametype_id"] integerValue]];
+        cell.imgUser.layer.borderColor = [UIColor whiteColor].CGColor;
+        cell.lblUserName.text = [userInfo objectForKey:@"name"];
+        [[cell indicator] startAnimating];
+        [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[userInfo objectForKey:@"profileurl"]]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
+                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                   [[cell indicator] stopAnimating];
+                                   
+                               }];
+        
+    }
+    
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)_collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return CGSizeMake(frameWidth, 80);
+}
+
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 0;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    return UIEdgeInsetsMake(0, 0, 0, 0);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [[self delegate]scoreBoardSelectedWithIndex:indexPath.row];
+    
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
+
+
 
 @end

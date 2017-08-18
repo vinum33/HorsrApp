@@ -62,6 +62,13 @@
     }];
 }
 
+-(void)closeExpandedMenu{
+    
+    if (isOpened) {
+        _trailingForButton.constant = 0.0f;
+        isOpened = false;
+    }
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

@@ -11,12 +11,16 @@
 #import "ProfileCell.h"
 #import "ChangePasswordPopUp.h"
 #import "EditProfileViewController.h"
+#import "PhotoBrowser.h"
+#import "CreateGameViewController.h"
 
-@interface ProfileViewController () <ChangePasswordPopUpDelegate,EditProfileDelegate>{
+@interface ProfileViewController () <ChangePasswordPopUpDelegate,EditProfileDelegate,PhotoBrowserDelegate>{
     
     ChangePasswordPopUp *changePwdPopUp;
     
     IBOutlet UISearchBar *searchBar;
+    IBOutlet UIButton *btnCreateGame;
+    
     IBOutlet NSLayoutConstraint *constraintForNavBg;
     IBOutlet UITableView* tableView;
     IBOutlet UIButton* btnEdit;
@@ -28,6 +32,7 @@
     NSString *strUserName;
     NSString *strLocation;
     NSString *strStatusMsg;
+    PhotoBrowser *photoBrowser;
     
 }
 
@@ -43,6 +48,12 @@
 }
 
 -(void)setUp{
+    
+    btnCreateGame.clipsToBounds = YES;
+    btnCreateGame.layer.cornerRadius = 5.f;
+    btnCreateGame.layer.borderWidth = 1.f;
+    btnCreateGame.backgroundColor = [UIColor clearColor];
+    btnCreateGame.layer.borderColor = [UIColor whiteColor].CGColor;
     
     tableView.hidden = true;
     btnEdit.hidden = true;
@@ -187,9 +198,64 @@
 }
 
 
+-(IBAction)showUserPhotoGallery{
+    
+    if ([userInfo objectForKey:@"profileurl"]) {
+        NSArray *images = [NSArray arrayWithObject:[userInfo objectForKey:@"profileurl"]];
+        [self presentGalleryWithImages:images];
+    }
+    
+}
+
+
+- (void)presentGalleryWithImages:(NSArray*)images
+{
+    
+    if (!photoBrowser) {
+        photoBrowser = [[[NSBundle mainBundle] loadNibNamed:@"PhotoBrowser" owner:self options:nil] objectAtIndex:0];
+        photoBrowser.delegate = self;
+    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    UIView *vwPopUP = photoBrowser;
+    [app.window.rootViewController.view addSubview:vwPopUP];
+    vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    
+    vwPopUP.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwPopUP.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [photoBrowser setUpWithImages:images];
+    }];
+    
+}
+
+-(void)closePhotoBrowserView{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        photoBrowser.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [photoBrowser removeFromSuperview];
+        photoBrowser = nil;
+    }];
+}
+
+
 
 
 #pragma mark - IBActions
+
+-(IBAction)createGame{
+    
+    CreateGameViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCreateGame];
+    [[self navigationController]pushViewController:games animated:YES];
+    
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     

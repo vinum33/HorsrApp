@@ -11,4 +11,5 @@
 @interface AHTagView : UIView
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, copy, readonly) UIImage *image;
+- (void)setupConstraints;
 @end
