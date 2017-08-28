@@ -588,7 +588,6 @@
             
         }
         
-        
     }
 }
 
@@ -648,9 +647,7 @@
                     [Utility hideLoadingScreenFromView:self.view];
                 }];
             }
-            
-            
-            
+           
         }
         
     } failure:^{

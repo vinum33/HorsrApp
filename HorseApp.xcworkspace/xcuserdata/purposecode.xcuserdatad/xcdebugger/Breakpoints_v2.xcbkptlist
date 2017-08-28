@@ -345,22 +345,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "525335969.205649"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "519"
-            endingLineNumber = "519"
-            landmarkName = "-customActionSheet:clickedButtonAtIndex:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
             timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
@@ -778,22 +762,6 @@
             startingLineNumber = "585"
             endingLineNumber = "585"
             landmarkName = "+createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "525335969.205649"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "690"
-            endingLineNumber = "690"
-            landmarkName = "-showWinnerPopUp"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1475,38 +1443,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Views/Info PopUp/InfoPopUp.m"
-            timestampString = "524750093.786397"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "-keyboardWillShow:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Views/Info PopUp/InfoPopUp.m"
-            timestampString = "524750093.786397"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "-keyboardWillShow:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
             timestampString = "524749864.090192"
             startingColumnNumber = "9223372036854775807"
@@ -1524,11 +1460,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "525335969.205649"
+            timestampString = "525608570.354947"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "737"
-            endingLineNumber = "737"
+            startingLineNumber = "736"
+            endingLineNumber = "736"
             landmarkName = "-showInfoPopUp"
             landmarkType = "7">
          </BreakpointContent>

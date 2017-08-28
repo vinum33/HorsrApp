@@ -439,7 +439,6 @@ typedef enum{
     messageController.messageComposeDelegate = self;
     [messageController setRecipients:recipents];
     [messageController setBody:message];
-    
     // Present message view controller on screen
     [self presentViewController:messageController animated:YES completion:nil];
 }
