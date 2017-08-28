@@ -20,6 +20,7 @@
 @property (nonatomic,weak) IBOutlet UIButton *btnProfile;
 @property (nonatomic,weak) IBOutlet UIButton *btnDelete;
 @property (nonatomic,weak) IBOutlet UIImageView *imgThumb;
+@property (nonatomic,weak) IBOutlet UIButton *btnShare;
 @property (nonatomic,weak) IBOutlet UILabel *lblDescription;
 @property (nonatomic,weak) IBOutlet NSLayoutConstraint *constraintForHeight;
 @property (nonatomic,weak) IBOutlet EMEmojiableBtn *btnEmoji;

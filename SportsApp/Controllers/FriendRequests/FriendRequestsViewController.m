@@ -129,7 +129,7 @@
         cell.lblName.text = [user objectForKey:@"name"];
         cell.lblLoc.text = [user objectForKey:@"location"];;
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[user objectForKey:@"profileurl"]]
-                        placeholderImage:[UIImage imageNamed:@"NoImage"]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                    [cell.indicator stopAnimating];
                                    

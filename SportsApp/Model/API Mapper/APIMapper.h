@@ -11,7 +11,7 @@
 
 @interface APIMapper : NSObject
 
-+ (void)registerUserWithName:(NSString*)userName userEmail:(NSString*)email phoneNumber:(NSString*)phone gender:(NSString*)gender location:(NSString*)location userPassword:(NSString*)password success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)registerUserWithName:(NSString*)userName userEmail:(NSString*)email phoneNumber:(NSString*)phone gender:(NSString*)gender location:(NSString*)location userPassword:(NSString*)password dialCode:(NSString*)dialCode success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)loginUserWithUserName:(NSString*)userName userPassword:(NSString*)password success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                      failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
@@ -19,7 +19,7 @@
 + (void)forgotPasswordWithEmail:(NSString*)email success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                       failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)socialMediaRegistrationnWithFirstName:(NSString*)firstName profileImage:(NSString*)profileImg fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email gender:(NSString*)gender dob:(long)dob success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)socialMediaRegistrationnWithFirstName:(NSString*)firstName profileImage:(NSString*)profileImg fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email phoneNumber:(NSString*)phoneNumber success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)setPushNotificationTokenWithUserID:(NSString*)userID token:(NSString*)token success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
@@ -29,9 +29,8 @@
 
 + (void)logoutFromAccount:(NSString*)userID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)updateProfileWithUserID:(NSString*)userID name:(NSString*)name statusMsg:(NSString*)statusMsg city:(NSString*)city gender:(NSInteger)gender mediaFileName:(NSString*)mediaName success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)updateProfileWithUserID:(NSString*)userID name:(NSString*)name statusMsg:(NSString*)statusMsg city:(NSString*)city gender:(NSInteger)gender mediaFileName:(NSString*)mediaName phoneNumber:(NSString*)phoneNumber success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)updateProfileFromEditPageWithUserID:(NSString*)userID latitude:(double)latitude longitude:(double)longitude city:(NSString*)city locationAddress:(NSString*)locationAddress dateOfBirth:(double)dateOfBirth name:(NSString*)name status:(NSString*)status gallery:(NSMutableArray*)dataSource defaultImageIndex:(NSInteger)defaultImageIndex deletedID:(NSMutableArray*)deletedIDs success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)getAllUserListWithPageNumber:(NSInteger)pageno OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
@@ -89,6 +88,10 @@
 
 + (void)deleteSharedVideoWithVideoID:(NSString*)videoID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)submitGameStatus:(NSString*)videoID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)updateGameStatusWithGameID:(NSString*)gameID statusMsg:(NSString*)statusMsg OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)syncContactsWith:(NSString*)json OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 @end

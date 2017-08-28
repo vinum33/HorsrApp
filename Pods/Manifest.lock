@@ -68,6 +68,7 @@ PODS:
   - GTMSessionFetcher/Full (1.1.11):
     - GTMSessionFetcher/Core (= 1.1.11)
   - GUIPlayerView (0.0.4)
+  - libPhoneNumber-iOS (0.9.10)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -84,6 +85,7 @@ DEPENDENCIES:
   - GoogleMaps
   - GooglePlaces
   - GUIPlayerView (~> 0.0.4)
+  - libPhoneNumber-iOS (~> 0.8)
   - SDWebImage (~> 3.7)
   - UICollectionViewLeftAlignedLayout
   - UITextView+Placeholder
@@ -105,10 +107,11 @@ SPEC CHECKSUMS:
   GTMOAuth2: 7fc9c10f5c745f4d9850419ea88889fe3baa6b7d
   GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
   GUIPlayerView: 659256b3aefdd5d1041782ea40faaee250429f41
+  libPhoneNumber-iOS: f721ae4d5854bce60934f9fb9b0b28e8e68913cb
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
   UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: 25ccff14858b0e26d0542d3f3dac3b7bb3c968e0
+PODFILE CHECKSUM: 5e7518c7805d6cde8a9b06965b67fb8eaecfe186
 
 COCOAPODS: 1.2.1

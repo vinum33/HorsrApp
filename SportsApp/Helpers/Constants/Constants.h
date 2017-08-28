@@ -19,7 +19,7 @@ extern NSString * const CommonFontBold;
 extern NSString * const BaseURLString;
 extern NSString * const ExternalWebURL;
 extern NSString * const UploadedImageURL;
-
+extern NSString * const AppStoreURL;
 extern NSString * const GoogleMapAPIKey;
 extern NSString * const PROJECT_NAME;
 

@@ -140,7 +140,7 @@
     [dataTask resume];
      */
     
-    [self doRegisterUserWithFirstName:name profileImg:profileurl fbID:nil googleID:userId email:email gender:@"1" dob:54545454545];
+    [self doRegisterUserWithFirstName:name profileImg:profileurl fbID:nil googleID:userId email:email phoneNumber:@""];
     
 }
 
@@ -189,7 +189,7 @@
                      fbID = [result objectForKey:@"id"];
                  }
                  
-                  [self doRegisterUserWithFirstName:fname profileImg:nil fbID:fbID googleID:nil email:email gender:@"1" dob:545252121525];
+                  [self doRegisterUserWithFirstName:fname profileImg:nil fbID:fbID googleID:nil email:email phoneNumber:@""];
             }
          }];
     }
@@ -197,10 +197,10 @@
 
 #pragma mark - SignUp Methods
 
--(void)doRegisterUserWithFirstName:(NSString*)name profileImg:(NSURL*)profileurl fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email gender:(NSString*)gender dob:(double)dob {
+-(void)doRegisterUserWithFirstName:(NSString*)name profileImg:(NSURL*)profileurl fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email phoneNumber:(NSString*)phoneNumber {
     
     [self showLoadingScreen];
-    [APIMapper socialMediaRegistrationnWithFirstName:name profileImage:[profileurl absoluteString] fbID:fbID googleID:googleID email:email gender:gender dob:dob success:^(AFHTTPRequestOperation *operation, id responds) {
+    [APIMapper socialMediaRegistrationnWithFirstName:name profileImage:[profileurl absoluteString] fbID:fbID googleID:googleID email:email phoneNumber:phoneNumber success:^(AFHTTPRequestOperation *operation, id responds) {
         
         if ([operation.response statusCode] == StatusSucess) {
             AppDelegate *appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
@@ -268,7 +268,7 @@
 -(void)locationSearchedWithInfo:(NSString*)city address:(NSString*)address latitude:(double)latitude longitude:(double)longitude{
     
     [self showLoadingScreen];
-    [APIMapper updateProfileWithUserID:[User sharedManager].userId name:nil statusMsg:nil city:city gender:0 mediaFileName:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper updateProfileWithUserID:[User sharedManager].userId name:nil statusMsg:nil city:city gender:0 mediaFileName:nil phoneNumber:@"" success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hideLoadingScreen];
         if ([responseObject objectForKey:@"text"])
             [self showAlertWithMessage:[responseObject objectForKey:@"text"] title:@"Location"];

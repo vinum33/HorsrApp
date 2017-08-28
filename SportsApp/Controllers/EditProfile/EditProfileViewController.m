@@ -11,8 +11,9 @@
 #import "ProfileCell.h"
 #import <GooglePlaces/GooglePlaces.h>
 #import "CustomeImagePicker.h"
+#import "PhoneNumberView.h"
 
-@interface EditProfileViewController () <GMSAutocompleteViewControllerDelegate,CustomeImagePickerDelegate>{
+@interface EditProfileViewController () <GMSAutocompleteViewControllerDelegate,CustomeImagePickerDelegate,PhoneNumberViewDelegate>{
     
     
     IBOutlet UISearchBar *searchBar;
@@ -28,7 +29,9 @@
     NSString *strLocation;
     NSString *strStatusMsg;
     UIImage *imgProfilePic;
+    NSString * strPhoneNumber;
     BOOL isUpdated;
+    PhoneNumberView *phoneNumberPicker;
     
 }
 
@@ -98,6 +101,7 @@
     strLocation = [userInfo objectForKey:@"location"];
     strUserName = [userInfo objectForKey:@"name"];
     strStatusMsg = [userInfo objectForKey:@"status_msg"];
+    strPhoneNumber = [userInfo objectForKey:@"phone"];
     if ([_strUserID isEqualToString:[User sharedManager].userId]) {
         btnEdit.hidden = false;
     }
@@ -118,7 +122,7 @@
 
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rows = 2;
+    NSInteger rows = 3;
     if (!isDataAvailable) {
         rows = 1;
     }
@@ -154,6 +158,30 @@
         return cell;
     }
     else if (indexPath.row == 1){
+        static NSString *CellIdentifier = @"AddPhonenumber";
+        UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UIView *vwBG;
+        if ([[cell contentView] viewWithTag:2]) {
+            vwBG = (UIView*)[[cell contentView] viewWithTag:2];
+            vwBG.layer.cornerRadius = 5.f;
+            vwBG.layer.borderWidth = 1.f;
+            vwBG.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+        }
+        UILabel *lblStatus;
+        if ([[cell contentView] viewWithTag:1]) {
+            lblStatus = (UILabel*)[[cell contentView] viewWithTag:1];
+            lblStatus.text = strPhoneNumber;
+        }
+        lblStatus.textColor = [UIColor getBlackTextColor];
+        if (!strPhoneNumber) {
+            lblStatus.text = @"Add PhoneNumber";
+            lblStatus.textColor = [UIColor getThemeColor];
+        }
+       
+        return cell;
+    }
+    else if (indexPath.row == 2){
         static NSString *CellIdentifier = @"StatusMessage";
         UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -173,6 +201,10 @@
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (indexPath.row == 1) {
+        
+        [self showPhoneNumberPicker];
+    }
     
 }
 
@@ -331,6 +363,58 @@
     [tableView reloadData];
 }
 
+#pragma mark - Gender AND DOB Picker
+
+-(void)showPhoneNumberPicker{
+    
+    if (!phoneNumberPicker) {
+        
+        phoneNumberPicker = [[[NSBundle mainBundle] loadNibNamed:@"PhoneNumberView" owner:self options:nil] objectAtIndex:0];
+        [self.view addSubview:phoneNumberPicker];
+        phoneNumberPicker.delegate = self;
+        phoneNumberPicker.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[phoneNumberPicker]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(phoneNumberPicker)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[phoneNumberPicker]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(phoneNumberPicker)]];
+        
+        phoneNumberPicker.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            // animate it to the identity transform (100% scale)
+            phoneNumberPicker.transform = CGAffineTransformIdentity;
+            [phoneNumberPicker intialiseViewWithPhoneNumber:strPhoneNumber];
+        } completion:^(BOOL finished){
+            // if you want to do something once the animation finishes, put it here
+        }];
+        
+        
+    }
+    
+    [self.view endEditing:YES];
+    
+}
+
+-(void)closePopUpWithPhoneNumber:(NSString*)phoneNumber{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        phoneNumberPicker.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [phoneNumberPicker removeFromSuperview];
+        phoneNumberPicker = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (phoneNumber.length) {
+                strPhoneNumber = phoneNumber;
+            }
+            [tableView reloadData];
+        });
+        
+    }];
+    
+    
+    
+}
+
+
 #pragma mark - Location Picker
 
 -(IBAction)showLocationPikcer{
@@ -475,7 +559,7 @@
             NSDictionary *data = [responds objectForKey:@"data"];
             mediaFileName = [data objectForKey:@"media_file"];
         }
-        [APIMapper updateProfileWithUserID:[User sharedManager].userId name:strUserName statusMsg:strStatusMsg city:strLocation gender:0 mediaFileName:mediaFileName success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [APIMapper updateProfileWithUserID:[User sharedManager].userId name:strUserName statusMsg:strStatusMsg city:strLocation gender:0 mediaFileName:mediaFileName phoneNumber:strPhoneNumber success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [Utility hideLoadingScreenFromView:self.view];
             [self updateUserData:responseObject];
             if ([responseObject objectForKey:@"text"]) {
@@ -486,6 +570,7 @@
                                                       otherButtonTitles:nil];
                 [alert show];
                 isUpdated = true;
+                [self goBack:nil];
             }
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {

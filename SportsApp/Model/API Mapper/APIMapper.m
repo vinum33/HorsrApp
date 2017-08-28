@@ -13,14 +13,14 @@
 
 @implementation APIMapper
 
-+ (void)registerUserWithName:(NSString*)userName userEmail:(NSString*)email phoneNumber:(NSString*)phone gender:(NSString*)gender location:(NSString*)location userPassword:(NSString*)password success:(void (^)(AFHTTPRequestOperation *task, id responseObject))success
++ (void)registerUserWithName:(NSString*)userName userEmail:(NSString*)email phoneNumber:(NSString*)phone gender:(NSString*)gender location:(NSString*)location userPassword:(NSString*)password dialCode:(NSString*)dialCode success:(void (^)(AFHTTPRequestOperation *task, id responseObject))success
                      failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@register",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *params = @{@"name": userName,
                              @"email": email,
-                             @"mobile": phone,
+                             @"phone": [NSString stringWithFormat:@"%@%@",dialCode,phone],
                              @"location": location,
                              @"gender": gender,
                              @"password": password,
@@ -38,7 +38,7 @@
     
 }
 
-+ (void)socialMediaRegistrationnWithFirstName:(NSString*)firstName profileImage:(NSString*)profileImg fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email gender:(NSString*)gender dob:(long)dob success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)socialMediaRegistrationnWithFirstName:(NSString*)firstName profileImage:(NSString*)profileImg fbID:(NSString*)fbID googleID:(NSString*)googleID email:(NSString*)email phoneNumber:(NSString*)phoneNumber success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@socialmedia",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -49,7 +49,7 @@
     if (firstName.length)[params setObject:firstName forKey:@"firstname"];
     if (fbID.length)[params setObject:fbID forKey:@"fbid"];
     if (googleID.length)[params setObject:googleID forKey:@"googleid"];
-    if (gender.length)[params setObject:gender forKey:@"gender"];
+    if (phoneNumber.length)[params setObject:phoneNumber forKey:@"phone"];
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
@@ -160,7 +160,7 @@
 
 
 
-+ (void)updateProfileWithUserID:(NSString*)userID name:(NSString*)name statusMsg:(NSString*)statusMsg city:(NSString*)city gender:(NSInteger)gender mediaFileName:(NSString*)mediaName success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)updateProfileWithUserID:(NSString*)userID name:(NSString*)name statusMsg:(NSString*)statusMsg city:(NSString*)city gender:(NSInteger)gender mediaFileName:(NSString*)mediaName phoneNumber:(NSString*)phoneNumber success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@profile/",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -172,6 +172,7 @@
     if (statusMsg.length > 0)[params setObject:statusMsg forKey:@"status_msg"];
     if (gender != 0)[params setObject:[NSNumber numberWithInteger:gender] forKey:@"gender"];
     if (mediaName.length)[params setObject:mediaName forKey:@"profileimg"];
+    if (phoneNumber.length)[params setObject:phoneNumber forKey:@"phone"];
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
@@ -1069,5 +1070,56 @@
 
 }
 
++ (void)updateGameStatusWithGameID:(NSString*)gameID statusMsg:(NSString*)statusMsg OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@game/",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager.operationQueue cancelAllOperations];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (statusMsg.length > 0)[params setObject:statusMsg forKey:@"status_message"];
+    [params setObject:gameID forKey:@"game_id"];
+    [manager PUT:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
++ (void)syncContactsWith:(NSString*)json OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@contacts",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager.operationQueue cancelAllOperations];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (json.length > 0)[params setObject:json forKey:@"contact_json"];
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+
+}
 
 @end

@@ -32,6 +32,7 @@
     NSString *strUserName;
     NSString *strLocation;
     NSString *strStatusMsg;
+    NSString *strPhoneNumber;
     PhotoBrowser *photoBrowser;
     
 }
@@ -52,8 +53,7 @@
     btnCreateGame.clipsToBounds = YES;
     btnCreateGame.layer.cornerRadius = 5.f;
     btnCreateGame.layer.borderWidth = 1.f;
-    btnCreateGame.backgroundColor = [UIColor clearColor];
-    btnCreateGame.layer.borderColor = [UIColor whiteColor].CGColor;
+    btnCreateGame.layer.borderColor = [UIColor clearColor].CGColor;
     
     tableView.hidden = true;
     btnEdit.hidden = true;
@@ -65,6 +65,7 @@
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.layer.borderColor = [UIColor getSeperatorColor].CGColor;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [tableView setContentInset:UIEdgeInsetsMake(0,0,60,0)];
     
     float width = 720;
     float height = 460;
@@ -105,6 +106,8 @@
     strLocation = [userInfo objectForKey:@"location"];
     strUserName = [userInfo objectForKey:@"name"];
     strStatusMsg = [userInfo objectForKey:@"status_msg"];
+    strPhoneNumber = [userInfo objectForKey:@"phone"];
+    
     if ([_strUserID isEqualToString:[User sharedManager].userId]) {
         btnEdit.hidden = false;
     }
@@ -125,7 +128,7 @@
 
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rows = 3;
+    NSInteger rows = 4;
     if (!isDataAvailable) {
         rows = 1;
     }
@@ -157,12 +160,34 @@
         return cell;
     }
     else if (indexPath.row == 1){
+        static NSString *CellIdentifier = @"AddPhonenumber";
+        UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if ([[cell contentView] viewWithTag:1]) {
+            UILabel *lblStatus = (UILabel*)[[cell contentView] viewWithTag:1];
+            lblStatus.text = strPhoneNumber;
+            lblStatus.hidden = false;
+            if (!strPhoneNumber.length) {
+                lblStatus.hidden = true;
+            }
+        }
+        if ([[cell contentView] viewWithTag:2]) {
+            UIImageView *imgFone = (UIImageView*)[[cell contentView] viewWithTag:2];
+            imgFone.hidden = false;
+            if (!strPhoneNumber.length) {
+                imgFone.hidden = true;
+            }
+        }
+        return cell;
+    }
+    else if (indexPath.row == 2){
         static NSString *CellIdentifier = @"ChangePWD";
         UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
-    else if (indexPath.row == 2){
+  
+    else if (indexPath.row == 3){
         static NSString *CellIdentifier = @"StatusMessage";
         UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -179,7 +204,7 @@
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row == 1) {
+    if (indexPath.row == 2) {
         [self changePassowrd];
     }
     
@@ -187,12 +212,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    if (indexPath.row == 1) {
+    if (indexPath.row == 2) {
         if (![_strUserID isEqualToString:[User sharedManager].userId]) {
              return 0;
         }
-       
+    }
+    if (indexPath.row == 1) {
+        if (!strPhoneNumber) {
+            return 0;
+        }
     }
     return UITableViewAutomaticDimension;
 }

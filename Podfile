@@ -24,4 +24,8 @@ pod 'Google/SignIn'
 pod 'GUIPlayerView', '~> 0.0.4'
 pod 'EMEmojiableBtn'
 pod 'BSStackView'
+
+source 'https://github.com/CocoaPods/Specs.git'
+pod 'libPhoneNumber-iOS', '~> 0.8'
+
 end

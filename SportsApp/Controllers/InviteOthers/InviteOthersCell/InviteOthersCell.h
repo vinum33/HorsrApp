@@ -12,9 +12,10 @@
 
 @property (nonatomic,weak) IBOutlet UILabel *lblName;
 @property (nonatomic,weak) IBOutlet UILabel *lblLoc;
+@property (nonatomic,weak) IBOutlet UILabel *lblType;
 @property (nonatomic,weak) IBOutlet UIImageView *imgUser;
 @property (nonatomic,weak) IBOutlet UIImageView *imgStatus;
-@property (nonatomic,weak) IBOutlet UIButton *btnSMS;
+@property (nonatomic,weak) IBOutlet UIButton *btnInvite;
 @property (nonatomic,weak) IBOutlet UIButton *btnChat;
 
 @end

@@ -43,7 +43,7 @@
     // ----- initialize camera -------- //
     
     // create camera vc
-    self.camera = [[LLSimpleCamera alloc] initWithQuality:AVCaptureSessionPresetMedium
+    self.camera = [[LLSimpleCamera alloc] initWithQuality:AVCaptureSessionPreset640x480
                                                  position:LLCameraPositionRear
                                              videoEnabled:YES];
     

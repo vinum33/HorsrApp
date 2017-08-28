@@ -37,6 +37,7 @@
     NSURL *recordedVideoURL;
     NSInteger clickedIndex;
     NSString *strGameCreatedUserID;
+    NSString *strOwnerID;
     NSString *strTrickID;
     NSString *strStatusMsg;
     InfoPopUp *vwInfoPopUp;
@@ -131,6 +132,10 @@
     if ([[responds objectForKey:@"data"] objectForKey:@"gameId"]) {
         lblTitle.text = [[responds objectForKey:@"data"] objectForKey:@"gameId"];
     }
+    if ([[responds objectForKey:@"data"] objectForKey:@"owner_id"]) {
+        strOwnerID = [[responds objectForKey:@"data"] objectForKey:@"owner_id"];
+    }
+    
     
     if (arrUsers.count > 0) isDataAvailable = true;
     clickedIndex = 0;
@@ -243,38 +248,34 @@
         CommunityActionCell *_cell = (CommunityActionCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         _cell.btnEmoji.delegate = self;
         _cell.btnEmoji.dataset = @[
-                                  [[EMEmojiableOption alloc] initWithImage:@"Sad" withName:@" Sad"],
-                                  [[EMEmojiableOption alloc] initWithImage:@"Wow" withName:@" Wow"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Like_Blue" withName:@" Like"],
                                   [[EMEmojiableOption alloc] initWithImage:@"Haha" withName:@" Haha"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Wow" withName:@" Wow"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Sad" withName:@" Sad"],
                                   [[EMEmojiableOption alloc] initWithImage:@"Angry" withName:@" Angry"],
                                   ];
         _cell.btnEmoji.vwBtnSuperView = self.view;
         [_cell.btnEmoji privateInit];
         _cell.btnShare.hidden = true;
+        [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
         if (clickedIndex < arrUsers.count) {
             NSDictionary *user = arrUsers[clickedIndex];
             if ([user objectForKey:@"video"]) {
                 NSArray *videos = [user objectForKey:@"video"];
                 NSDictionary *video = [videos lastObject];
                 [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-                [_cell.btnEmoji setTitle:@"Like" forState:UIControlStateNormal];
+                [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %ldLikes",[[video objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
                 if ([[video objectForKey:@"emoji_code"] integerValue] >= 0) {
-                    if ([[video objectForKey:@"emoji_code"] integerValue] == 4) {
-                        [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like"] forState:UIControlStateNormal];
-                        [_cell.btnEmoji setTitle:@"Like" forState:UIControlStateNormal];
-                    }else{
-                        EMEmojiableOption *option = [_cell.btnEmoji.dataset objectAtIndex:[[video objectForKey:@"emoji_code"] integerValue]];
-                        [_cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
-                        [_cell.btnEmoji setTitle:option.name forState:UIControlStateNormal];
-                    }
+                    EMEmojiableOption *option = [_cell.btnEmoji.dataset objectAtIndex:[[video objectForKey:@"emoji_code"] integerValue]];
+                    [_cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
                 }
             }
             if ([user objectForKey:@"video"]) {
                   if ([[user objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) _cell.btnShare.hidden = false;
             }
         }
-        
         cell = _cell;
+        
     }
     if (indexPath.row == 3) {
         static NSString *CellIdentifier = @"ScoreBoardCell";
@@ -414,16 +415,19 @@
     if (sender.tag < arrUsers.count) {
         
         NSDictionary *details = arrUsers[clickedIndex];
-        [self updateDetailsWithEmojiIndex:4 position:clickedIndex];
         if ([details objectForKey:@"video"]) {
             NSArray *videos = [details objectForKey:@"video"];
             NSDictionary *video = [videos lastObject];
-            [APIMapper likeVideoWithVideoID:[video objectForKey:@"video_id"] type:@"game" emojiCode:4 OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSInteger value = 0;
+            if ([[video objectForKey:@"emoji_code"] integerValue] >= 0) {
+                value = -1;
+            }
+            [self updateDetailsWithEmojiIndex:value position:clickedIndex];
+            [APIMapper likeVideoWithVideoID:[video objectForKey:@"video_id"] type:@"game" emojiCode:value OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
             } failure:^(AFHTTPRequestOperation *task, NSError *error) {
                 
             }];
-
             
         }
 
@@ -434,12 +438,13 @@
 - (void)EMEmojiableBtn:( EMEmojiableBtn* _Nonnull)button selectedOption:(NSUInteger)index{
     EMEmojiableOption *option = [button.dataset objectAtIndex:index];
     [button setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
-    [button setTitle:option.name forState:UIControlStateNormal];
+   // [button setTitle:option.name forState:UIControlStateNormal];
     if (clickedIndex < arrUsers.count) {
         
-        [self updateDetailsWithEmojiIndex:index position:clickedIndex];
+       
         NSDictionary *details = arrUsers[clickedIndex];
         if ([details objectForKey:@"video"]) {
+            [self updateDetailsWithEmojiIndex:index position:clickedIndex];
             NSArray *videos = [details objectForKey:@"video"];
             NSDictionary *video = [videos lastObject];
             [APIMapper likeVideoWithVideoID:[video objectForKey:@"video_id"] type:@"game" emojiCode:index OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -472,6 +477,17 @@
             if ([details objectForKey:@"video"]) {
                 NSArray *videos = [details objectForKey:@"video"];
                 NSMutableDictionary *video = [NSMutableDictionary dictionaryWithDictionary:[videos lastObject]];
+                NSInteger oldCode = [[video objectForKey:@"emoji_code"] integerValue];
+                NSInteger count = [[video objectForKey:@"like_total"] integerValue];
+                if (oldCode >= 0 && emojiCode >= 0) {
+                    
+                }else if ((oldCode >= 0) && (emojiCode < 0)){
+                    count -= 1;
+                }else if ((oldCode < 0) && (emojiCode >= 0)){
+                    count += 1;
+                }
+                count = count < 0 ? 0 : count;
+                [video setObject:[NSNumber numberWithInteger:count] forKey:@"like_total"];
                 [video setObject:[NSNumber numberWithInteger:emojiCode] forKey:@"emoji_code"];
                 NSArray *new = [[NSArray alloc] initWithObjects:video, nil];
                 [details setObject:new forKey:@"video"];
@@ -719,10 +735,15 @@
     
     if (!vwInfoPopUp) {
         
-        NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"InfoPopUp" owner:self options:nil];
+        NSString *nibName = @"InfoPopUp";
+        if ([strOwnerID isEqualToString:[User sharedManager].userId]) {
+            nibName = @"InfoPopUpEdit";
+        }
+        NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
         vwInfoPopUp = [viewArray objectAtIndex:0];
         [self.view addSubview:vwInfoPopUp];
         vwInfoPopUp.delegate = self;
+        vwInfoPopUp.strGameID = _strGameID;
         vwInfoPopUp.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwInfoPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwInfoPopUp)]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwInfoPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwInfoPopUp)]];
@@ -743,7 +764,7 @@
 
 
 
--(void)closeInfoPopUp{
+-(void)closeInfoPopUp:(BOOL)shouldRefresh{
     
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
@@ -753,6 +774,10 @@
         [vwInfoPopUp removeFromSuperview];
         vwInfoPopUp = nil;
     }];
+
+    if (shouldRefresh) {
+        [self getGameZoneDetails];
+    }
 }
 
 

@@ -170,7 +170,7 @@ typedef enum{
     ShareUserCell *cell = (ShareUserCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell.lblName.text =  [_userInfo objectForKey:@"name"];
     [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[_userInfo objectForKey:@"profileurl"]]
-                     placeholderImage:[UIImage imageNamed:@"NoImage"]
+                     placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                 
                             }];

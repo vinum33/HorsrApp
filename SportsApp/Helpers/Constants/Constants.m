@@ -13,6 +13,8 @@ NSString * const BaseURLString = @"http://purposecodes.com/sportsapp/";
 NSString * const ExternalWebURL = @"http://purposecodes.com/";
 NSString * const UploadedImageURL = @"http://purposecodes.com/moza/uploads/profile/";
 
+NSString * const AppStoreURL = @"https://itunes.apple.com/us/app/purpose-color-life-success/id1186639523?ls=1&mt=8";
+
 NSString * const GoogleAutoSearchAPIForPlaceCoordinate = @"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=%@";
 
 

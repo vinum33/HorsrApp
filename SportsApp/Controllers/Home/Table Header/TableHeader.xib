@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="DroidSans.ttf">
+        <array key="DroidSansMerged-Regular.ttf">
             <string>DroidSans</string>
         </array>
     </customFonts>
@@ -27,20 +27,20 @@
                     </constraints>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImage" translatesAutoresizingMaskIntoConstraints="NO" id="7xS-9O-vxj">
-                    <rect key="frame" x="153" y="0.0" width="70" height="70"/>
+                    <rect key="frame" x="148" y="0.0" width="80" height="80"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="70" id="6k6-bV-w07"/>
-                        <constraint firstAttribute="width" constant="70" id="qG6-go-xEq"/>
+                        <constraint firstAttribute="height" constant="80" id="6k6-bV-w07"/>
+                        <constraint firstAttribute="width" constant="80" id="qG6-go-xEq"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zui-pd-ULn">
-                    <rect key="frame" x="10" y="80" width="355" height="18"/>
+                    <rect key="frame" x="10" y="90" width="355" height="18"/>
                     <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="15"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p18-Z4-ulo">
-                    <rect key="frame" x="136.5" y="108" width="103" height="30"/>
+                    <rect key="frame" x="136.5" y="118" width="103" height="30"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jgdfjghjfdgjdfk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="icn-jT-gJu">
                             <rect key="frame" x="10" y="5" width="83" height="20"/>
@@ -59,14 +59,14 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECENTLY ADDED GAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l05-sk-9ac">
-                    <rect key="frame" x="111.5" y="148" width="152.5" height="16.5"/>
+                    <rect key="frame" x="112" y="158" width="152.5" height="16.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vsE-Aw-4cw">
-                    <rect key="frame" x="132.5" y="174.5" width="110" height="130"/>
+                    <rect key="frame" x="132.5" y="184.5" width="110" height="130"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xoi-gF-dUl" userLabel="vIDEO 1">
                             <rect key="frame" x="0.0" y="0.0" width="110" height="130"/>
@@ -187,19 +187,19 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B3C-TW-tUU" userLabel="Vw Animation">
                     <rect key="frame" x="265" y="-5" width="160" height="160"/>
                     <subviews>
-                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8j-Gb-NJQ">
-                            <rect key="frame" x="60" y="10" width="40" height="40"/>
+                        <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8j-Gb-NJQ">
+                            <rect key="frame" x="55" y="10" width="50" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="q47-rh-bPd"/>
+                                <constraint firstAttribute="width" constant="50" id="q47-rh-bPd"/>
                                 <constraint firstAttribute="height" constant="40" id="x5v-eZ-SAg"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="12"/>
-                            <state key="normal" image="contact_icon"/>
+                            <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="13"/>
+                            <state key="normal" image="Friends"/>
                             <connections>
                                 <action selector="menuSelectedwithIndex:" destination="iN0-l3-epB" eventType="touchUpInside" id="Wse-sb-Bhc"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rbl-2R-bTQ" userLabel="List">
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rbl-2R-bTQ" userLabel="List">
                             <rect key="frame" x="60" y="110" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" priority="999" constant="40" id="1i4-IQ-wOe"/>
@@ -210,7 +210,7 @@
                                 <action selector="menuSelectedwithIndex:" destination="iN0-l3-epB" eventType="touchUpInside" id="Tpi-JK-JXR"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSE-jJ-GuA">
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSE-jJ-GuA">
                             <rect key="frame" x="10" y="60" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" priority="999" constant="40" id="aNV-ri-07R"/>
@@ -234,7 +234,7 @@
                         <constraint firstAttribute="width" constant="160" id="qLv-cr-0XJ"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA2-7a-Hb4">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UA2-7a-Hb4">
                     <rect key="frame" x="325" y="55" width="40" height="40"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -247,7 +247,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aQb-Bn-nIp" userLabel="profile">
-                    <rect key="frame" x="153" y="0.0" width="70" height="70"/>
+                    <rect key="frame" x="148" y="0.0" width="80" height="80"/>
                     <connections>
                         <action selector="showProfilePageWithID:" destination="-1" eventType="touchUpInside" id="fbc-MP-3qM"/>
                     </connections>
@@ -306,10 +306,10 @@
     <resources>
         <image name="Create_Game_White" width="30" height="30"/>
         <image name="Dashboard_BG" width="360" height="240"/>
+        <image name="Friends" width="30" height="30"/>
         <image name="NoImage" width="193" height="129"/>
         <image name="Round_Menu" width="30" height="30"/>
         <image name="Share_Video" width="30" height="30"/>
         <image name="Video_Icon" width="30" height="30"/>
-        <image name="contact_icon" width="15" height="11"/>
     </resources>
 </document>

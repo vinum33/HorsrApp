@@ -238,7 +238,7 @@
     NSArray *viewControllers = navController.viewControllers;
     if (viewControllers.count) {
         HomeViewController *homeVC = viewControllers[0];
-        [homeVC showSelectedCategoryDetailsFromMenuList:7];
+        [homeVC showSelectedCategoryDetailsFromMenuList:6];
     }
     [self.revealViewController revealToggleAnimated:YES];
 }

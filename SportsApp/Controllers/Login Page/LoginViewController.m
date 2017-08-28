@@ -31,10 +31,10 @@ typedef enum{
 #import "CustomCellForLogin.h"
 #import "SocialMediaLoginManager.h"
 #import <Google/SignIn.h>
-#import "GenderAndDOBPicker.h"
+#import "PhoneNumberView.h"
 #import "LocationAutoSearchViewController.h"
 
-@interface LoginViewController () <UIAlertViewDelegate,GIDSignInUIDelegate,GIDSignInDelegate,GenderAndDOBViewDelegate,SocialMediaLoginDelegate,SearchLocationDelegate>{
+@interface LoginViewController () <UIAlertViewDelegate,GIDSignInUIDelegate,GIDSignInDelegate,PhoneNumberViewDelegate,SocialMediaLoginDelegate,SearchLocationDelegate>{
     
     IBOutlet UITableView *tableView;
     
@@ -48,7 +48,7 @@ typedef enum{
     
     IBOutlet UIButton *btnFb;
     IBOutlet UIButton *btnGoogle;
-    GenderAndDOBPicker *genderPicker;
+    PhoneNumberView *phoneNumberPicker;
     
     NSString *socialMediaName;
     NSString *socialMediaEmail;
@@ -496,8 +496,9 @@ typedef enum{
 }
 
 -(IBAction)tapToLogin:(id)sender{
-    //[self byPassLogin];
-    //return;
+    
+    [self byPassLogin];
+   return;
     
     [self.view endEditing:YES];
     [self checkAllFieldsAreValid:^{
@@ -617,7 +618,7 @@ typedef enum{
     socialMediaName = user.profile.name;
     socialMediaEmail = user.profile.email;
     if ([user.profile hasImage]) socialMediaProfileImageurl = [user.profile imageURLWithDimension:200];
-    [self showGenderPicker];
+    [self showPhoneNumberPicker];
     
 }
 
@@ -639,29 +640,29 @@ typedef enum{
     socialMediaName = fname;
     fbID = _fbID;
     
-    [self showGenderPicker];
+    [self showPhoneNumberPicker];
 }
 
 
 
 #pragma mark - Gender AND DOB Picker
 
--(void)showGenderPicker{
+-(void)showPhoneNumberPicker{
     
-    if (!genderPicker) {
+    if (!phoneNumberPicker) {
         
-        genderPicker = [[[NSBundle mainBundle] loadNibNamed:@"GenderAndDOBPicker" owner:self options:nil] objectAtIndex:0];
-        [self.view addSubview:genderPicker];
-        genderPicker.delegate = self;
-        genderPicker.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[genderPicker]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(genderPicker)]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[genderPicker]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(genderPicker)]];
+        phoneNumberPicker = [[[NSBundle mainBundle] loadNibNamed:@"PhoneNumberView" owner:self options:nil] objectAtIndex:0];
+        [self.view addSubview:phoneNumberPicker];
+        phoneNumberPicker.delegate = self;
+        phoneNumberPicker.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[phoneNumberPicker]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(phoneNumberPicker)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[phoneNumberPicker]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(phoneNumberPicker)]];
         
-        genderPicker.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        phoneNumberPicker.transform = CGAffineTransformMakeScale(0.01, 0.01);
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             // animate it to the identity transform (100% scale)
-            genderPicker.transform = CGAffineTransformIdentity;
-            [genderPicker intialiseView];
+            phoneNumberPicker.transform = CGAffineTransformIdentity;
+            [phoneNumberPicker intialiseViewWithPhoneNumber:@""];
         } completion:^(BOOL finished){
             // if you want to do something once the animation finishes, put it here
         }];
@@ -673,16 +674,16 @@ typedef enum{
     
 }
 
--(void)genderAndDOBSelectedByGender:(NSString*)gender andDOB:(long)_dob{
+-(void)closePopUpWithPhoneNumber:(NSString*)phoneNumber{
     
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         // animate it to the identity transform (100% scale)
-        genderPicker.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        phoneNumberPicker.transform = CGAffineTransformMakeScale(0.01, 0.01);
     } completion:^(BOOL finished){
         // if you want to do something once the animation finishes, put it here
-        [genderPicker removeFromSuperview];
-        genderPicker = nil;
-        [self doRegisterUserWithFirstName:socialMediaName profileImg:socialMediaProfileImageurl fbID:fbID googleID:googleID email:socialMediaEmail gender:gender dob:_dob];
+        [phoneNumberPicker removeFromSuperview];
+        phoneNumberPicker = nil;
+        [self doRegisterUserWithFirstName:socialMediaName profileImg:socialMediaProfileImageurl fbID:fbID googleID:googleID email:socialMediaEmail phoneNumber:phoneNumber];
     }];
     
     
@@ -692,10 +693,10 @@ typedef enum{
 #pragma mark - SignUp Methods
 
 
--(void)doRegisterUserWithFirstName:(NSString*)name profileImg:(NSURL*)profileurl fbID:(NSString*)_fbID googleID:(NSString*)_googleID email:(NSString*)email gender:(NSString*)gender dob:(double)dob {
+-(void)doRegisterUserWithFirstName:(NSString*)name profileImg:(NSURL*)profileurl fbID:(NSString*)_fbID googleID:(NSString*)_googleID email:(NSString*)email phoneNumber:(NSString*)phoneNumber {
     
     [self showLoadingScreen];
-    [APIMapper socialMediaRegistrationnWithFirstName:name profileImage:[profileurl absoluteString] fbID:_fbID googleID:_googleID email:email gender:gender dob:dob success:^(AFHTTPRequestOperation *operation, id responds) {
+    [APIMapper socialMediaRegistrationnWithFirstName:name profileImage:[profileurl absoluteString] fbID:_fbID googleID:_googleID email:email phoneNumber:phoneNumber success:^(AFHTTPRequestOperation *operation, id responds) {
         if ([operation.response statusCode] == StatusSucess) {
             BOOL shouldGoToHome = [self createUserWithInfo:responds];
             if (shouldGoToHome) {
@@ -780,7 +781,7 @@ typedef enum{
 -(void)locationSearchedWithInfo:(NSString*)city address:(NSString*)address latitude:(double)latitude longitude:(double)longitude{
     
     [self showLoadingScreen];
-    [APIMapper updateProfileWithUserID:[User sharedManager].userId name:nil statusMsg:nil city:city gender:0 mediaFileName:nil  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper updateProfileWithUserID:[User sharedManager].userId name:nil statusMsg:nil city:city gender:0 mediaFileName:nil phoneNumber:nil   success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         if ([operation.response statusCode] == StatusSucess) {
             BOOL shouldGoToHome = [self createUserWithInfo:responseObject];

@@ -85,6 +85,7 @@ typedef enum{
 @interface HomeViewController ()<SWRevealViewControllerDelegate,UITabBarControllerDelegate,RadialMenuDelegate>{
     
     IBOutlet UIView *vwOverLay;
+    IBOutlet UIImageView *imgNotifn;
     IBOutlet UIButton* btnSlideMenu;
     IBOutlet UITableView* tableView;
     IBOutlet UIButton *btnCreateGame;
@@ -163,6 +164,12 @@ typedef enum{
     navBarLineView.backgroundColor = [UIColor whiteColor];
     [self.navigationController.navigationBar addSubview:navBarLineView];
 }
+
+-(void)updateNotificationIcon{
+    
+    imgNotifn.hidden = false;
+}
+
 
 -(void)handleRefresh{
     
@@ -549,6 +556,7 @@ typedef enum{
 
 -(IBAction)showNotifications{
     
+    imgNotifn.hidden = true;
     NotificationsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
     [[self navigationController]pushViewController:games animated:YES];
 }
@@ -1104,6 +1112,15 @@ typedef enum{
 
 
 #pragma mark - Generic Methods
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.destinationViewController isKindOfClass:[NotificationsViewController class]]) {
+        
+        imgNotifn.hidden = true;
+    }
+    
+}
 
 -(IBAction)showUserProfileWithIndex:(UIButton*)sender{
     if (sender.tag < arrGameRequests.count) {

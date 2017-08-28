@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -48,10 +48,10 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="85" id="cGH-b3-e53" customClass="CustomCellForLogin">
-                                        <rect key="frame" x="0.0" y="56" width="335" height="85"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="335" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cGH-b3-e53" id="d8y-0K-KQO">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="84"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="84.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="50s-ev-0xL">
@@ -208,7 +208,7 @@
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyIdentifier" rowHeight="85" id="ypJ-T3-zap" customClass="RegistrationPageCustomTableViewCell">
-                                        <rect key="frame" x="0.0" y="56" width="335" height="85"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="335" height="85"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ypJ-T3-zap" id="DP9-iT-nZn">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="85"/>
@@ -312,6 +312,65 @@
                                             <outlet property="entryField" destination="fqY-F2-aFF" id="Iga-O3-Jaa"/>
                                             <outlet property="imgIcon" destination="2Wz-Ap-IHd" id="PiG-Vl-0hI"/>
                                             <outlet property="vwGenderSelection" destination="Fi3-Oo-i1M" id="7BF-0o-K5m"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PhoneNumber" rowHeight="85" id="2rg-At-EsG" customClass="RegistrationPageCustomTableViewCell">
+                                        <rect key="frame" x="0.0" y="140.5" width="335" height="85"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2rg-At-EsG" id="9Sv-Xf-Nhw">
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="85"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYi-lp-isy" userLabel="Border BG">
+                                                    <rect key="frame" x="5" y="5" width="325" height="75"/>
+                                                    <color key="backgroundColor" red="0.21960784310000001" green="0.26274509800000001" blue="0.30588235289999999" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wsY-IW-lkM">
+                                                    <rect key="frame" x="10" y="27" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="8OP-U7-wzB"/>
+                                                        <constraint firstAttribute="height" constant="30" id="NXn-zG-Id4"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jf4-5h-HOy">
+                                                    <rect key="frame" x="73.5" y="22" width="251.5" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="D36-Ph-wi6"/>
+                                                    </constraints>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XHX-Gj-oIW" id="81d-bg-uMW"/>
+                                                    </connections>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+91" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEG-Uo-x43">
+                                                    <rect key="frame" x="45" y="34.5" width="23.5" height="16.5"/>
+                                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="sEG-Uo-x43" firstAttribute="leading" secondItem="wsY-IW-lkM" secondAttribute="trailing" constant="5" id="C4P-B6-bHw"/>
+                                                <constraint firstAttribute="trailing" secondItem="FYi-lp-isy" secondAttribute="trailing" constant="5" id="ImJ-3H-6FC"/>
+                                                <constraint firstItem="wsY-IW-lkM" firstAttribute="centerY" secondItem="9Sv-Xf-Nhw" secondAttribute="centerY" id="Jzc-PP-co7"/>
+                                                <constraint firstAttribute="bottom" secondItem="FYi-lp-isy" secondAttribute="bottom" constant="5" id="KrY-oj-bnC"/>
+                                                <constraint firstItem="FYi-lp-isy" firstAttribute="top" secondItem="9Sv-Xf-Nhw" secondAttribute="top" constant="5" id="LKO-Un-KCR"/>
+                                                <constraint firstItem="FYi-lp-isy" firstAttribute="leading" secondItem="9Sv-Xf-Nhw" secondAttribute="leading" constant="5" id="QZP-vQ-rof"/>
+                                                <constraint firstAttribute="trailing" secondItem="jf4-5h-HOy" secondAttribute="trailing" constant="10" id="QvZ-ml-3X3"/>
+                                                <constraint firstItem="wsY-IW-lkM" firstAttribute="leading" secondItem="9Sv-Xf-Nhw" secondAttribute="leading" constant="10" id="R4d-fc-3Zb"/>
+                                                <constraint firstItem="jf4-5h-HOy" firstAttribute="centerY" secondItem="9Sv-Xf-Nhw" secondAttribute="centerY" id="k2d-dO-PtA"/>
+                                                <constraint firstItem="jf4-5h-HOy" firstAttribute="leading" secondItem="sEG-Uo-x43" secondAttribute="trailing" constant="5" id="nkx-HS-6Bq"/>
+                                                <constraint firstItem="sEG-Uo-x43" firstAttribute="centerY" secondItem="jf4-5h-HOy" secondAttribute="centerY" id="vLw-ng-h9e"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="borderBG" destination="FYi-lp-isy" id="DEZ-hf-ucn"/>
+                                            <outlet property="entryField" destination="jf4-5h-HOy" id="3yf-Pd-B6z"/>
+                                            <outlet property="imgIcon" destination="wsY-IW-lkM" id="VYt-O7-8UR"/>
+                                            <outlet property="lblDialCode" destination="sEG-Uo-x43" id="7iO-Jj-Eon"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

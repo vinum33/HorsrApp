@@ -26,6 +26,7 @@
 		E5009B6E1F2618C500C683A2 /* SRVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E5009B5A1F2618C500C683A2 /* SRVideoPlayer.m */; };
 		E5009B6F1F2618C500C683A2 /* SRVideoProgressTip.m in Sources */ = {isa = PBXBuildFile; fileRef = E5009B5C1F2618C500C683A2 /* SRVideoProgressTip.m */; };
 		E5009B701F2618C500C683A2 /* SRVideoTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E5009B5E1F2618C500C683A2 /* SRVideoTopBar.m */; };
+		E50C13E01F46FB2E00C678A7 /* InfoPopUpEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50C13DF1F46FB2E00C678A7 /* InfoPopUpEdit.xib */; };
 		E517B3371E3606F700BB89E8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E517B3361E3606F700BB89E8 /* main.m */; };
 		E517B33A1E3606F700BB89E8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E517B3391E3606F700BB89E8 /* AppDelegate.m */; };
 		E517B3421E3606F700BB89E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E517B3411E3606F700BB89E8 /* Assets.xcassets */; };
@@ -82,6 +83,7 @@
 		E53932ED1E4A100500221641 /* PhotoPickerCell_5.xib in Resources */ = {isa = PBXBuildFile; fileRef = E53932E11E4A100500221641 /* PhotoPickerCell_5.xib */; };
 		E53932EE1E4A100500221641 /* RNActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = E53932E31E4A100500221641 /* RNActivityView.m */; };
 		E53932EF1E4A100500221641 /* UIView+RNActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = E53932E51E4A100500221641 /* UIView+RNActivityView.m */; };
+		E53AACFB1F4AEF39009CE260 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = E53AACFA1F4AEF39009CE260 /* Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E55F3B611F31AC0C0035F385 /* ScoreBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E55F3B601F31AC0C0035F385 /* ScoreBoardViewController.m */; };
 		E55F3B661F31ACD20035F385 /* ScoreBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E55F3B641F31ACD20035F385 /* ScoreBoard.m */; };
 		E55F3B671F31ACD20035F385 /* ScoreBoard.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55F3B651F31ACD20035F385 /* ScoreBoard.xib */; };
@@ -99,6 +101,7 @@
 		E5760A261E37392700E47739 /* RegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5760A231E37392700E47739 /* RegistrationViewController.m */; };
 		E5760A2C1E3739B900E47739 /* Login&RegisterStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5760A2B1E3739B900E47739 /* Login&RegisterStoryBoard.storyboard */; };
 		E57678F71ECDB3DA00AABC23 /* ButtonNew.m in Sources */ = {isa = PBXBuildFile; fileRef = E57678F61ECDB3DA00AABC23 /* ButtonNew.m */; };
+		E579E6FE1F4C34FC00DF0D18 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = E579E6FD1F4C34FC00DF0D18 /* countries.json */; };
 		E57A0A421E41BAAF008CE4D3 /* PhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = E57A0A3D1E41BAAF008CE4D3 /* PhotoBrowser.m */; };
 		E57A0A431E41BAAF008CE4D3 /* PhotoBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57A0A3E1E41BAAF008CE4D3 /* PhotoBrowser.xib */; };
 		E57A0A441E41BAAF008CE4D3 /* PhotoBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E57A0A401E41BAAF008CE4D3 /* PhotoBrowserCell.m */; };
@@ -137,8 +140,8 @@
 		E58C862B1F1E112500DA0539 /* ReqListHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E58C86291F1E112500DA0539 /* ReqListHeader.xib */; };
 		E58E40D71F1741B700D01625 /* DroidSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E58E40D51F1741B700D01625 /* DroidSans.ttf */; };
 		E58E40D81F1741B700D01625 /* DroidSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E58E40D61F1741B700D01625 /* DroidSans-Bold.ttf */; };
-		E58E40DD1F176A6900D01625 /* GenderAndDOBPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = E58E40DB1F176A6900D01625 /* GenderAndDOBPicker.m */; };
-		E58E40DE1F176A6900D01625 /* GenderAndDOBPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = E58E40DC1F176A6900D01625 /* GenderAndDOBPicker.xib */; };
+		E58E40DD1F176A6900D01625 /* PhoneNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = E58E40DB1F176A6900D01625 /* PhoneNumberView.m */; };
+		E58E40DE1F176A6900D01625 /* PhoneNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E58E40DC1F176A6900D01625 /* PhoneNumberView.xib */; };
 		E58E40E31F17713B00D01625 /* LocationAutoSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E58E40E21F17713B00D01625 /* LocationAutoSearchViewController.m */; };
 		E58FB96C1F21C8820061BA26 /* OverLay.xib in Resources */ = {isa = PBXBuildFile; fileRef = E58FB96B1F21C8820061BA26 /* OverLay.xib */; };
 		E58FB9741F21D3D70061BA26 /* CameraViewcontroller.m in Sources */ = {isa = PBXBuildFile; fileRef = E58FB96F1F21D3D70061BA26 /* CameraViewcontroller.m */; };
@@ -214,6 +217,7 @@
 		E5009B5C1F2618C500C683A2 /* SRVideoProgressTip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRVideoProgressTip.m; sourceTree = "<group>"; };
 		E5009B5D1F2618C500C683A2 /* SRVideoTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRVideoTopBar.h; sourceTree = "<group>"; };
 		E5009B5E1F2618C500C683A2 /* SRVideoTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRVideoTopBar.m; sourceTree = "<group>"; };
+		E50C13DF1F46FB2E00C678A7 /* InfoPopUpEdit.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoPopUpEdit.xib; sourceTree = "<group>"; };
 		E517B3321E3606F700BB89E8 /* HORSE APP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HORSE APP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E517B3361E3606F700BB89E8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E517B3381E3606F700BB89E8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -320,6 +324,8 @@
 		E53932E31E4A100500221641 /* RNActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNActivityView.m; sourceTree = "<group>"; };
 		E53932E41E4A100500221641 /* UIView+RNActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RNActivityView.h"; sourceTree = "<group>"; };
 		E53932E51E4A100500221641 /* UIView+RNActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RNActivityView.m"; sourceTree = "<group>"; };
+		E53AACF91F4AEF39009CE260 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		E53AACFA1F4AEF39009CE260 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		E55F3B5F1F31AC0C0035F385 /* ScoreBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreBoardViewController.h; sourceTree = "<group>"; };
 		E55F3B601F31AC0C0035F385 /* ScoreBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreBoardViewController.m; sourceTree = "<group>"; };
 		E55F3B631F31ACD20035F385 /* ScoreBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreBoard.h; sourceTree = "<group>"; };
@@ -351,6 +357,7 @@
 		E5760A2B1E3739B900E47739 /* Login&RegisterStoryBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Login&RegisterStoryBoard.storyboard"; sourceTree = "<group>"; };
 		E57678F51ECDB3DA00AABC23 /* ButtonNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonNew.h; sourceTree = "<group>"; };
 		E57678F61ECDB3DA00AABC23 /* ButtonNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonNew.m; sourceTree = "<group>"; };
+		E579E6FD1F4C34FC00DF0D18 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
 		E57A0A3C1E41BAAF008CE4D3 /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
 		E57A0A3D1E41BAAF008CE4D3 /* PhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowser.m; sourceTree = "<group>"; };
 		E57A0A3E1E41BAAF008CE4D3 /* PhotoBrowser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoBrowser.xib; sourceTree = "<group>"; };
@@ -418,9 +425,9 @@
 		E58C86291F1E112500DA0539 /* ReqListHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReqListHeader.xib; sourceTree = "<group>"; };
 		E58E40D51F1741B700D01625 /* DroidSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DroidSans.ttf; sourceTree = "<group>"; };
 		E58E40D61F1741B700D01625 /* DroidSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DroidSans-Bold.ttf"; sourceTree = "<group>"; };
-		E58E40DA1F176A6900D01625 /* GenderAndDOBPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenderAndDOBPicker.h; sourceTree = "<group>"; };
-		E58E40DB1F176A6900D01625 /* GenderAndDOBPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenderAndDOBPicker.m; sourceTree = "<group>"; };
-		E58E40DC1F176A6900D01625 /* GenderAndDOBPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenderAndDOBPicker.xib; sourceTree = "<group>"; };
+		E58E40DA1F176A6900D01625 /* PhoneNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberView.h; sourceTree = "<group>"; };
+		E58E40DB1F176A6900D01625 /* PhoneNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberView.m; sourceTree = "<group>"; };
+		E58E40DC1F176A6900D01625 /* PhoneNumberView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneNumberView.xib; sourceTree = "<group>"; };
 		E58E40E11F17713B00D01625 /* LocationAutoSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationAutoSearchViewController.h; sourceTree = "<group>"; };
 		E58E40E21F17713B00D01625 /* LocationAutoSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationAutoSearchViewController.m; sourceTree = "<group>"; };
 		E58E40E41F17738C00D01625 /* SportsApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SportsApp.entitlements; sourceTree = "<group>"; };
@@ -783,6 +790,7 @@
 		E517B38C1E36094700BB89E8 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				E53AACF81F4AEF39009CE260 /* Base64 */,
 				E52769D21F33487900B3DE27 /* Reachability */,
 				E589B1281F2F31D6007CFD6E /* CustomActionSheet */,
 				E5FEBA491F277DA200EDF59C /* VideoCompression */,
@@ -1002,6 +1010,15 @@
 			path = PhotoGallery;
 			sourceTree = "<group>";
 		};
+		E53AACF81F4AEF39009CE260 /* Base64 */ = {
+			isa = PBXGroup;
+			children = (
+				E53AACF91F4AEF39009CE260 /* Base64.h */,
+				E53AACFA1F4AEF39009CE260 /* Base64.m */,
+			);
+			path = Base64;
+			sourceTree = "<group>";
+		};
 		E55F3B5E1F31AC0C0035F385 /* ScoreBoard */ = {
 			isa = PBXGroup;
 			children = (
@@ -1143,13 +1160,21 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
+		E579E6FC1F4C34FC00DF0D18 /* Country */ = {
+			isa = PBXGroup;
+			children = (
+				E579E6FD1F4C34FC00DF0D18 /* countries.json */,
+			);
+			path = Country;
+			sourceTree = "<group>";
+		};
 		E57A0A3A1E41BA89008CE4D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				E591FE6A1F3D9590001ECA33 /* Winner PopUp */,
 				E591FE641F3D7F52001ECA33 /* Info PopUp */,
 				E5FEBA3D1F276A4700EDF59C /* ChangePwdPopUp */,
-				E58E40D91F176A6900D01625 /* Gender and DOB Picker View */,
+				E58E40D91F176A6900D01625 /* PhoneNumberPopUp */,
 				E57A0A3B1E41BAAF008CE4D3 /* PhotoBrowser */,
 			);
 			path = Views;
@@ -1418,13 +1443,14 @@
 			path = "Req List Header";
 			sourceTree = "<group>";
 		};
-		E58E40D91F176A6900D01625 /* Gender and DOB Picker View */ = {
+		E58E40D91F176A6900D01625 /* PhoneNumberPopUp */ = {
 			isa = PBXGroup;
 			children = (
-				E58E40DA1F176A6900D01625 /* GenderAndDOBPicker.h */,
-				E58E40DB1F176A6900D01625 /* GenderAndDOBPicker.m */,
-				E58E40DC1F176A6900D01625 /* GenderAndDOBPicker.xib */,
+				E58E40DA1F176A6900D01625 /* PhoneNumberView.h */,
+				E58E40DB1F176A6900D01625 /* PhoneNumberView.m */,
+				E58E40DC1F176A6900D01625 /* PhoneNumberView.xib */,
 			);
+			name = PhoneNumberPopUp;
 			path = "Gender and DOB Picker View";
 			sourceTree = "<group>";
 		};
@@ -1481,6 +1507,7 @@
 			isa = PBXGroup;
 			children = (
 				E591FE651F3D7F52001ECA33 /* InfoPopUp.h */,
+				E50C13DF1F46FB2E00C678A7 /* InfoPopUpEdit.xib */,
 				E591FE701F3DA925001ECA33 /* InfoPopUp.xib */,
 				E591FE661F3D7F52001ECA33 /* InfoPopUp.m */,
 			);
@@ -1528,6 +1555,7 @@
 		E59E343C1E362C3B0066DD8F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E579E6FC1F4C34FC00DF0D18 /* Country */,
 				E5760A311E37585F00E47739 /* DummyImage */,
 				E59E343D1E362C3B0066DD8F /* Fonts */,
 			);
@@ -1648,7 +1676,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E58E40DE1F176A6900D01625 /* GenderAndDOBPicker.xib in Resources */,
+				E58E40DE1F176A6900D01625 /* PhoneNumberView.xib in Resources */,
 				E58C860F1F1DD41800DA0539 /* TableHeader.xib in Resources */,
 				E57A0A451E41BAAF008CE4D3 /* PhotoBrowserCell.xib in Resources */,
 				E517B34E1E36076500BB89E8 /* StoryBoardForSlider.storyboard in Resources */,
@@ -1657,6 +1685,7 @@
 				E591FE711F3DA925001ECA33 /* InfoPopUp.xib in Resources */,
 				E53932EC1E4A100500221641 /* PhotoPickerCell.xib in Resources */,
 				E53932E91E4A100500221641 /* CustomeImagePicker.xib in Resources */,
+				E50C13E01F46FB2E00C678A7 /* InfoPopUpEdit.xib in Resources */,
 				E5009B6D1F2618C500C683A2 /* SRVideoPlayer.bundle in Resources */,
 				E530760B1EBCA127004C80E3 /* GoogleService-Info.plist in Resources */,
 				E58C861D1F1DF38400DA0539 /* PeopleListHeader.xib in Resources */,
@@ -1669,6 +1698,7 @@
 				E517B3421E3606F700BB89E8 /* Assets.xcassets in Resources */,
 				E5760A061E3728F900E47739 /* WelcomeCustomCell.xib in Resources */,
 				E58FB96C1F21C8820061BA26 /* OverLay.xib in Resources */,
+				E579E6FE1F4C34FC00DF0D18 /* countries.json in Resources */,
 				E53932ED1E4A100500221641 /* PhotoPickerCell_5.xib in Resources */,
 				E5760A2C1E3739B900E47739 /* Login&RegisterStoryBoard.storyboard in Resources */,
 				E57AA8F21F1F8A4A000F3355 /* AHTagTableViewCell.xib in Resources */,
@@ -1745,6 +1775,7 @@
 				E527B4961ECAB0180033CED8 /* JCNotificationBannerViewIOSStyle.m in Sources */,
 				E58FB9921F21D4FB0061BA26 /* ViewUtils.m in Sources */,
 				E58FB9911F21D4FB0061BA26 /* UIImage+Resize.m in Sources */,
+				E53AACFB1F4AEF39009CE260 /* Base64.m in Sources */,
 				E58E40E31F17713B00D01625 /* LocationAutoSearchViewController.m in Sources */,
 				E527B4901ECAB0180033CED8 /* JCNotificationBannerPresenterIOS7Style.m in Sources */,
 				E52769C51F32D9CF00B3DE27 /* ShareGameViewControlle.m in Sources */,
@@ -1794,7 +1825,7 @@
 				E5009B621F2618C500C683A2 /* MASLayoutConstraint.m in Sources */,
 				E53932E61E4A100500221641 /* CameraFocusSquare.m in Sources */,
 				E527B4911ECAB0180033CED8 /* JCNotificationBannerPresenterIOSStyle.m in Sources */,
-				E58E40DD1F176A6900D01625 /* GenderAndDOBPicker.m in Sources */,
+				E58E40DD1F176A6900D01625 /* PhoneNumberView.m in Sources */,
 				E57AA8D11F1F728A000F3355 /* ThumbCustomCell.m in Sources */,
 				E5009B631F2618C500C683A2 /* MASViewAttribute.m in Sources */,
 				E520FC541F2A08B6001103C6 /* UserCell.m in Sources */,

@@ -35,8 +35,9 @@
 -(void)awakeFromNib{
     
     [super awakeFromNib];
+    
     _imgUser.clipsToBounds = YES;
-    _imgUser.layer.cornerRadius = 35.f;
+    _imgUser.layer.cornerRadius = 40.f;
     _imgUser.layer.borderWidth = 3.f;
     _imgUser.backgroundColor = [UIColor whiteColor];
     _imgUser.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -61,7 +62,6 @@
     _btnMenu.layer.cornerRadius = 20.f;
     _btnMenu.layer.borderWidth = 1.f;
     _btnMenu.layer.borderColor = [UIColor clearColor].CGColor;
-    
     
     vwAnimaiton.layer.cornerRadius = 80.f;
     vwAnimaiton.layer.borderWidth = 1.f;

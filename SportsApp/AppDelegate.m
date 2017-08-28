@@ -238,7 +238,7 @@ typedef enum{
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
             
-        }];
+    }];
     
 }
 
@@ -246,6 +246,7 @@ typedef enum{
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
     [self resetBadgeCount];
+   // [_homeVC updateNotificationIcon];
     BOOL userExists = [self loadUserObjectWithKey:@"USER"];
     if (!userExists) return;
     if(application.applicationState == UIApplicationStateInactive) {

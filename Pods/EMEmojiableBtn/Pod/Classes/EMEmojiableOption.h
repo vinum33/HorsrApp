@@ -13,4 +13,5 @@
 @property (strong,nonatomic) NSString *name;
 
 -(instancetype)initWithImage:(NSString*)imageName withName:(NSString*)name;
+
 @end

@@ -14,7 +14,9 @@
  *This method is invoked when user taps the 'Close' Button.
  */
 
--(void)closeInfoPopUp;
+-(void)closeInfoPopUp:(BOOL)shouldRefresh;
+
+
 
 /*!
  *This method is invoked when user selects a country.The selected Country Details sends back to Registration page
@@ -27,6 +29,7 @@
 }
 
 @property (nonatomic,weak)  id<InfoPopUpDelegate>delegate;
+@property (nonatomic,strong) NSString *strGameID;
 
 -(void)setUpWithTitle:(NSString*)title;
 

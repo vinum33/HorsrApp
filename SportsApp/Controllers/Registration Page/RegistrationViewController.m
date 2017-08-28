@@ -13,6 +13,8 @@
 #import "Constants.h"
 #import "LoginViewController.h"
 #import <GooglePlaces/GooglePlaces.h>
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
 typedef enum{
     
@@ -48,6 +50,8 @@ typedef enum{
     NSInteger indexForTextFieldNavigation;
     NSInteger totalRequiredFieldCount;
     UIView *inputAccView;
+    NSArray *countriesList;
+    NSString *dialCode;
     
 }
 
@@ -58,6 +62,7 @@ typedef enum{
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
+    [self setUpCountry];
     
     // Do any additional setup after loading the view.
 }
@@ -108,6 +113,28 @@ typedef enum{
 
 }
 
+- (void)setUpCountry {
+    
+    CTTelephonyNetworkInfo *network_Info = [CTTelephonyNetworkInfo new];
+    CTCarrier *carrier = network_Info.subscriberCellularProvider;
+    NSString *countryCode = carrier.isoCountryCode;
+    if (!countryCode) {
+        NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
+        countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
+    }
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"countries" ofType:@"json"]];
+    NSError *localError = nil;
+    NSDictionary *parsedObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&localError];
+    if (localError != nil) NSLog(@"%@", [localError userInfo]);
+    countriesList = (NSArray *)parsedObject;
+    for (NSDictionary *dict in countriesList) {
+        if ([[dict objectForKey:@"code"] isEqualToString:[countryCode uppercaseString]]) {
+            dialCode = [dict objectForKey:@"dial_code"];
+            break;
+        }
+    }
+}
+
 #pragma mark - TableView Delegates
 
 
@@ -126,7 +153,11 @@ typedef enum{
 
 - (UITableViewCell *)tableView:(UITableView *)_tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *MyIdentifier = @"MyIdentifier";
+    NSInteger row = indexPath.row;
+    NSString *MyIdentifier = @"MyIdentifier";
+    if (row == eFieldPhoneNumber) {
+        MyIdentifier = @"PhoneNumber";
+    }
     RegistrationPageCustomTableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:MyIdentifier];
     cell.vwGenderSelection.hidden = true;
     cell.entryField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -139,7 +170,7 @@ typedef enum{
     cell.borderBG.layer.borderWidth = 1.0f;
     cell.borderBG.layer.cornerRadius = 20.0f;
     
-    NSInteger row = indexPath.row;
+    
     switch (row) {
         case eFieldName:
             cell.entryField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Name" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
@@ -157,15 +188,14 @@ typedef enum{
              break;
             
         case eFieldPhoneNumber:
-            cell.entryField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Phone Number" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+            cell.entryField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Mobile Number" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
             cell.entryField.tag = eFieldPhoneNumber;
             cell.entryField.text = phoneNumber;
             cell.entryField.keyboardType = UIKeyboardTypeNumberPad;
-             cell.imgIcon.image = [UIImage imageNamed:@"Icon_Phone"];
+            cell.imgIcon.image = [UIImage imageNamed:@"Icon_Phone"];
+            cell.lblDialCode.text = dialCode;
             break;
-            
-        
-            
+          
         case eFieldLocation:
             cell.entryField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Location" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
             cell.entryField.tag = eFieldLocation;
@@ -619,7 +649,7 @@ typedef enum{
     [self checkAllFieldsAreValid:^{
         
         [self showLoadingScreen];
-        [APIMapper registerUserWithName:name userEmail:email phoneNumber:phoneNumber gender:gender location:city userPassword:password
+        [APIMapper registerUserWithName:name userEmail:email phoneNumber:phoneNumber gender:gender location:city userPassword:password dialCode:dialCode
                                 success:^(AFHTTPRequestOperation *operation, id responseObject){
             
                                     NSDictionary *responds = (NSDictionary*)responseObject;

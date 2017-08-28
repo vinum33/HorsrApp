@@ -143,6 +143,7 @@ typedef enum{
     cell.btnDelete.tag = indexPath.row;
     cell.btnDelete.hidden = true;
     cell.btnProfile.tag = indexPath.row;
+    cell.btnShare.tag = indexPath.row;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row < arrDataSource.count) {
         NSDictionary *details = arrDataSource[indexPath.row];
@@ -188,7 +189,7 @@ typedef enum{
         float imageHeight = (self.view.frame.size.width - 30) / ratio;
         //cell.constraintForHeight.constant = imageHeight;
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"profileurl"]]
-                        placeholderImage:[UIImage imageNamed:@"NoImage"]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                    
                                }];
@@ -199,22 +200,17 @@ typedef enum{
                                }];
         cell.btnEmoji.delegate = self;
         cell.btnEmoji.dataset = @[
-                                  [[EMEmojiableOption alloc] initWithImage:@"Sad" withName:@" Sad"],
-                                  [[EMEmojiableOption alloc] initWithImage:@"Wow" withName:@" Wow"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Like_Blue" withName:@" Like"],
                                   [[EMEmojiableOption alloc] initWithImage:@"Haha" withName:@" Haha"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Wow" withName:@" Wow"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Sad" withName:@" Sad"],
                                   [[EMEmojiableOption alloc] initWithImage:@"Angry" withName:@" Angry"],
                                   ];
         [cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-        [cell.btnEmoji setTitle:@"Like" forState:UIControlStateNormal];
+        [cell.btnEmoji setTitle:[NSString stringWithFormat:@" %ldLikes",[[details objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
         if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
-            if ([[details objectForKey:@"emoji_code"] integerValue] == 4) {
-                [cell.btnEmoji setImage:[UIImage imageNamed:@"Like"] forState:UIControlStateNormal];
-                 [cell.btnEmoji setTitle:@"Like" forState:UIControlStateNormal];
-            }else{
-                EMEmojiableOption *option = [ cell.btnEmoji.dataset objectAtIndex:[[details objectForKey:@"emoji_code"] integerValue]];
-                [cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
-                [cell.btnEmoji setTitle:option.name forState:UIControlStateNormal];
-            }
+            EMEmojiableOption *option = [cell.btnEmoji.dataset objectAtIndex:[[details objectForKey:@"emoji_code"] integerValue]];
+            [cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
         }
         cell.btnEmoji.vwBtnSuperView = self.view;
         cell.btnEmoji.tag = indexPath.row;
@@ -297,6 +293,23 @@ typedef enum{
 
 }
 
+-(IBAction)shareVideoToPublic:(UIButton*)sender{
+    
+    if (sender.tag < arrDataSource.count) {
+        
+        NSDictionary *details = arrDataSource[sender.tag];
+        NSString *url = [details objectForKey:@"videourl"];
+        NSString * title = [NSString stringWithFormat:@"Download ECG app %@ and get free reward points!",url];
+        NSArray* dataToShare = @[title];
+        UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:dataToShare applicationActivities:nil];
+        activityViewController.excludedActivityTypes = @[UIActivityTypeAirDrop];
+        [self presentViewController:activityViewController animated:YES completion:^{}];
+
+    }
+
+    
+}
+
 -(IBAction)playVideo:(UIButton*)sender{
     
     if (sender.tag < arrDataSource.count) {
@@ -331,8 +344,13 @@ typedef enum{
     if (sender.tag < arrDataSource.count) {
         
         NSDictionary *details = arrDataSource[sender.tag];
-        [self updateDetailsWithEmojiIndex:4 position:sender.tag];
-        [APIMapper likeVideoWithVideoID:[details objectForKey:@"video_id"] type:@"share" emojiCode:4 OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSInteger value = -1;
+        if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
+            value = 0;
+        }
+        
+        [self updateDetailsWithEmojiIndex:value position:sender.tag];
+        [APIMapper likeVideoWithVideoID:[details objectForKey:@"video_id"] type:@"share" emojiCode:value OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
             
@@ -345,7 +363,7 @@ typedef enum{
     
     EMEmojiableOption *option = [button.dataset objectAtIndex:index];
     [button setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
-    [button setTitle:option.name forState:UIControlStateNormal];
+    [button setTitle:@"" forState:UIControlStateNormal];
     if (button.tag < arrDataSource.count) {
         
         [self updateDetailsWithEmojiIndex:index position:button.tag];
@@ -373,9 +391,19 @@ typedef enum{
     dispatch_async(dispatch_get_main_queue(), ^{
         //UI Updating code here.
         if (position < arrDataSource.count) {
-            
             NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDataSource[position]];
+            NSInteger oldCode = [[details objectForKey:@"emoji_code"] integerValue];
             [details setObject:[NSNumber numberWithInteger:emojiCode] forKey:@"emoji_code"];
+            NSInteger count = [[details objectForKey:@"like_total"] integerValue];
+            if (oldCode >= 0 && emojiCode >= 0) {
+                
+            }else if ((oldCode >= 0) && (emojiCode < 0)){
+                count -= 1;
+            }else if ((oldCode < 0) && (emojiCode >= 0)){
+                count += 1;
+            }
+            count = count < 0 ? 0 : count;
+            [details setObject:[NSNumber numberWithInteger:count] forKey:@"like_total"];
             [arrDataSource replaceObjectAtIndex:position withObject:details];
             [tableView reloadData];
         }

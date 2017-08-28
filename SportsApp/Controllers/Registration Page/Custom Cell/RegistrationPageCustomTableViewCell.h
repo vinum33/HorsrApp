@@ -16,5 +16,6 @@
 @property (nonatomic,weak) IBOutlet UIButton *btnMale;
 @property (nonatomic,weak) IBOutlet UIButton *btnFemale;
 @property (nonatomic,weak) IBOutlet UIImageView *imgIcon;
+@property (nonatomic,weak) IBOutlet UILabel *lblDialCode;
 
 @end

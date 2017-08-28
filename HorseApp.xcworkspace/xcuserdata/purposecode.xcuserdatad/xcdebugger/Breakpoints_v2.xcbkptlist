@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "843"
-            endingLineNumber = "843"
+            startingLineNumber = "844"
+            endingLineNumber = "844"
             landmarkName = "+verifyVideoWithTrickID:status:videoID:gameID:nextUserID:OnSuccess:failure:"
             landmarkType = "7">
             <Locations>
@@ -26,12 +26,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733093.063956"
+                  timestampString = "525328860.556848"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "843"
-                  endingLineNumber = "843"
-                  offsetFromSymbolStart = "1212">
+                  startingLineNumber = "844"
+                  endingLineNumber = "844"
+                  offsetFromSymbolStart = "1188">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -41,12 +41,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733093.068564"
+                  timestampString = "525328860.558448"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "843"
-                  endingLineNumber = "843"
-                  offsetFromSymbolStart = "14">
+                  startingLineNumber = "844"
+                  endingLineNumber = "844"
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "845"
-            endingLineNumber = "845"
+            startingLineNumber = "846"
+            endingLineNumber = "846"
             landmarkName = "+verifyVideoWithTrickID:status:videoID:gameID:nextUserID:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "848"
-            endingLineNumber = "848"
+            startingLineNumber = "849"
+            endingLineNumber = "849"
             landmarkName = "+verifyVideoWithTrickID:status:videoID:gameID:nextUserID:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "983"
-            endingLineNumber = "983"
+            startingLineNumber = "984"
+            endingLineNumber = "984"
             landmarkName = "+shareVideoWithVideoID:location:address:message:frieds:success:failure:"
             landmarkType = "7">
             <Locations>
@@ -106,12 +106,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733093.119712"
+                  timestampString = "525328860.677844"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "983"
-                  endingLineNumber = "983"
-                  offsetFromSymbolStart = "1402">
+                  startingLineNumber = "984"
+                  endingLineNumber = "984"
+                  offsetFromSymbolStart = "1284">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -121,12 +121,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733093.121962"
+                  timestampString = "525328860.679353"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "983"
-                  endingLineNumber = "983"
-                  offsetFromSymbolStart = "14">
+                  startingLineNumber = "984"
+                  endingLineNumber = "984"
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -186,12 +186,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/ShareGamePage/ShareGameViewControlle.m"
-                  timestampString = "524733093.175093"
+                  timestampString = "525328860.688514"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "442"
                   endingLineNumber = "442"
-                  offsetFromSymbolStart = "888">
+                  offsetFromSymbolStart = "876">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -201,12 +201,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/ShareGamePage/ShareGameViewControlle.m"
-                  timestampString = "524733093.178777"
+                  timestampString = "525328860.690095"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "442"
                   endingLineNumber = "442"
-                  offsetFromSymbolStart = "14">
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "984"
-            endingLineNumber = "984"
+            startingLineNumber = "985"
+            endingLineNumber = "985"
             landmarkName = "+shareVideoWithVideoID:location:address:message:frieds:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "988"
-            endingLineNumber = "988"
+            startingLineNumber = "989"
+            endingLineNumber = "989"
             landmarkName = "+shareVideoWithVideoID:location:address:message:frieds:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
+            timestampString = "525267774.726733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
             landmarkName = "-playVideo:"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
+            timestampString = "525267774.726733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
             landmarkName = "-playVideo:"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,107 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
+            timestampString = "525269188.645559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "-likeVideo:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
-            landmarkName = "-likeVideo:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__40-[SharedVideosViewController likeVideo:]_block_invoke"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-                  timestampString = "524733103.4516"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "337"
-                  endingLineNumber = "337"
-                  offsetFromSymbolStart = "48">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__40-[SharedVideosViewController likeVideo:]_block_invoke_2"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-                  timestampString = "524733103.45311"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "339"
-                  endingLineNumber = "339"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1034"
-            endingLineNumber = "1034"
-            landmarkName = "+likeVideoWithVideoID:type:emojiCode:OnSuccess:failure:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
-            landmarkName = "-EMEmojiableBtn:selectedOption:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
             landmarkName = "-updateDetailsWithEmojiIndex:position:"
             landmarkType = "7">
          </BreakpointContent>
@@ -425,44 +329,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "414"
-            endingLineNumber = "414"
-            landmarkName = "-likeVideo:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
-            landmarkName = "-EMEmojiableBtn:selectedOption:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "971"
-            endingLineNumber = "971"
+            startingLineNumber = "972"
+            endingLineNumber = "972"
             landmarkName = "+shareVideoWithVideoID:location:address:message:frieds:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -474,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525335969.205649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
+            startingLineNumber = "519"
+            endingLineNumber = "519"
             landmarkName = "-customActionSheet:clickedButtonAtIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -490,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "977"
-            endingLineNumber = "977"
+            startingLineNumber = "978"
+            endingLineNumber = "978"
             landmarkName = "+shareVideoWithVideoID:location:address:message:frieds:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -505,28 +377,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1024"
-            endingLineNumber = "1024"
-            landmarkName = "+likeVideoWithVideoID:type:emojiCode:OnSuccess:failure:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525335969.205649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "445"
-            endingLineNumber = "445"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
             landmarkName = "-EMEmojiableBtn:selectedOption:"
             landmarkType = "7">
             <Locations>
@@ -538,12 +394,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/GameZone/GameZoneViewController.m"
-                  timestampString = "524733103.572815"
+                  timestampString = "525328860.728877"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "445"
-                  endingLineNumber = "445"
-                  offsetFromSymbolStart = "838">
+                  startingLineNumber = "451"
+                  endingLineNumber = "451"
+                  offsetFromSymbolStart = "676">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -553,12 +409,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/GameZone/GameZoneViewController.m"
-                  timestampString = "524733103.574837"
+                  timestampString = "525328860.73052"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "448"
-                  endingLineNumber = "448"
-                  offsetFromSymbolStart = "48">
+                  startingLineNumber = "454"
+                  endingLineNumber = "454"
+                  offsetFromSymbolStart = "80">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -570,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
+            timestampString = "525267774.726733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "-deleteSharedVideo:"
             landmarkType = "7">
          </BreakpointContent>
@@ -586,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
+            timestampString = "525267774.726733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "-deleteSharedVideo:"
             landmarkType = "7">
          </BreakpointContent>
@@ -601,44 +457,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ChatView/ChatComposeViewController.m"
-            timestampString = "523966809.71911"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
-            landmarkName = "-keyboardWillShow:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ChatView/ChatComposeViewController.m"
-            timestampString = "523966809.71911"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
-            landmarkName = "-keyboardWillShow:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1058"
-            endingLineNumber = "1058"
+            startingLineNumber = "1059"
+            endingLineNumber = "1059"
             landmarkName = "+deleteSharedVideoWithVideoID:OnSuccess:failure:"
             landmarkType = "7">
             <Locations>
@@ -650,12 +474,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.598336"
+                  timestampString = "525328860.739776"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1058"
-                  endingLineNumber = "1058"
-                  offsetFromSymbolStart = "1098">
+                  startingLineNumber = "1059"
+                  endingLineNumber = "1059"
+                  offsetFromSymbolStart = "1004">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -665,30 +489,14 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.599772"
+                  timestampString = "525328860.741323"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1058"
-                  endingLineNumber = "1058"
-                  offsetFromSymbolStart = "14">
+                  startingLineNumber = "1059"
+                  endingLineNumber = "1059"
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524731193.838281"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1048"
-            endingLineNumber = "1048"
-            landmarkName = "+deleteSharedVideoWithVideoID:OnSuccess:failure:"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -794,11 +602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524570234.014124"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "755"
-            endingLineNumber = "755"
+            startingLineNumber = "763"
+            endingLineNumber = "763"
             landmarkName = "-manageGroupChatInfoFromForeGround:isBBg:"
             landmarkType = "7">
          </BreakpointContent>
@@ -810,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524732950.490422"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "664"
-            endingLineNumber = "664"
+            startingLineNumber = "672"
+            endingLineNumber = "672"
             landmarkName = "-manageGroupChatInfoFromForeGround:isBBg:"
             landmarkType = "7">
          </BreakpointContent>
@@ -916,11 +724,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "591"
-            endingLineNumber = "591"
+            startingLineNumber = "592"
+            endingLineNumber = "592"
             landmarkName = "+createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:"
             landmarkType = "7">
             <Locations>
@@ -932,12 +740,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.652066"
+                  timestampString = "525328860.787141"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "591"
-                  endingLineNumber = "591"
-                  offsetFromSymbolStart = "1410">
+                  startingLineNumber = "592"
+                  endingLineNumber = "592"
+                  offsetFromSymbolStart = "1328">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -947,12 +755,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.6535"
+                  timestampString = "525328860.788641"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "591"
-                  endingLineNumber = "591"
-                  offsetFromSymbolStart = "14">
+                  startingLineNumber = "592"
+                  endingLineNumber = "592"
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -964,106 +772,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "584"
-            endingLineNumber = "584"
+            startingLineNumber = "585"
+            endingLineNumber = "585"
             landmarkName = "+createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "594"
-            endingLineNumber = "594"
-            landmarkName = "+createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "+[APIMapper createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:]"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.660111"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "595"
-                  endingLineNumber = "595"
-                  offsetFromSymbolStart = "1506">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__107+[APIMapper createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:]_block_invoke"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.661548"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "595"
-                  endingLineNumber = "595"
-                  offsetFromSymbolStart = "78">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_.364"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.662957"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "595"
-                  endingLineNumber = "595"
-                  offsetFromSymbolStart = "30">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.365"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.664355"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "595"
-                  endingLineNumber = "595"
-                  offsetFromSymbolStart = "18">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__107+[APIMapper createGameWithGameID:gameType:mediaFileName:thumbFileName:invites:statusMsg:OnSuccess:failure:]_block_invoke.367"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
-                  timestampString = "524733103.665794"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "596"
-                  endingLineNumber = "596"
-                  offsetFromSymbolStart = "66">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1073,11 +788,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525335969.205649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "674"
-            endingLineNumber = "674"
+            startingLineNumber = "690"
+            endingLineNumber = "690"
             landmarkName = "-showWinnerPopUp"
             landmarkType = "7">
          </BreakpointContent>
@@ -1089,11 +804,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525183413.702941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "-verifyVideoWithTag:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1105,11 +820,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525183413.702941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
             landmarkName = "-verifyVideoWithTag:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1121,11 +836,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525183413.702941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "344"
+            endingLineNumber = "344"
             landmarkName = "-verifyVideoWithTag:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1137,11 +852,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
-            timestampString = "524568889.069347"
+            timestampString = "525183413.702941"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "-verifyVideoWithTag:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1169,59 +884,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
+            timestampString = "525269188.645559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
-            landmarkName = "-updateDetailsWithEmojiIndex:position:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[SharedVideosViewController updateDetailsWithEmojiIndex:position:]"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-                  timestampString = "524733104.133146"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "373"
-                  endingLineNumber = "373"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__67-[SharedVideosViewController updateDetailsWithEmojiIndex:position:]_block_invoke"
-                  moduleName = "HORSE APP"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-                  timestampString = "524733104.135453"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "373"
-                  endingLineNumber = "373"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
-            timestampString = "524558460.560479"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
             landmarkName = "-updateDetailsWithEmojiIndex:position:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1249,11 +916,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/ProfilePage/ProfileViewController.m"
-            timestampString = "524577944.866032"
+            timestampString = "525182156.209274"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
             landmarkName = "-showUserPhotoGallery"
             landmarkType = "7">
          </BreakpointContent>
@@ -1280,28 +947,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ScoreBoard/ScoreBoardViewController.m"
-            timestampString = "524144142.927967"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "-showProfilePageWithID:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524570234.014124"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "854"
-            endingLineNumber = "854"
+            startingLineNumber = "862"
+            endingLineNumber = "862"
             landmarkName = "-managePrivateChatInfoFromForeGround:isBBg:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1313,11 +964,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524570234.014124"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "640"
-            endingLineNumber = "640"
+            startingLineNumber = "648"
+            endingLineNumber = "648"
             landmarkName = "-refreshGameZoneWithInfo:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1329,28 +980,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524570234.014124"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1013"
-            endingLineNumber = "1013"
+            startingLineNumber = "1021"
+            endingLineNumber = "1021"
             landmarkName = "-addFriend:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/Notifications/NotificationsViewController.m"
-            timestampString = "524559089.483174"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1393,12 +1028,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SearchFriends/SearchFriendsViewController.m"
-                  timestampString = "524733104.268436"
+                  timestampString = "525328860.835638"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "461"
                   endingLineNumber = "461"
-                  offsetFromSymbolStart = "88">
+                  offsetFromSymbolStart = "76">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1408,12 +1043,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SearchFriends/SearchFriendsViewController.m"
-                  timestampString = "524733104.269869"
+                  timestampString = "525328860.837152"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "461"
                   endingLineNumber = "461"
-                  offsetFromSymbolStart = "14">
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1441,12 +1076,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SearchFriends/SearchFriendsViewController.m"
-                  timestampString = "524733104.273535"
+                  timestampString = "525328860.840668"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "103"
                   endingLineNumber = "103"
-                  offsetFromSymbolStart = "202">
+                  offsetFromSymbolStart = "180">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1456,12 +1091,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/SearchFriends/SearchFriendsViewController.m"
-                  timestampString = "524733104.275115"
+                  timestampString = "525328860.842194"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "103"
                   endingLineNumber = "103"
-                  offsetFromSymbolStart = "14">
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1473,11 +1108,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "366"
-            endingLineNumber = "366"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
             landmarkName = "+searchUserNameWithText:pageNumber:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1489,11 +1124,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
+            startingLineNumber = "371"
+            endingLineNumber = "371"
             landmarkName = "+searchUserNameWithText:pageNumber:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1505,11 +1140,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524564945.643367"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "+getAllUserListWithPageNumber:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1521,11 +1156,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524564946.970997"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
             landmarkName = "+getAllUserListWithPageNumber:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1537,11 +1172,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565161.301729"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "329"
-            endingLineNumber = "329"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "+getAllUserListWithPageNumber:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1553,11 +1188,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524565271.2848"
+            timestampString = "525000459.211208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
             landmarkName = "+searchUserNameWithText:pageNumber:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1601,12 +1236,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Libraries/PhotoGallery/CustomeImagePicker.m"
-                  timestampString = "524733104.300129"
+                  timestampString = "525328860.865877"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "72"
                   endingLineNumber = "72"
-                  offsetFromSymbolStart = "2166">
+                  offsetFromSymbolStart = "1676">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1616,12 +1251,12 @@
                   moduleName = "HORSE APP"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Libraries/PhotoGallery/CustomeImagePicker.m"
-                  timestampString = "524733104.301607"
+                  timestampString = "525328860.867433"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "72"
                   endingLineNumber = "72"
-                  offsetFromSymbolStart = "14">
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1697,60 +1332,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
-            timestampString = "524727314.477637"
+            timestampString = "525159490.586234"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "-getContactsWithAddressBook:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
-            timestampString = "524727314.477637"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "-scrollViewDidScroll:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
-            timestampString = "524726071.810907"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
-            timestampString = "524727212.162815"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "492"
-            endingLineNumber = "492"
-            landmarkName = "-composeChat:"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
+            landmarkName = "-scrollViewWillBeginDragging:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1777,11 +1364,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/AppDelegate.m"
-            timestampString = "524732939.530893"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
             landmarkName = "-handleNotificationWith:isBackground:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1793,11 +1380,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/AppDelegate.m"
-            timestampString = "524732941.698417"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "-handleNotificationWith:isBackground:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1809,11 +1396,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/AppDelegate.m"
-            timestampString = "524732943.778271"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
             landmarkName = "-handleNotificationWith:isBackground:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1825,12 +1412,124 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524733090.290992"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "761"
-            endingLineNumber = "761"
+            startingLineNumber = "771"
+            endingLineNumber = "771"
             landmarkName = "-managePrivateChatInfoFromForeGround:isBBg:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
+            timestampString = "525000459.211208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "931"
+            endingLineNumber = "931"
+            landmarkName = "+loadChatHistoryWithGameID:toUserID:page:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
+            timestampString = "525000459.211208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "918"
+            endingLineNumber = "918"
+            landmarkName = "+loadChatHistoryWithGameID:toUserID:page:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
+            timestampString = "525000459.211208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "935"
+            endingLineNumber = "935"
+            landmarkName = "+loadChatHistoryWithGameID:toUserID:page:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Views/Info PopUp/InfoPopUp.m"
+            timestampString = "524750093.786397"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Views/Info PopUp/InfoPopUp.m"
+            timestampString = "524750093.786397"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
+            timestampString = "524749864.090192"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "-getGameZoneDetails"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
+            timestampString = "525335969.205649"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "737"
+            endingLineNumber = "737"
+            landmarkName = "-showInfoPopUp"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1841,11 +1540,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Controllers/Home/HomeViewController.m"
-            timestampString = "524733341.698503"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "763"
-            endingLineNumber = "763"
+            startingLineNumber = "768"
+            endingLineNumber = "768"
             landmarkName = "-managePrivateChatInfoFromForeGround:isBBg:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1856,13 +1555,205 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SportsApp/Controllers/ChatView/ChatComposeViewController.m"
-            timestampString = "524733128.179058"
+            filePath = "SportsApp/AppDelegate.m"
+            timestampString = "525270488.948024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
-            landmarkName = "-loadChatHistoryWithPageNo:isByPagination:"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
+            landmarkName = "-handleNotificationWith:isBackground:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate handleNotificationWith:isBackground:]"
+                  moduleName = "HORSE APP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/AppDelegate.m"
+                  timestampString = "525328860.922959"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "270"
+                  endingLineNumber = "270"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AppDelegate handleNotificationWith:isBackground:]"
+                  moduleName = "HORSE APP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/AppDelegate.m"
+                  timestampString = "525328860.924546"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "270"
+                  endingLineNumber = "270"
+                  offsetFromSymbolStart = "356">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/AppDelegate.m"
+            timestampString = "525270488.948024"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
+            landmarkName = "-handleNotificationWith:isBackground:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ProfilePage/ProfileViewController.m"
+            timestampString = "525182156.209274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "-showProfileWith:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ProfilePage/ProfileViewController.m"
+            timestampString = "525182156.209274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "-getUserProfile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Libraries/Camera/CameraViewcontroller.m"
+            timestampString = "525014588.995019"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "-snapButtonPressed:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ProfilePage/ProfileViewController.m"
+            timestampString = "525182156.209274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/Registration Page/RegistrationViewController.m"
+            timestampString = "525096818.485246"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "-setUpCountry"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RegistrationViewController setUpCountry]"
+                  moduleName = "HORSE APP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/Registration%20Page/RegistrationViewController.m"
+                  timestampString = "525328860.942616"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "720">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RegistrationViewController setUpCountry]"
+                  moduleName = "HORSE APP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Controllers/Registration%20Page/RegistrationViewController.m"
+                  timestampString = "525328860.944148"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "744">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/Registration Page/RegistrationViewController.m"
+            timestampString = "525096818.485246"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-setUpCountry"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/Registration Page/RegistrationViewController.m"
+            timestampString = "525088813.276943"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "-setUpCountry"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1873,12 +1764,252 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524733230.367214"
+            timestampString = "525089381.202227"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "930"
-            endingLineNumber = "930"
-            landmarkName = "+loadChatHistoryWithGameID:toUserID:page:success:failure:"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "+registerUserWithName:userEmail:phoneNumber:gender:location:userPassword:dialCode:success:failure:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[APIMapper registerUserWithName:userEmail:phoneNumber:gender:location:userPassword:dialCode:success:failure:]"
+                  moduleName = "HORSE APP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
+                  timestampString = "525328860.95346"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "796">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__110+[APIMapper registerUserWithName:userEmail:phoneNumber:gender:location:userPassword:dialCode:success:failure:]_block_invoke"
+                  moduleName = "HORSE APP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/iOS%20Projects/SportsApp/SportsApp/Model/API%20Mapper/APIMapper.m"
+                  timestampString = "525328860.955108"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Model/API Mapper/APIMapper.m"
+            timestampString = "525094944.266807"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "+registerUserWithName:userEmail:phoneNumber:gender:location:userPassword:dialCode:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
+            timestampString = "525159490.586234"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "-sendContactsToBakendWith:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
+            timestampString = "525159490.586234"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "-sendContactsToBakendWith:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ConatctPicker/ContactPickerViewController.m"
+            timestampString = "525159643.275994"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "-getContactsWithAddressBook:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
+            timestampString = "525267774.726733"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
+            landmarkName = "-shareVideoToPublic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ProfilePage/ProfileViewController.m"
+            timestampString = "525182156.209274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "-getUserProfile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/ProfilePage/ProfileViewController.m"
+            timestampString = "525182156.209274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "-getUserProfile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
+            timestampString = "525269188.645559"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
+            landmarkName = "-updateDetailsWithEmojiIndex:position:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/Home/HomeViewController.m"
+            timestampString = "525271201.819708"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "-updateNotificationIcon"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/AppDelegate.m"
+            timestampString = "525271206.907216"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
+            landmarkName = "-application:didReceiveRemoteNotification:fetchCompletionHandler:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
+            timestampString = "525328601.227115"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
+            landmarkName = "-likeVideo:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/SharedVideos/SharedVideosViewController.m"
+            timestampString = "525328847.350763"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "-likeVideo:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SportsApp/Controllers/GameZone/GameZoneViewController.m"
+            timestampString = "525328852.211015"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "421"
+            endingLineNumber = "421"
+            landmarkName = "-likeVideo:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1889,12 +2020,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524733238.259012"
+            timestampString = "525328921.561111"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "917"
-            endingLineNumber = "917"
-            landmarkName = "+loadChatHistoryWithGameID:toUserID:page:success:failure:"
+            startingLineNumber = "1035"
+            endingLineNumber = "1035"
+            landmarkName = "+likeVideoWithVideoID:type:emojiCode:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1905,12 +2036,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SportsApp/Model/API Mapper/APIMapper.m"
-            timestampString = "524733251.419106"
+            timestampString = "525328923.807337"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "934"
-            endingLineNumber = "934"
-            landmarkName = "+loadChatHistoryWithGameID:toUserID:page:success:failure:"
+            startingLineNumber = "1033"
+            endingLineNumber = "1033"
+            landmarkName = "+likeVideoWithVideoID:type:emojiCode:OnSuccess:failure:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

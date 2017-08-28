@@ -26,6 +26,10 @@ typedef enum{
 #import <AddressBookUI/AddressBookUI.h>
 #import <MessageUI/MessageUI.h>
 #import "ChatComposeViewController.h"
+#import "Base64.h"
+#import<CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import "NBPhoneNumberUtil.h"
 
 @interface ContactPickerViewController () <MFMessageComposeViewControllerDelegate>{
     
@@ -52,13 +56,16 @@ typedef enum{
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self getAllFriendsWithPageNumber:currentPage isPagination:NO];
+    [self getUserPermission];
     // Do any additional setup after loading the view.
 }
 
 -(void)setUp{
     
+
+    [Base64 initialize];
     currentPage = 1;
+    
     arrDataSource = [NSMutableArray new];
     arrFiltered = [NSMutableArray new];
     
@@ -94,57 +101,12 @@ typedef enum{
 
 
 -(IBAction)clearClicked:(id)sender{
-    [self getAllFriendsWithPageNumber:currentPage isPagination:NO];
     [self.view endEditing:YES];
-}
-
-
--(void)getAllFriendsWithPageNumber:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
-    
-    if (!isPagination) {
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
-    }
-    
-    [APIMapper getAllMyFriendsPageNumber:pageNumber onSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        tableView.hidden = false;
-        isPageRefresing = false;
-        [self showAllUsersWithJSON:responseObject];
-        [Utility hideLoadingScreenFromView:self.view];
-        
-    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-        
-        tableView.hidden = false;
-        isPageRefresing = false;
-        [Utility hideLoadingScreenFromView:self.view];
-        if (task.responseData)
-            [self displayErrorMessgeWithDetails:task.responseData];
-        else
-            strAPIErrorMsg = error.localizedDescription;
-        [tableView reloadData];
-    }];
-    
-    
-}
-
--(void)showAllUsersWithJSON:(NSDictionary*)responds{
-    
     [arrFiltered removeAllObjects];
-    [arrDataSource removeAllObjects];
-    isDataAvailable = false;
-    if (NULL_TO_NIL([responds objectForKey:@"data"]))
-        [arrDataSource addObjectsFromArray:[responds objectForKey:@"data"]];
-    if (arrDataSource.count > 0) isDataAvailable = true;
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
-//        totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
-//        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
-   
-    arrFiltered = [NSMutableArray arrayWithArray:arrDataSource];
-    [self getUserPermission];
-    
-    
+    [arrFiltered addObjectsFromArray:arrDataSource];
+    [tableView reloadData];
 }
+
 
 #pragma mark - Contact Picker
 
@@ -176,73 +138,97 @@ typedef enum{
 
 // Get the contacts.
 - (void)getContactsWithAddressBook:(ABAddressBookRef )addressBook {
-    
-    NSMutableArray *contactList = [[NSMutableArray alloc] init];
+    [Utility showLoadingScreenOnView:self.view withTitle:@"Syncing contacts.."];
     CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-    
+    NBPhoneNumberUtil *phoneUtil = [[NBPhoneNumberUtil alloc] init];
+    NSMutableArray *arrContacts = [NSMutableArray new];
     for (int i=0;i < nPeople;i++) {
-        BOOL isPhoneAvailable = false;
-        NSMutableDictionary *dOfPerson=[NSMutableDictionary dictionary];
-        
         ABRecordRef ref = CFArrayGetValueAtIndex(allPeople,i);
-        
-        //For username and surname
         ABMultiValueRef phones =(__bridge ABMultiValueRef)((__bridge NSString*)ABRecordCopyValue(ref, kABPersonPhoneProperty));
-        
-        CFStringRef firstName, lastName;
-        firstName = ABRecordCopyValue(ref, kABPersonFirstNameProperty);
-        lastName  = ABRecordCopyValue(ref, kABPersonLastNameProperty);
-        NSString *name;
-        if (firstName) name = [NSString stringWithFormat:@"%@", firstName];
-        if (lastName) name = [NSString stringWithFormat:@"%@ %@",name,lastName];
-        [dOfPerson setObject:[NSString stringWithFormat:@"%@",name] forKey:@"name"];
-        
-        // For getting the user image.
-        UIImage *contactImage;
-        if(ABPersonHasImageData(ref)){
-            contactImage = [UIImage imageWithData:(__bridge NSData *)ABPersonCopyImageData(ref)];
-            [dOfPerson setObject:contactImage forKey:@"contact_image"];
-        }
-        //For Email ids
-        ABMutableMultiValueRef eMail  = ABRecordCopyValue(ref, kABPersonEmailProperty);
-        if(ABMultiValueGetCount(eMail) > 0) {
-            [dOfPerson setObject:(__bridge NSString *)ABMultiValueCopyValueAtIndex(eMail, 0) forKey:@"email"];
-        }
-        //For Phone number
-        NSString* mobileLabel;
         for(CFIndex i = 0; i < ABMultiValueGetCount(phones); i++) {
-            mobileLabel = (__bridge NSString*)ABMultiValueCopyLabelAtIndex(phones, i);
-            //            if([mobileLabel isEqualToString:(NSString *)kABPersonPhoneMobileLabel])
-            //            {
-            //                [dOfPerson setObject:(__bridge NSString*)ABMultiValueCopyValueAtIndex(phones, i) forKey:@"Phone"];
-            //            }
-            //            else if ([mobileLabel isEqualToString:(NSString*)kABPersonPhoneIPhoneLabel])
-            //            {
-            //                [dOfPerson setObject:(__bridge NSString*)ABMultiValueCopyValueAtIndex(phones, i) forKey:@"Phone"];
-            //                break ;
-            //            }
-            [dOfPerson setObject:(__bridge NSString*)ABMultiValueCopyValueAtIndex(phones, i) forKey:@"Phone"];
-            isPhoneAvailable = true;
-            break;
-            
+            NSString *phoneNumber = (__bridge NSString*)ABMultiValueCopyValueAtIndex(phones, i);
+            NSError *anError = nil;
+            NBPhoneNumber *myNumber = [phoneUtil parseWithPhoneCarrierRegion:phoneNumber error:&anError];
+            if (anError == nil) {
+                NSMutableDictionary *dOfPerson=[NSMutableDictionary dictionary];
+                if(ABPersonHasImageData(ref)){
+                    NSData  *imageData = (__bridge_transfer NSData *) ABPersonCopyImageDataWithFormat(ref, kABPersonImageFormatThumbnail);
+                    NSString *strEncoded = [Base64 encode:imageData];
+                    [dOfPerson setObject:strEncoded forKey:@"image"];
+                }
+                CFStringRef locLabel = ABMultiValueCopyLabelAtIndex(phones, i);
+                NSString *mobileLabel =(__bridge NSString*) ABAddressBookCopyLocalizedLabel(locLabel);
+                if (!mobileLabel.length) {
+                    mobileLabel = @"Phone";
+                }
+                CFStringRef firstName, lastName;
+                firstName = ABRecordCopyValue(ref, kABPersonFirstNameProperty);
+                lastName  = ABRecordCopyValue(ref, kABPersonLastNameProperty);
+                NSString *name;
+                if (firstName) name = [NSString stringWithFormat:@"%@",firstName];
+                if (lastName) name = [NSString stringWithFormat:@"%@ %@",name,lastName];
+                [dOfPerson setObject:[NSString stringWithFormat:@"%@",name] forKey:@"name"];
+                [dOfPerson setObject:[NSString stringWithFormat:@"%@",mobileLabel] forKey:@"type"];
+                [dOfPerson setObject:[phoneUtil format:myNumber
+                                          numberFormat:NBEPhoneNumberFormatE164
+                                                 error:&anError] forKey:@"phone"];
+                [arrContacts addObject:dOfPerson];
+            }
         }
-        [dOfPerson setObject:[NSNumber numberWithBool:YES] forKey:@"PhoneContact"];
-        if (name.length && isPhoneAvailable) {
-            [contactList addObject:dOfPerson];
-        }
-        
         
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [arrDataSource addObjectsFromArray:contactList];
-        [arrFiltered addObjectsFromArray:contactList];
-        [tableView reloadData];
+        
+        [self sendContactsToBakendWith:arrContacts];
     });
     
     
+}
+
+
+-(void)sendContactsToBakendWith:(NSMutableArray*)arrContacts{
     
-    //NSLog(@"Contacts = %@",contactList);
+    if (arrContacts.count) {
+        NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:arrContacts,@"contacts", nil];
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary options:0 error:&error];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [APIMapper syncContactsWith:jsonString OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            tableView.hidden = false;
+            isPageRefresing = false;
+            [self showAllUsersWithJSON:responseObject];
+            [Utility hideLoadingScreenFromView:self.view];
+            
+        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+            
+            tableView.hidden = false;
+            isPageRefresing = false;
+            [Utility hideLoadingScreenFromView:self.view];
+            if (task.responseData)
+                [self displayErrorMessgeWithDetails:task.responseData];
+            else
+                strAPIErrorMsg = error.localizedDescription;
+            [tableView reloadData];
+        }];
+
+    }
+ 
+    
+}
+
+-(void)showAllUsersWithJSON:(NSDictionary*)responds{
+    
+    [arrFiltered removeAllObjects];
+    [arrDataSource removeAllObjects];
+    isDataAvailable = false;
+    if (NULL_TO_NIL([responds objectForKey:@"data"]))
+        [arrDataSource addObjectsFromArray:[responds objectForKey:@"data"]];
+    if (arrDataSource.count > 0) isDataAvailable = true;
+    arrFiltered = [NSMutableArray arrayWithArray:arrDataSource];
+    [tableView reloadData];
+    
 }
 
 
@@ -270,36 +256,30 @@ typedef enum{
         UITableViewCell *cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strAPIErrorMsg];
         return cell;
     }
-    
-    NSString *CellIdentifier = @"HorseAppContact";
+    NSString *CellIdentifier = @"PhoneContact";
     InviteOthersCell *cell;
     if (indexPath.row < arrFiltered.count) {
         NSDictionary *people = arrFiltered[indexPath.row];
-        BOOL isPhoneContact = false;
-        if ([[people objectForKey:@"PhoneContact"] boolValue]) {
-             CellIdentifier = @"PhoneContact";
-            isPhoneContact = true;
-        }
         cell = (InviteOthersCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        cell.btnSMS.tag = indexPath.row;
+        cell.btnInvite.tag = indexPath.row;
         cell.btnChat.tag = indexPath.row;
-        cell.imgUser.image = [UIImage imageNamed:@"NoImage"];
-        cell.lblName.text = [people objectForKey:@"name"];
-        if (isPhoneContact) {
-            cell.lblLoc.text = [people objectForKey:@"Phone"];
-            if ([people objectForKey:@"contact_image"]) {
-                [cell.imgUser setImage:[people objectForKey:@"contact_image"]];
-            }
-           
-        }else{
-            
-            cell.lblLoc.text = [people objectForKey:@"location"];
-            [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[people objectForKey:@"profileurl"]]
-                            placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                       
-                                   }];
+        cell.btnInvite.clipsToBounds = YES;
+        cell.btnInvite.layer.cornerRadius = 5.f;
+        cell.btnInvite.layer.borderWidth = 1.f;
+        cell.btnInvite.layer.borderColor = [UIColor getThemeColor].CGColor;
+        cell.imgUser.image = [UIImage imageNamed:@"UserProfilePic"];
+        if (NULL_TO_NIL([people objectForKey:@"image"])) {
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData *data = [Base64 decode:[people objectForKey:@"image"]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   cell.imgUser.image = [UIImage imageWithData:data];
+                });
+                
+            });
         }
+        cell.lblName.text = [people objectForKey:@"name"];
+        cell.lblLoc.text = [people objectForKey:@"phone"];
+        cell.lblType.text = [people objectForKey:@"type"];
         cell.contentView.backgroundColor = [UIColor whiteColor];
         
     }
@@ -314,7 +294,7 @@ typedef enum{
     
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     
     [self.view endEditing:YES];
 }
@@ -322,9 +302,8 @@ typedef enum{
 -(IBAction)sendSMS:(UIButton*)sender{
     
     NSDictionary *people = arrFiltered[sender.tag];
-    if ([[people objectForKey:@"PhoneContact"] boolValue]) {
-        [self sendSMSWithMessage:@"Error Error Domain=NSCocoaErrorDomain Code=3010" andNumber:[NSArray arrayWithObjects:[people objectForKey:@"Phone"], nil] ];
-    }
+    [self sendSMSWithMessage:@"Install HorseApp from the link." andNumber:[NSArray arrayWithObjects:[people objectForKey:@"phone"], nil] ];
+    
 }
 
 #pragma mark - Search Methods and Delegates
