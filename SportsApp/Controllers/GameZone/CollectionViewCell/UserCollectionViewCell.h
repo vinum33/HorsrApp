@@ -12,6 +12,7 @@
 
 @property (nonatomic,weak) IBOutlet UIImageView *imgUser;
 @property (nonatomic,weak) IBOutlet UIImageView *imgBall;
+@property (nonatomic,weak) IBOutlet UIImageView *imgHorseOrPig;
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView *indicator;
 
 @end

@@ -89,6 +89,7 @@
     [arrCategories addObject:@"Shared Video"];
     [arrCategories addObject:@"All Games"];
     [arrCategories addObject:@"Notifications"];
+    [arrCategories addObject:@"Chat"];
     [arrCategories addObject:@"Settings"];
     [arrCategories addObject:@"Logout"];
     [_tableView reloadData];
@@ -120,7 +121,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 5;
+        return 6;
     }else{
         return 1;
     }
@@ -167,6 +168,9 @@
                 imgIcon.image = [UIImage imageNamed:@"Notification_Black"];
                 break;
             case 4:
+                imgIcon.image = [UIImage imageNamed:@"Menu_Chat"];
+                break;
+            case 5:
                 imgIcon.image = [UIImage imageNamed:@"Settings"];
                 break;
            
@@ -238,7 +242,7 @@
     NSArray *viewControllers = navController.viewControllers;
     if (viewControllers.count) {
         HomeViewController *homeVC = viewControllers[0];
-        [homeVC showSelectedCategoryDetailsFromMenuList:6];
+        [homeVC showSelectedCategoryDetailsFromMenuList:7];
     }
     [self.revealViewController revealToggleAnimated:YES];
 }

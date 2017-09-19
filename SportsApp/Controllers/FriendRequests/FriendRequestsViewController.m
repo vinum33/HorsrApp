@@ -55,6 +55,13 @@
     
     arrDataSource = [NSMutableArray new];
 }
+
+-(void)refreshPage{
+    
+    [arrDataSource removeAllObjects];
+    [self getAllFriendRequetsWithPage:currentPage isPagination:NO];
+    
+}
 -(void)getAllFriendRequetsWithPage:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
     
     if (!isPagination) {
@@ -135,7 +142,6 @@
                                    
                                }];
     }
-    return cell;
     return cell;
     
 }

@@ -13,8 +13,9 @@
 #import "EditProfileViewController.h"
 #import "PhotoBrowser.h"
 #import "CreateGameViewController.h"
+#import "StatisticsViewController.h"
 
-@interface ProfileViewController () <ChangePasswordPopUpDelegate,EditProfileDelegate,PhotoBrowserDelegate>{
+@interface ProfileViewController () <ChangePasswordPopUpDelegate,EditProfileDelegate,PhotoBrowserDelegate,CreateGamePopUpDelegate>{
     
     ChangePasswordPopUp *changePwdPopUp;
     
@@ -34,6 +35,7 @@
     NSString *strStatusMsg;
     NSString *strPhoneNumber;
     PhotoBrowser *photoBrowser;
+    CreateGameViewController *createGame;
     
 }
 
@@ -110,6 +112,7 @@
     
     if ([_strUserID isEqualToString:[User sharedManager].userId]) {
         btnEdit.hidden = false;
+        
     }
     [tableView reloadData];
     
@@ -149,6 +152,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.lblLoc.text = strLocation;
         cell.lblName.text = strUserName;
+        cell.btnStatistics.hidden = false;
+        if ([_strUserID isEqualToString:[User sharedManager].userId]) cell.btnStatistics.hidden = true;
         cell.lblEmail.text = [userInfo objectForKey:@"email"];
         cell.lblRegStatus.text = [NSString stringWithFormat:@"Member since %@",[self getDayFromSeconds:[[userInfo objectForKey:@"reg_date"] doubleValue]]];
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[userInfo objectForKey:@"profileurl"]]
@@ -278,12 +283,59 @@
 
 #pragma mark - IBActions
 
+//-(IBAction)createGame{
+//    
+//    CreateGameViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCreateGame];
+//    [[self navigationController]pushViewController:games animated:YES];
+//    
+//}
+
+#pragma mark - Create Game PopUp
+
+-(IBAction)showStatisticsPage:(id)sender{
+    
+    StatisticsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForStatistics];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
 -(IBAction)createGame{
     
-    CreateGameViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCreateGame];
-    [[self navigationController]pushViewController:games animated:YES];
+    if (!createGame) {
+        
+        createGame =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCreateGame];
+        createGame.delegate = self;
+        UIView *popup = createGame.view;
+        [self.view addSubview:popup];
+        popup.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+        popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            // animate it to the identity transform (100% scale)
+            popup.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished){
+            // if you want to do something once the animation finishes, put it here
+        }];
+        
+    }
+    
+    [self.view endEditing:YES];
+    
     
 }
+
+-(void)closeCreateGamePopUp{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        createGame.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [createGame.view removeFromSuperview];
+        createGame = nil;
+    }];
+}
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
@@ -319,8 +371,7 @@
         } completion:^(BOOL finished){
             // if you want to do something once the animation finishes, put it here
         }];
-        
-        
+       
     }
     
     [self.view endEditing:YES];

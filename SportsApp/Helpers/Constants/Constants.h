@@ -43,7 +43,13 @@ extern NSString * const StoryBoardIdentifierForPlayedGameZone;
 extern NSString * const StoryBoardIdentifierForScoreBoard;
 extern NSString * const StoryBoardIdentifierForShareGame;
 extern NSString * const StoryBoardIdentifierForNotifications;
-extern NSString * const StoryBoardIdentifierForChatComposer;
+extern NSString * const StoryBoardIdentifierForGroupChatComposer;
+extern NSString * const StoryBoardIdentifierForPrivateChatComposer;
 extern NSString * const StoryBoardIdentifierForInviteOthers;
 extern NSString * const StoryBoardIdentifierForContactPicker;
-
+extern NSString * const StoryBoardIdentifierForComments;
+extern NSString * const StoryBoardIdentifierForCommunityGallery;
+extern NSString * const StoryBoardIdentifierForFriendRequest;
+extern NSString * const StoryBoardIdentifierForChatList;
+extern NSString * const StoryBoardIdentifierForParticipantsView ;
+extern NSString * const StoryBoardIdentifierForStatistics ;

@@ -20,9 +20,12 @@
 #import "UICustomActionSheet.h"
 #import "ScoreBoardViewController.h"
 #import "ShareGameViewController.h"
-#import "ChatComposeViewController.h"
+#import "GroupChatComposeViewController.h"
 #import "InfoPopUp.h"
 #import "WinnerPopUp.h"
+#import "NotificationsViewController.h"
+#import "SearchFriendsViewController.h"
+#import "FriendRequestsViewController.h"
 
 @interface GameZoneViewController ()<CameraRecordDelegate,EMEmojiableBtnDelegate,UIActionSheetDelegate,UICustomActionSheetDelegate,UserCellDelegate,ScoreBoardCellDelegate,InfoPopUpDelegate,WinnerPopUpDelegate>{
     
@@ -125,8 +128,14 @@
         strStatusMsg = [[responds objectForKey:@"data"] objectForKey:@"status_message"];
         btnInfo.hidden = strStatusMsg.length ? false : true;
     }
-    if ([[[responds objectForKey:@"data"] objectForKey:@"winner"] boolValue]) {
-        [self showWinnerPopUp];
+    if ([[[responds objectForKey:@"data"] objectForKey:@"winner"] integerValue] > 0) {
+        NSString *winUserID = [[responds objectForKey:@"data"] objectForKey:@"winner"];
+        if ([winUserID isEqualToString:[[User sharedManager]userId]]) {
+             [self showWinnerPopUpIsByWinner:true andName:nil];
+        }else{
+            [self showWinnerPopUpIsByWinner:false andName:[[responds objectForKey:@"data"] objectForKey:@"winner_name"]];
+        }
+        
         
     }
     if ([[responds objectForKey:@"data"] objectForKey:@"gameId"]) {
@@ -256,15 +265,18 @@
                                   ];
         _cell.btnEmoji.vwBtnSuperView = self.view;
         [_cell.btnEmoji privateInit];
+        [_cell.btnEmoji setEnabled:false];
         _cell.btnShare.hidden = true;
         [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
+        [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %dLikes",0]forState:UIControlStateNormal];
         if (clickedIndex < arrUsers.count) {
             NSDictionary *user = arrUsers[clickedIndex];
             if ([user objectForKey:@"video"]) {
+                 [_cell.btnEmoji setEnabled:true];
                 NSArray *videos = [user objectForKey:@"video"];
                 NSDictionary *video = [videos lastObject];
                 [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-                [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %ldLikes",[[video objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
+                [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %dLikes",[[video objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
                 if ([[video objectForKey:@"emoji_code"] integerValue] >= 0) {
                     EMEmojiableOption *option = [_cell.btnEmoji.dataset objectAtIndex:[[video objectForKey:@"emoji_code"] integerValue]];
                     [_cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
@@ -330,7 +342,15 @@
         NSString *nextUsrID ;
         if (arrUsers.count) {
             if (clickedIndex + 1 < arrUsers.count) {
-                nextUser = clickedIndex + 1;
+               nextUser = clickedIndex + 1;
+                while (nextUser < arrUsers.count) {
+                    NSDictionary *user = arrUsers[nextUser];
+                    if ([[user objectForKey:@"player_status"] isEqualToString:@"out"]) {
+                    }else{
+                        break;
+                    }
+                    nextUser ++;
+                }
             }
             NSDictionary *user = arrUsers[nextUser];
             nextUsrID = [user objectForKey:@"user_id"];
@@ -500,6 +520,7 @@
     
     
 }
+
 
 
 #pragma mark - Share Videos
@@ -682,7 +703,7 @@
 #pragma mark - Winner PopUp and Delegates
 
 
--(IBAction)showWinnerPopUp{
+-(IBAction)showWinnerPopUpIsByWinner:(BOOL)isByWinner andName:(NSString*)name{
     
     if (!vwWinnderPopUp) {
         
@@ -694,11 +715,17 @@
         vwWinnderPopUp.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwWinnderPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwWinnderPopUp)]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwWinnderPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwWinnderPopUp)]];
+        
         vwWinnderPopUp.transform = CGAffineTransformMakeScale(0.01, 0.01);
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             // animate it to the identity transform (100% scale)
             vwWinnderPopUp.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished){
+            
+            if (!isByWinner) {
+                [vwWinnderPopUp setUpPopUpForOthersWithWinnerName:name];
+            }
+            
             // if you want to do something once the animation finishes, put it here
         }];
         
@@ -779,6 +806,25 @@
 
 
 
+#pragma mark - IBActions
+
+-(IBAction)showNotifications{
+    
+    NotificationsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
+-(IBAction)showSearchPeoplePage{
+    
+    SearchFriendsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForSearchFriends];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
+-(IBAction)showFriendReqPage{
+    
+    FriendRequestsViewController *friendList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequest];
+    [self.navigationController pushViewController:friendList animated:YES];
+}
 
 
 #pragma mark - Generic Methods
@@ -798,8 +844,9 @@
 
 -(IBAction)composeChat{
     
-    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
+    GroupChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForGroupChatComposer];
     chatCompose.strGameID = _strGameID;
+    chatCompose.strChatCount = [NSString stringWithFormat:@"%d",arrUsers.count] ;
     [[self navigationController]pushViewController:chatCompose animated:YES];
     
 }

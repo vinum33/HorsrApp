@@ -19,6 +19,7 @@
     UILabel *lblTimer;
     NSTimer *timer;
     NSInteger counter;
+    UILabel *lblCaption;
     
 }
 @property (strong, nonatomic) LLSimpleCamera *camera;
@@ -114,7 +115,27 @@
     [blackView addSubview:self.cancelBtn];
     
     
-
+    lblCaption = [UILabel new];
+    lblCaption.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:lblCaption];
+    lblCaption.text = @"Capture Video...";
+    lblCaption.textAlignment = NSTextAlignmentCenter;
+    lblCaption.font = [UIFont fontWithName:CommonFont size:16];
+    lblCaption.textColor = [UIColor whiteColor];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:lblCaption
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1.0
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:lblCaption
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0]];
    
     
     lblTimer = [UILabel new];
@@ -221,7 +242,7 @@
 
 - (void)snapButtonPressed:(UIButton *)button
 {
-    
+    [lblCaption removeFromSuperview];
     if(!self.camera.isRecording) {
         
     self.switchButton.hidden = YES;

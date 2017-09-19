@@ -24,10 +24,12 @@
 
 @interface WinnerPopUp : UIView{
     
+    
 }
 
 @property (nonatomic,weak)  id<WinnerPopUpDelegate>delegate;
 
 -(void)setUp;
+-(void)setUpPopUpForOthersWithWinnerName:(NSString*)winnerName;
 
 @end

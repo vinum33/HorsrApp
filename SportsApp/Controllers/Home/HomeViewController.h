@@ -20,6 +20,8 @@
 -(void)refreshGameZoneWithInfo:(NSDictionary*)info;
 -(void)manageGroupChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG;
 -(void)managePrivateChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG;
+-(void)manageOtherNotificationsWith:(NSDictionary*)_userInfo isBBg:(BOOL)isBG;
+-(void)manageFriendReqNotificatinWith:(NSDictionary*)_userInfo isBBg:(BOOL)isBG;
 -(void)updateNotificationIcon;
 
 @end

@@ -25,8 +25,13 @@ typedef enum{
 #import <AVFoundation/AVFoundation.h>
 #import "EMEmojiableBtn.h"
 #import "ProfileViewController.h"
+#import "CommentComposeViewController.h"
+#import "CommunityGalleryViewController.h"
+#import "NotificationsViewController.h"
+#import "SearchFriendsViewController.h"
+#import "FriendRequestsViewController.h"
 
-@interface SharedVideosViewController () <EMEmojiableBtnDelegate>{
+@interface SharedVideosViewController () <EMEmojiableBtnDelegate,CommentPopUpDelegate,CommunityGalleryPopUpDelegate>{
     
     IBOutlet NSLayoutConstraint *constraintForNavBg;
     IBOutlet UITableView* tableView;
@@ -36,6 +41,8 @@ typedef enum{
     NSInteger totalPages;
     NSInteger currentPage;
     NSString *strAPIErrorMsg;
+    CommentComposeViewController *comments;
+    CommunityGalleryViewController *galleryView;
 }
 
 @end
@@ -102,8 +109,8 @@ typedef enum{
 -(void)showAllRequestsWithJSON:(NSDictionary*)responds{
     
     isDataAvailable = false;
-    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"videos"]))
-        [arrDataSource addObjectsFromArray:[[responds objectForKey:@"data"] objectForKey:@"videos"]];
+    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"community"]))
+        [arrDataSource addObjectsFromArray:[[responds objectForKey:@"data"] objectForKey:@"community"]];
     if (arrDataSource.count > 0) isDataAvailable = true;
     if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
         totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
@@ -139,15 +146,21 @@ typedef enum{
     }
     static NSString *CellIdentifier = @"SharedVideoCell";
     SharedVideoCell *cell = (SharedVideoCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.btnComment.tag = indexPath.row;
     cell.btnVideo.tag = indexPath.row;
     cell.btnDelete.tag = indexPath.row;
     cell.btnDelete.hidden = true;
     cell.btnProfile.tag = indexPath.row;
     cell.btnShare.tag = indexPath.row;
+    cell.btnMoreGallery.tag = indexPath.row;
+    cell.btnVideo.hidden = true;
+    [cell.indicator stopAnimating];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row < arrDataSource.count) {
         NSDictionary *details = arrDataSource[indexPath.row];
         cell.lblName.text = [details objectForKey:@"name"];
+        cell.lblLoc.text = @"";
+        cell.lblFriends.text = @"";
         
          if (NULL_TO_NIL([details objectForKey:@"location"]) ){
              NSMutableAttributedString *myString = [NSMutableAttributedString new];
@@ -180,24 +193,64 @@ typedef enum{
             }
             
         }
-        if ([[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId])cell.btnDelete.hidden = false;
+        cell.trailingToChat.priority = 998;
+        cell.trailingToSuperView.priority = 999;
+        if ([[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]){
+            cell.btnDelete.hidden = false;
+            cell.trailingToChat.priority = 999;
+            cell.trailingToSuperView.priority = 998;
+        }
+        
+        [cell.btnComment setTitle:[NSString stringWithFormat:@"(%ld)",[[details objectForKey:@"comment_total"] integerValue]]forState:UIControlStateNormal];
         cell.lblTime.text = [Utility getDateDescriptionForChat:[[details objectForKey:@"shared_datetime"] doubleValue]];
-        cell.lblDescription.text = [details objectForKey:@"share_msg"];
-        float width = [[details objectForKey:@"width"] integerValue];
-        float height = [[details objectForKey:@"height"] integerValue];;
-        float ratio = width / height;
-        float imageHeight = (self.view.frame.size.width - 30) / ratio;
-        //cell.constraintForHeight.constant = imageHeight;
+        NSString *msg = [details objectForKey:@"share_msg"];
+        cell.lblDescription.text = @"";
+        cell.desrptionTopToView.constant = 0;
+        cell.desrptionTopToImage.constant = 0;
+        if (msg.length) {
+            cell.lblDescription.text = [details objectForKey:@"share_msg"];
+            cell.desrptionTopToView.constant = 10;
+            cell.desrptionTopToImage.constant = 10;
+        }
+        
+        cell.lblMediaCount.text = @"";
+        cell.imgMore.hidden = true;
+        if ([details objectForKey:@"media"]) {
+            NSArray *media = [details objectForKey:@"media"];
+            if (media.count > 1) {
+                cell.imgMore.hidden = false;
+                cell.lblMediaCount.text = [NSString stringWithFormat:@"%u+",media.count - 1];
+            }
+            
+        }
+        cell.topForImage.constant = 0;
+        cell.constraintForHeight.constant = 0;
+        cell.imgThumb.hidden = true;
+        if (NULL_TO_NIL([details objectForKey:@"display_image"])) {
+            cell.imgThumb.hidden = false;
+            cell.btnVideo.hidden = false;
+            cell.topForImage.constant = 10;
+            if ([[details objectForKey:@"display_type"] isEqualToString:@"image"]) {
+                cell.btnVideo.hidden = true;
+            }
+            [cell.indicator startAnimating];
+            float width = [[details objectForKey:@"image_width"] integerValue];
+            float height = [[details objectForKey:@"image_height"] integerValue];;
+            float ratio = width / height;
+            float imageHeight = (self.view.frame.size.width - 30) / ratio;
+            cell.constraintForHeight.constant = imageHeight;
+            [cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
+                             placeholderImage:[UIImage imageNamed:@"NoImage"]
+                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                          [cell.indicator stopAnimating];
+                                    }];
+        }
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"profileurl"]]
                         placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                    
                                }];
-        [cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"imageurl"]]
-                        placeholderImage:[UIImage imageNamed:@"NoImage"]
-                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                   
-                               }];
+        
         cell.btnEmoji.delegate = self;
         cell.btnEmoji.dataset = @[
                                   [[EMEmojiableOption alloc] initWithImage:@"Like_Blue" withName:@" Like"],
@@ -207,7 +260,7 @@ typedef enum{
                                   [[EMEmojiableOption alloc] initWithImage:@"Angry" withName:@" Angry"],
                                   ];
         [cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-        [cell.btnEmoji setTitle:[NSString stringWithFormat:@" %ldLikes",[[details objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
+        [cell.btnEmoji setTitle:[NSString stringWithFormat:@"(%d)",[[details objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
         if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
             EMEmojiableOption *option = [cell.btnEmoji.dataset objectAtIndex:[[details objectForKey:@"emoji_code"] integerValue]];
             [cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
@@ -265,9 +318,9 @@ typedef enum{
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"DELETE"
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                   
-                                                                  if ([details objectForKey:@"video_id"]) {
+                                                                  if ([details objectForKey:@"community_id"]) {
                                                                        [Utility showLoadingScreenOnView:self.view withTitle:@"Deleting.."];
-                                                                      [APIMapper deleteSharedVideoWithVideoID:[details objectForKey:@"video_id"] OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                      [APIMapper deleteSharedVideoWithVideoID:[details objectForKey:@"community_id"] OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                           
                                                                           [arrDataSource removeObjectAtIndex:sender.tag];
                                                                           [tableView reloadData];
@@ -297,11 +350,15 @@ typedef enum{
     
     if (sender.tag < arrDataSource.count) {
         
+        NSMutableArray *arrShare = [NSMutableArray new];
         NSDictionary *details = arrDataSource[sender.tag];
-        NSString *url = [details objectForKey:@"videourl"];
-        NSString * title = [NSString stringWithFormat:@"Download ECG app %@ and get free reward points!",url];
-        NSArray* dataToShare = @[title];
-        UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:dataToShare applicationActivities:nil];
+        NSString * title;
+        if ([details objectForKey:@"share_msg"]) {
+            title = [details objectForKey:@"share_msg"];
+        }
+        title = [NSString stringWithFormat:@"%@\nSent from HorseApp",title];
+        [arrShare addObject:title];
+        UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:arrShare applicationActivities:nil];
         activityViewController.excludedActivityTypes = @[UIActivityTypeAirDrop];
         [self presentViewController:activityViewController animated:YES completion:^{}];
 
@@ -316,7 +373,7 @@ typedef enum{
         
         NSDictionary *details = arrDataSource[sender.tag];
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-        playerViewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:[details objectForKey:@"videourl"]]];
+        playerViewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:[details objectForKey:@"media_url"]]];
         [playerViewController.player play];
         [self presentViewController:playerViewController animated:YES completion:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -344,13 +401,13 @@ typedef enum{
     if (sender.tag < arrDataSource.count) {
         
         NSDictionary *details = arrDataSource[sender.tag];
-        NSInteger value = -1;
+        NSInteger value = 0;
         if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
-            value = 0;
+            value = -1;
         }
         
         [self updateDetailsWithEmojiIndex:value position:sender.tag];
-        [APIMapper likeVideoWithVideoID:[details objectForKey:@"video_id"] type:@"share" emojiCode:value OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [APIMapper likeVideoWithVideoID:[details objectForKey:@"community_id"] type:@"share" emojiCode:value OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
             
@@ -368,7 +425,7 @@ typedef enum{
         
         [self updateDetailsWithEmojiIndex:index position:button.tag];
         NSDictionary *details = arrDataSource[button.tag];
-        [APIMapper likeVideoWithVideoID:[details objectForKey:@"video_id"] type:@"share" emojiCode:index OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [APIMapper likeVideoWithVideoID:[details objectForKey:@"community_id"] type:@"share" emojiCode:index OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
             
@@ -413,6 +470,131 @@ typedef enum{
    
 }
 
+#pragma mark - Comment PopUp Methods
+
+
+-(IBAction)showCommentsBy:(UIButton*)sender{
+    
+    if (!comments) {
+        
+        if (sender.tag < arrDataSource.count) {
+            NSDictionary *details = arrDataSource[sender.tag];
+            comments =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForComments];
+            comments.strCommunityID = [details objectForKey:@"community_id"];
+            comments.objIndex = sender.tag;
+            UIView *popup = comments.view;
+            [self.view addSubview:popup];
+            comments.delegate = self;
+            popup.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                // animate it to the identity transform (100% scale)
+                popup.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished){
+                // if you want to do something once the animation finishes, put it here
+            }];
+            
+        }
+        
+        
+        
+    }
+    
+    [self.view endEditing:YES];
+
+    
+    
+   
+}
+
+-(void)closePopUp;{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        comments.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [comments.view removeFromSuperview];
+        comments = nil;
+    }];
+}
+
+-(void)updateCommentCountByCount:(NSInteger)count atIndex:(NSInteger)index{
+    
+    if (index < arrDataSource.count) {
+        NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDataSource[index]];
+        [details setObject:[NSNumber numberWithInteger:count] forKey:@"comment_total"];
+        [arrDataSource replaceObjectAtIndex:index withObject:details];
+        [tableView reloadData];
+    }
+}
+
+#pragma mark - IBActions
+
+-(IBAction)showNotifications{
+    
+    NotificationsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
+-(IBAction)showSearchPeoplePage{
+    
+    SearchFriendsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForSearchFriends];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
+-(IBAction)showFriendReqPage{
+    
+    FriendRequestsViewController *friendList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequest];
+    [self.navigationController pushViewController:friendList animated:YES];
+}
+
+
+
+
+-(IBAction)showMoreGalleries:(UIButton*)sender{
+    
+    if (sender.tag < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[sender.tag];
+        if ([details objectForKey:@"media"]) {
+            NSArray *media = [details objectForKey:@"media"];
+            if (media.count > 1) {
+                galleryView =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCommunityGallery];
+                galleryView.gallery = media;
+                UIView *popup = galleryView.view;
+                [self.view addSubview:popup];
+                galleryView.delegate = self;
+                popup.translatesAutoresizingMaskIntoConstraints = NO;
+                [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+                [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+                popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+                [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    // animate it to the identity transform (100% scale)
+                    popup.transform = CGAffineTransformIdentity;
+                } completion:^(BOOL finished){
+                    // if you want to do something once the animation finishes, put it here
+                }];
+
+            }
+        }
+    }
+    
+}
+
+
+-(void)closeGalleryPopUp;{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        galleryView.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [galleryView.view removeFromSuperview];
+        galleryView = nil;
+    }];
+}
 
 
 -(IBAction)goBack:(id)sender{

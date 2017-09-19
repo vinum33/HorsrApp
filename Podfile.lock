@@ -43,6 +43,9 @@ PODS:
   - GoogleMaps/Base (2.4.0)
   - GoogleMaps/Maps (2.4.0):
     - GoogleMaps/Base
+  - GooglePlacePicker (2.4.0):
+    - GoogleMaps (= 2.4.0)
+    - GooglePlaces (= 2.4.0)
   - GooglePlaces (2.4.0):
     - GoogleMaps/Base (= 2.4.0)
   - GoogleSignIn (4.0.2):
@@ -83,6 +86,7 @@ DEPENDENCIES:
   - Fabric
   - Google/SignIn
   - GoogleMaps
+  - GooglePlacePicker
   - GooglePlaces
   - GUIPlayerView (~> 0.0.4)
   - libPhoneNumber-iOS (~> 0.8)
@@ -101,6 +105,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
   Google: 98da4b1a60ed0beb80a290387a28333406a1eb90
   GoogleMaps: 8436ab5d1c25e36915b2f7416d0c8e3fa2e76c61
+  GooglePlacePicker: 755f10343d71280c7b016823e73fbae9625dfa8a
   GooglePlaces: aafe5990fa7951e98e078761bbdaaf236d7e0c65
   GoogleSignIn: d7ad83f13480e1f30453471d00d19b5293ac46af
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
@@ -112,6 +117,6 @@ SPEC CHECKSUMS:
   UICollectionViewLeftAlignedLayout: 830bf6fa5bab9f9b464f62e3384f9d2e00b3c0f6
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: 5e7518c7805d6cde8a9b06965b67fb8eaecfe186
+PODFILE CHECKSUM: b8a8535f7f4f9fefa3248478635b7f5348002067
 
 COCOAPODS: 1.2.1

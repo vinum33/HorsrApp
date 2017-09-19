@@ -17,6 +17,12 @@
 @property (nonatomic,weak) IBOutlet UIButton *btnCancelReq;
 @property (nonatomic,weak) IBOutlet UIButton *btnReject;
 
+@property (nonatomic,weak) IBOutlet UIButton *btnChat;
+@property (nonatomic,weak) IBOutlet UIButton *btnProfile;
+
+@property (nonatomic,weak) IBOutlet UILabel *lblChatMessge;
+@property (nonatomic,weak) IBOutlet UILabel *lblDate;
+
 @property (nonatomic,weak) IBOutlet UIImageView *imgUser;
 @property (nonatomic,weak) IBOutlet UILabel *lblName;
 @property (nonatomic,weak) IBOutlet UILabel *lblLocation;

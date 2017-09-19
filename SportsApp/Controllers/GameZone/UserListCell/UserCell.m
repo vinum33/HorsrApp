@@ -73,6 +73,19 @@
         NSDictionary *userInfo = players[indexPath.row];
         cell.imgBall.hidden = [[userInfo objectForKey:@"turn"] boolValue] ? false : true;
         cell.imgUser.layer.borderColor = [UIColor colorWithRed:0.97 green:0.89 blue:0.82 alpha:1.0].CGColor;
+        cell.imgHorseOrPig.hidden = true;
+        cell.imgUser.alpha = 1;
+        if ([[userInfo objectForKey:@"player_status"] isEqualToString:@"out"]){
+            cell.imgUser.alpha = 0.5;
+            cell.imgHorseOrPig.hidden = false;
+            if ([[userInfo objectForKey:@"gametype_id"]integerValue] == 2) {
+                cell.imgHorseOrPig.image = [UIImage imageNamed:@"Pig"];
+            }else{
+                cell.imgHorseOrPig.image = [UIImage imageNamed:@"Horse"];
+            }
+            
+            
+        }
         [[cell indicator] startAnimating];
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[userInfo objectForKey:@"profileurl"]]
                         placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]

@@ -9,6 +9,7 @@
 #define NOTIFICATION_TYPE_GAME_UPLOAD               @"game_upload"
 #define NOTIFICATION_TYPE_GROUP_CHAT                @"chat"
 #define NOTIFICATION_TYPE_PRIVATE_CHAT              @"privatechat"
+#define NOTIFICATION_TYPE_FRIEND_REQ                @"friend"
 
 
 typedef enum{
@@ -110,6 +111,11 @@ typedef enum{
             User *object = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
             if (object)isUserExists = true;
             [self createUserObject:object];
+            NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.purposecodes.sportsapp"];
+            [sharedDefaults setObject: [User sharedManager].token forKey:@"TOKEN"];
+             [sharedDefaults setObject: [User sharedManager].name forKey:@"name"];
+             [sharedDefaults setObject: [User sharedManager].profileurl forKey:@"profileurl"];
+            [sharedDefaults synchronize];
         }
 
     }
@@ -276,6 +282,11 @@ typedef enum{
             }
             else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_PRIVATE_CHAT]){
                 [_homeVC managePrivateChatInfoFromForeGround:[userInfo objectForKey:@"data"] isBBg:isBackground];
+            }
+            else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_FRIEND_REQ]){
+                [_homeVC manageFriendReqNotificatinWith:userInfo isBBg:isBackground];
+            }else{
+                [_homeVC manageOtherNotificationsWith:userInfo isBBg:isBackground];
             }
         }
     }

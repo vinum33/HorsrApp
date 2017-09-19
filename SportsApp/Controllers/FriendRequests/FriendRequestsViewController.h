@@ -10,4 +10,6 @@
 
 @interface FriendRequestsViewController : UIViewController
 
+-(void)refreshPage;
+
 @end

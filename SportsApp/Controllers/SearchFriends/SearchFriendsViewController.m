@@ -32,6 +32,7 @@ typedef enum{
 #import "Constants.h"
 #import "PlayerListTableViewCell.h"
 #import "ProfileViewController.h"
+#import "PrivateChatComposeViewController.h"
 
 @interface SearchFriendsViewController () {
     
@@ -169,6 +170,8 @@ typedef enum{
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row < arrDataSource.count) {
         
+        cell.btnChat.hidden = true;
+        cell.btnChat.tag = indexPath.row;
         cell.btnAddFrnd.tag = indexPath.row;
         cell.btnCancel.tag = indexPath.row;
         cell.btnAcept.tag = indexPath.row;
@@ -277,6 +280,7 @@ typedef enum{
 -(void)configureConfirmedCell:(PlayerListTableViewCell*)cell{
     
     cell.contrsintForEnd.priority = 999;
+    cell.btnChat.hidden = false;
   
 }
 
@@ -428,6 +432,8 @@ typedef enum{
     strSeatchText = searchText;
     currentPage = 1;
     NSString *trimDot = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimDot = [trimDot stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
     [APIMapper searchUserNameWithText:trimDot pageNumber:currentPage OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self praseResponds:responseObject isByPagination:NO];
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -469,6 +475,19 @@ typedef enum{
             strAPIErrorMsg = error.localizedDescription;
         
     }];
+}
+
+-(IBAction)composeChat:(UIButton*)btn{
+    
+    PrivateChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForPrivateChatComposer];
+    if (btn.tag < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[btn.tag];
+        if ([details objectForKey:@"user_id"]) {
+            chatCompose.strUserID = [details objectForKey:@"user_id"];
+        }
+    }
+    [[self navigationController]pushViewController:chatCompose animated:YES];
+    
 }
 
 -(void)displayErrorMessgeWithDetails:(NSData*)responseData{

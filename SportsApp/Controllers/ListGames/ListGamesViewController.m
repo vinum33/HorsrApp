@@ -20,6 +20,9 @@ typedef enum{
 #import "Constants.h"
 #import "PlayedGameDetailPageViewController.h"
 #import "GameZoneViewController.h"
+#import "NotificationsViewController.h"
+#import "SearchFriendsViewController.h"
+#import "FriendRequestsViewController.h"
 
 @interface ListGamesViewController () <GameZoneDelegate>{
     
@@ -187,9 +190,9 @@ typedef enum{
         cell.btnPlayVideo.tag = indexPath.row;
         cell.btnAcceptInvite.tag = indexPath.row;
         cell.btnRejectInvite.tag = indexPath.row;
-        cell.lblKey.text = [game objectForKey:@"gameId"];
+        cell.lblKey.text = [Utility getDateDescriptionForChat:[[game objectForKey:@"gameadded_date"] doubleValue]];
         cell.lblName.text = [game objectForKey:@"name"];
-        cell.lblDateTime.text = [self getDaysBetweenTwoDatesWith:[[game objectForKey:@"gameadded_date"] doubleValue]];
+        cell.lblDateTime.text = [game objectForKey:@"location"];
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"profileurl"]]
                         placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -230,6 +233,30 @@ typedef enum{
     }
     
 }
+
+#pragma mark - IBActions
+
+-(IBAction)showNotifications{
+    
+    NotificationsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
+-(IBAction)showSearchPeoplePage{
+    
+    SearchFriendsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForSearchFriends];
+    [[self navigationController]pushViewController:games animated:YES];
+}
+
+-(IBAction)showFriendReqPage{
+    
+    FriendRequestsViewController *friendList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequest];
+    [self.navigationController pushViewController:friendList animated:YES];
+}
+
+
+
+
 
 -(void)gameZoneCompleted{
     

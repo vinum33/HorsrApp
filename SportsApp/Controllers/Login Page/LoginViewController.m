@@ -497,7 +497,7 @@ typedef enum{
 
 -(IBAction)tapToLogin:(id)sender{
     
-    [self byPassLogin];
+   [self byPassLogin];
    return;
     
     [self.view endEditing:YES];

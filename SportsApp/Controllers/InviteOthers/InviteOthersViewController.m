@@ -301,6 +301,8 @@ typedef enum{
     
     currentPage = 1;
     NSString *trimDot = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimDot = [trimDot stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
     [APIMapper searchFriendsNameWithText:trimDot pageNumber:currentPage OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self praseResponds:responseObject];
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -365,7 +367,7 @@ typedef enum{
     }
     
     [[self delegate]userInvitedWithList:selections];
-    [[self navigationController]popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -374,7 +376,7 @@ typedef enum{
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController]popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -428,9 +428,12 @@
     
 }
 
-+ (void)getAllNotificationsPageNumber:(NSInteger)pageno OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)getAllNotificationsPageNumber:(NSInteger)pageno type:(NSInteger)type OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@notification",BaseURLString];
+    if (type == 1) {
+        urlString = [NSString stringWithFormat:@"%@game/request",BaseURLString];
+    }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
     if ( [User sharedManager].token) {
@@ -584,7 +587,7 @@
     }
     NSMutableDictionary *params = [NSMutableDictionary new];
     if (statusMsg.length > 0)[params setObject:statusMsg forKey:@"status_message"];
-    [params setObject:gameID forKey:@"game_id"];
+    if (gameID.length > 0)[params setObject:gameID forKey:@"game_id"];
     [params setObject:gameType forKey:@"gametype_id"];
     [params setObject:mediaFileName forKey:@"media_file"];
     [params setObject:thumbFileName forKey:@"thumb_file"];
@@ -773,6 +776,32 @@
     
 }
 
++ (void)replyToGameRequestWithMessage:(NSString*)status requestID:(NSString*)reqID Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@game/reply",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"request_id": reqID,
+                             @"status_msg": status,
+                             };
+    
+    [manager PUT:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
 + (void)getGameZoneDetailsWithGameID:(NSString*)gameID Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@game/zone",BaseURLString];
@@ -857,9 +886,9 @@
 
 + (void)postChatMessageWithGameID:(NSString*)gameID toUserID:(NSString*)toUserID message:(NSString*)message success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
-    NSString *urlString = [NSString stringWithFormat:@"%@chat",BaseURLString];
+    NSString *urlString = [NSString stringWithFormat:@"%@chat/",BaseURLString];
     if (toUserID.length) {
-        urlString = [NSString stringWithFormat:@"%@privatechat",BaseURLString];
+        urlString = [NSString stringWithFormat:@"%@privatechat/",BaseURLString];
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
@@ -886,37 +915,13 @@
     
 }
 
-+ (void)getAllChatUsersWithUserID:(NSString*)userID pageNumber:(NSInteger)pageNumber success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
-    
-    NSString *urlString = [NSString stringWithFormat:@"%@chatuserlist",BaseURLString];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    if ( [User sharedManager].token) {
-        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
-    }
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
-    NSDictionary *params = @{@"user_id": userID,
-                             };
-    
-    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        success(operation,responseObject);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if ([operation.response statusCode] == kUnAuthorized) {
-            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            [app logoutSinceUnAuthorized:operation.responseObject];
-        }
-        failure (operation,error);
-    }];
-    
-}
 
 
 + (void)loadChatHistoryWithGameID:(NSString*)gameID toUserID:(NSString*)strToUserID page:(NSInteger)pageNo success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
-    NSString *urlString = [NSString stringWithFormat:@"%@chat",BaseURLString];
+    NSString *urlString = [NSString stringWithFormat:@"%@chat/",BaseURLString];
     if (strToUserID.length) {
-        urlString = [NSString stringWithFormat:@"%@privatechat",BaseURLString];
+        urlString = [NSString stringWithFormat:@"%@privatechat/",BaseURLString];
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
@@ -926,6 +931,7 @@
     NSMutableDictionary *params = [NSMutableDictionary new];
     if (gameID.length)[params setObject:gameID forKey:@"game_id"];
     if (strToUserID.length)[params setObject:strToUserID forKey:@"to_id"];
+    [params setObject:[NSNumber numberWithInteger:pageNo] forKey:@"pageno"];
 
     [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -1028,7 +1034,7 @@
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
     NSMutableDictionary *params = [NSMutableDictionary new];
-    if (videoID.length)[params setObject:videoID forKey:@"video_id"];
+    if (videoID.length)[params setObject:videoID forKey:@"community_id"];
     if (type.length)[params setObject:type forKey:@"type"];
     [params setObject:[NSNumber numberWithInteger:emojiCode] forKey:@"emoji_code"];
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1053,7 +1059,7 @@
     if ( [User sharedManager].token) {
         [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
     }
-    NSDictionary *params = @{@"video_id": videoID
+    NSDictionary *params = @{@"community_id": videoID
                              };
     manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithObjects:@"GET", @"HEAD", nil];
     [manager DELETE:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1121,5 +1127,133 @@
     
 
 }
+
++ (void)loadAllCommentsWithCommunityID:(NSString*)communityID page:(NSInteger)pageNo success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@comment",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (communityID.length)[params setObject:communityID forKey:@"community_id"];
+    
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
++ (void)postCommentWithCommunityID:(NSString*)communityID message:(NSString*)message success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@comment",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (message.length)[params setObject:message forKey:@"comment_txt"];
+    if (communityID.length)[params setObject:communityID forKey:@"community_id"];
+    
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
++ (void)deleteCommentWithCommentID:(NSString*)commentID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@comment",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"comment_id": commentID
+                             };
+    manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithObjects:@"GET", @"HEAD", nil];
+    [manager DELETE:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
+
++ (void)getChatListWithPageNumber:(NSInteger)pageno searchText:(NSString*)searchText OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@privatechat/list/",BaseURLString];
+    if (searchText.length) urlString = [NSString stringWithFormat:@"%@privatechat/list/%@",BaseURLString,searchText];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"pageno": [NSNumber numberWithInteger:pageno]
+                             };
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
++ (void)getAllMembersInGroupWithGroupID:(NSString*)groupID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@chat/list",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [params setObject:groupID forKey:@"game_id"];
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
 
 @end

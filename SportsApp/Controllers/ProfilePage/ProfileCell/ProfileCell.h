@@ -17,6 +17,7 @@
 @property (nonatomic,weak) IBOutlet UILabel *lblLoc;
 @property (nonatomic,weak) IBOutlet UILabel *lblEmail;
 @property (nonatomic,weak) IBOutlet UILabel *lblRegStatus;
+@property (nonatomic,weak) IBOutlet UIButton *btnStatistics;
 
 @property (nonatomic,weak) IBOutlet UITextField *txtField;
 

@@ -12,15 +12,17 @@ typedef enum{
     eCellGameName       = 0,
     eCellGameType       = 1,
     eCellStatusMsg      = 2,
-    eCellGameRecord     = 3,
+    eCellInvite         = 3,
     eCellThumb          = 4,
-    eCellInvite         = 5,
+    eCellGameRecord     = 5,
+   
     
     
 }eSectionType;
 
 typedef enum{
     
+    eGameTypeNone      = 0,
     eGameTypeHorse     = 1,
     eGameTypePig       = 2,
     
@@ -36,11 +38,14 @@ typedef enum{
 #import "CameraViewcontroller.h"
 #import "InviteOthersViewController.h"
 #import "SDAVAssetExportSession.h"
+#import "CreatedGameSummaryViewController.h"
 
 @interface CreateGameViewController () <UserTagListCellDelegate,CameraRecordDelegate,InviteUserDeleagte>{
     
     IBOutlet NSLayoutConstraint *constraintForNavBg;
     IBOutlet UITableView* tableView;
+    IBOutlet UIView *vwBG;
+    
     float tagCellHeight;
     NSMutableArray *arrInvites;
     NSString *strGameID;
@@ -72,11 +77,11 @@ typedef enum{
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 50;
     
-    tableView.clipsToBounds = YES;
-    tableView.layer.cornerRadius = 5.f;
-    tableView.layer.borderWidth = 1.f;
+    vwBG.clipsToBounds = YES;
+    vwBG.layer.cornerRadius = 5.f;
+    vwBG.layer.borderWidth = 1.f;
     tableView.backgroundColor = [UIColor whiteColor];
-    tableView.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+    vwBG.layer.borderColor = [UIColor getSeperatorColor].CGColor;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     float width = 720;
@@ -90,7 +95,7 @@ typedef enum{
 
 -(void)initializeGameVariables{
     
-    gameType = eGameTypeHorse;
+    gameType = eGameTypeNone;
     
 }
 
@@ -159,7 +164,7 @@ typedef enum{
             }
             if (gameType == eGameTypeHorse) {
                 [btnHorse setImage:[UIImage imageNamed:@"Game_Selection_Active"] forState:UIControlStateNormal];
-            }else{
+            }else if (gameType == eGameTypePig){
                 [btnPig setImage:[UIImage imageNamed:@"Game_Selection_Active"] forState:UIControlStateNormal];
             }
             
@@ -191,11 +196,12 @@ typedef enum{
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if ([[cell contentView]viewWithTag:1]) {
             UIView *vwContainer = (UIImageView*)[[cell contentView]viewWithTag:1];
-            vwContainer.layer.cornerRadius = 25.f;
+            vwContainer.layer.cornerRadius = 17.f;
             vwContainer.layer.borderWidth = 1.f;
             vwContainer.backgroundColor = [UIColor whiteColor];
             vwContainer.layer.borderColor = [UIColor getSeperatorColor].CGColor;
         }
+        
     }
     if (indexPath.row == eCellThumb) {
         static NSString *CellIdentifier = @"VideoThumb";
@@ -205,27 +211,40 @@ typedef enum{
         cell = _cell;
         
     }
+    
     if (indexPath.row == eCellInvite) {
-        if (arrInvites.count) {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InvitedUsers" forIndexPath:indexPath];
-            [self configureCell:cell atIndexPath:indexPath];
-             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
-          
-        }else{
-            static NSString *CellIdentifier = @"InviteOthers";
-            cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            if ([[cell contentView]viewWithTag:1]) {
-                UIView *vwContainer = (UIImageView*)[[cell contentView]viewWithTag:1];
-                vwContainer.layer.cornerRadius = 25.f;
-                vwContainer.layer.borderWidth = 1.f;
-                vwContainer.backgroundColor = [UIColor whiteColor];
-                vwContainer.layer.borderColor = [UIColor getSeperatorColor].CGColor;
-            }
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"InvitedUsers" forIndexPath:indexPath];
+        float radius = 25;
+        UIView *vwContainer;
+        if ([[cell contentView]viewWithTag:1]) {
+            vwContainer = (UIImageView*)[[cell contentView]viewWithTag:1];
+            vwContainer.layer.borderWidth = 1.f;
+            vwContainer.backgroundColor = [UIColor whiteColor];
+            vwContainer.layer.borderColor = [UIColor getSeperatorColor].CGColor;
         }
+        if (arrInvites.count) radius = 10;
+        [self configureCell:cell atIndexPath:indexPath];
+        vwContainer.layer.cornerRadius = radius;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
         
     }
+    /*
+
+    if (indexPath.row == eCellInvite) {
+        static NSString *CellIdentifier = @"InviteOthers";
+        cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if ([[cell contentView]viewWithTag:1]) {
+            UIView *vwContainer = (UIImageView*)[[cell contentView]viewWithTag:1];
+            vwContainer.layer.cornerRadius = 25.f;
+            vwContainer.layer.borderWidth = 1.f;
+            vwContainer.backgroundColor = [UIColor whiteColor];
+            vwContainer.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+        }
+
+        
+    }*/
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
   
@@ -251,7 +270,23 @@ typedef enum{
         }
         return 0;
         
-    }        
+    }
+    if (indexPath.row == eCellGameName) {
+        return 0;
+        
+    }
+    if (indexPath.row == eCellStatusMsg) {
+        return 0;
+        
+    }
+    
+    if (indexPath.row ==  eCellGameRecord) {
+        if (!thumbImage) {
+            return 0;
+        }
+    }
+    
+   
     return UITableViewAutomaticDimension;
 }
 
@@ -264,11 +299,18 @@ typedef enum{
     UIButton *btnSend = [UIButton buttonWithType:UIButtonTypeCustom];
     [vwFooter addSubview:btnSend];
     btnSend.translatesAutoresizingMaskIntoConstraints = NO;
-    [btnSend addTarget:self action:@selector(submitGame)
-      forControlEvents:UIControlEventTouchUpInside];
+   
     btnSend.layer.borderColor = [UIColor clearColor].CGColor;
     btnSend.titleLabel.font = [UIFont fontWithName:CommonFontBold size:16];
-    [btnSend setTitle:@"SUBMIT" forState:UIControlStateNormal];
+   
+    if (!thumbImage) {
+        [btnSend setTitle:@"PROCEED TO RECORD" forState:UIControlStateNormal];
+        [btnSend addTarget:self action:@selector(recordVideo:)forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [btnSend setTitle:@"SUBMIT" forState:UIControlStateNormal];
+        [btnSend addTarget:self action:@selector(submitGame)forControlEvents:UIControlEventTouchUpInside];
+    }
+   
     [btnSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnSend setBackgroundColor:[UIColor getThemeColor]];
     [vwFooter addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-15-[btnSend]-15-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(btnSend)]];
@@ -305,11 +347,19 @@ typedef enum{
 }
 -(IBAction)changeGameType:(UIButton*)sender{
     
-    gameType = eGameTypeHorse;
+    gameType = eGameTypeNone;
     if (sender.tag == 3) {
         gameType = eGameTypePig;
     }
+    else if (sender.tag == 2) {
+        gameType = eGameTypeHorse;
+    }
     [tableView reloadData];
+    if (arrInvites.count <= 0) {
+         [self showInviteOthersPage];
+    }
+   
+    
 }
 
 
@@ -469,6 +519,20 @@ typedef enum{
 
 #pragma mark - Search Invites
 
+-(void)showInviteOthersPage{
+    
+    InviteOthersViewController *inviteOthers = [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForInviteOthers];
+    NSMutableArray *arrIDS = [NSMutableArray new];
+    for (AHTag *tag in arrInvites) {
+        [arrIDS addObject:tag.userID];
+    }
+    inviteOthers.delegate = self;
+    inviteOthers.selectedUsers = arrIDS;
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [delegate.window.rootViewController  presentViewController:inviteOthers animated:YES completion:nil];
+    
+}
+
 -(void)userInvitedWithList:(NSMutableArray*)users{
     
     arrInvites = [NSMutableArray new];
@@ -479,6 +543,12 @@ typedef enum{
         [arrInvites addObject:tag];
     }
     [tableView reloadData];
+    NSIndexPath* ip = [NSIndexPath indexPathForRow:5 inSection:0];
+    [tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    if (!thumbImage) {
+        [self performSelector:@selector(recordVideo:) withObject:nil afterDelay:0.1];
+    }
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -500,7 +570,9 @@ typedef enum{
     CameraViewcontroller *recordView = [[CameraViewcontroller alloc] initWithNibName:nil bundle:nil];
     recordView.timeLength = 15;
     recordView.delegate = self;
-    [[self navigationController]presentViewController:recordView animated:YES completion:nil];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [delegate.window.rootViewController  presentViewController:recordView animated:YES completion:nil];
+
 }
 
 -(void)recordCompletedWithOutOutURL:(NSURL*)outputURL{
@@ -529,6 +601,9 @@ typedef enum{
                                     [Utility hideLoadingScreenFromView:self.view];
                                     thumbImage = [Utility fixrotation:[Utility getThumbNailFromVideoURL:outputURL]]; ;
                                     [tableView reloadData];
+                                    NSIndexPath* ip = [NSIndexPath indexPathForRow:5 inSection:0];
+                                    [tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                
                                 });
             
         }];
@@ -628,7 +703,8 @@ typedef enum{
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
         playerViewController.player = [AVPlayer playerWithURL:recordedVideoURL];
         [playerViewController.player play];
-        [self presentViewController:playerViewController animated:YES completion:nil];
+        AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        [delegate.window.rootViewController  presentViewController:playerViewController animated:YES completion:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(videoDidFinish:)
                                                      name:AVPlayerItemDidPlayToEndTimeNotification
@@ -643,7 +719,8 @@ typedef enum{
 {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [delegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
     
     //fade out / remove subview
 }
@@ -669,55 +746,66 @@ typedef enum{
 #pragma mark - Submit Methods
 
 -(void)submitGame{
-    
-    if (strGameID.length <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"CREATE GAME"
-                                                        message:@"Enter game name"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        return ;
+    BOOL isValid = true;
+    NSString *alertMsg;
+    if (arrInvites.count <= 0) {
+        isValid = false;
+        alertMsg = @"Invite others to play";
     }
-    [self uploadMediaOnsuccess:^(NSDictionary *responds) {
-       
-        if ([responds objectForKey:@"data"]) {
-            NSDictionary *data = [responds objectForKey:@"data"];
-            NSMutableArray *invites = [NSMutableArray new];
-            for (AHTag *tag in arrInvites) {
-                [invites addObject:tag.userID];
-            }
-            [APIMapper createGameWithGameID:strGameID gameType:[NSString stringWithFormat:@"%ld",(long)gameType] mediaFileName:[data objectForKey:@"media_file"] thumbFileName:[data objectForKey:@"thumb_file"] invites:invites statusMsg:strStatusMsg OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
-                [Utility hideLoadingScreenFromView:self.view];
-                if ([responseObject objectForKey:@"text"]) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"CREATE GAME"
-                                                                    message:[responseObject objectForKey:@"text"]
+    if (gameType == eGameTypeNone) {
+        isValid = false;
+        alertMsg = @"Choose game type";
+    }
+    if (isValid) {
+        [self uploadMediaOnsuccess:^(NSDictionary *responds) {
+            
+            if ([responds objectForKey:@"data"]) {
+                NSDictionary *data = [responds objectForKey:@"data"];
+                NSMutableArray *invites = [NSMutableArray new];
+                for (AHTag *tag in arrInvites) {
+                    [invites addObject:tag.userID];
+                }
+                [APIMapper createGameWithGameID:strGameID gameType:[NSString stringWithFormat:@"%ld",(long)gameType] mediaFileName:[data objectForKey:@"media_file"] thumbFileName:[data objectForKey:@"thumb_file"] invites:invites statusMsg:strStatusMsg OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    
+                    [Utility hideLoadingScreenFromView:self.view];
+                    if ([responseObject objectForKey:@"text"]) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"CREATE GAME"
+                                                                        message:[responseObject objectForKey:@"text"]
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                        [alert show];
+                        [self removeAllContentsInMediaFolder];
+                        [self goBack:nil];
+                    }
+                    
+                    
+                    
+                } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR"
+                                                                    message:error.localizedDescription
                                                                    delegate:nil
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
                     [alert show];
-                    [self removeAllContentsInMediaFolder];
-                    [self goBack:nil];
-                }
-                
-                
-                
-            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR"
-                                                                message:error.localizedDescription
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-                [alert show];
-                 [Utility hideLoadingScreenFromView:self.view];
-            }];
-        }
-        
-    } failure:^{
-        
-    }];
+                    [Utility hideLoadingScreenFromView:self.view];
+                }];
+            }
+            
+        } failure:^{
+            
+        }];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"CREATE GAME"
+                                                        message:alertMsg
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
 }
 
 -(void)uploadMediaOnsuccess:(void (^)(NSDictionary *responds ))success failure:(void (^)())failure{
@@ -763,11 +851,16 @@ typedef enum{
 
 #pragma mark -Generic Methods
 
+-(void)showSummaryPage{
+    
+  
+
+}
 
 
 -(IBAction)goBack:(id)sender{
     
-    [[self navigationController]popViewControllerAnimated:YES];
+    [[self delegate]closeCreateGamePopUp];
 }
 
 - (void)didReceiveMemoryWarning {

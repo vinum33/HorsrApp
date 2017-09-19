@@ -44,6 +44,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Share.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -113,6 +118,11 @@
 			<true/>
 		</dict>
 		<key>D58DF41F6D347C0CA0B9B76C23281826</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE8BB8F9999A9CED003CBCFC52961B27</key>
 		<dict>
 			<key>primary</key>
 			<true/>

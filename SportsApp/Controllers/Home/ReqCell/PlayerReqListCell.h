@@ -22,6 +22,7 @@
 @property (nonatomic,weak) IBOutlet UIButton *btnRejectInvite;
 @property (nonatomic,weak) IBOutlet UIButton *btnShare;
 @property (nonatomic,weak) IBOutlet UIButton *btnProfile;
+@property (nonatomic,weak) IBOutlet UIButton *btnReply;
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView *indicator;
 @property (nonatomic,weak) IBOutlet NSLayoutConstraint *trailingForButton;
 

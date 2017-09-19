@@ -722,33 +722,33 @@ static const CGFloat kDetailsLabelFontSize = 15.f;
 	}
 }
 
-- (void)setTransformForCurrentOrientation:(BOOL)animated {	
-	// Stay in sync with the superview
-	if (self.superview) {
-		self.bounds = self.superview.bounds;
-		[self setNeedsDisplay];
-	}
-	
-	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-	float radians = 0;
-	if (UIInterfaceOrientationIsLandscape(orientation)) {
-		if (orientation == UIInterfaceOrientationLandscapeLeft) { radians = -M_PI_2; } 
-		else { radians = M_PI_2; }
-		// Window coordinates differ!
-		self.bounds = CGRectMake(0, 0, self.bounds.size.height, self.bounds.size.width);
-	} else {
-		if (orientation == UIInterfaceOrientationPortraitUpsideDown) { radians = M_PI; } 
-		else { radians = 0; }
-	}
-	rotationTransform = CGAffineTransformMakeRotation(radians);
-	
-	if (animated) {
-		[UIView beginAnimations:nil context:nil];
-	}
-	[self setTransform:rotationTransform];
-	if (animated) {
-		[UIView commitAnimations];
-	}
+- (void)setTransformForCurrentOrientation:(BOOL)animated {
+    // Stay in sync with the superview
+    if (self.superview) {
+        self.bounds = self.superview.bounds;
+        [self setNeedsDisplay];
+    }
+    
+    //UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    float radians = 0;
+    //	if (UIInterfaceOrientationIsLandscape(orientation)) {
+    //		if (orientation == UIInterfaceOrientationLandscapeLeft) { radians = -M_PI_2; }
+    //		else { radians = M_PI_2; }
+    //		// Window coordinates differ!
+    //		self.bounds = CGRectMake(0, 0, self.bounds.size.height, self.bounds.size.width);
+    //	} else {
+    //		if (orientation == UIInterfaceOrientationPortraitUpsideDown) { radians = M_PI; }
+    //		else { radians = 0; }
+    //	}
+    rotationTransform = CGAffineTransformMakeRotation(radians);
+    
+    if (animated) {
+        [UIView beginAnimations:nil context:nil];
+    }
+    [self setTransform:rotationTransform];
+    if (animated) {
+        [UIView commitAnimations];
+    }
 }
 
 @end

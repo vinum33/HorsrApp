@@ -28,4 +28,20 @@ pod 'BSStackView'
 source 'https://github.com/CocoaPods/Specs.git'
 pod 'libPhoneNumber-iOS', '~> 0.8'
 
+
+
+end
+
+target ‘Share’ do
+    
+    source 'https://github.com/CocoaPods/Specs.git'
+    pod 'AFNetworking', '~> 2.5'
+    
+    pod 'SDWebImage', '~>3.7'
+    
+    source 'https://github.com/CocoaPods/Specs.git'
+    pod 'GooglePlacePicker'
+    
+    
+    
 end

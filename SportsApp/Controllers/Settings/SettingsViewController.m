@@ -56,7 +56,7 @@
 
 -(void)getUserProfile{
     
-    [Utility showLoadingScreenOnView:self.view withTitle:@"Loading"];
+    [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
     [APIMapper getUserProfileWithUserID:[User sharedManager].userId OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         tableView.hidden = false;

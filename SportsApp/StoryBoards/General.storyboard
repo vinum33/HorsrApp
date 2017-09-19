@@ -13,7 +13,7 @@
         <array key="DroidSans-Bold.ttf">
             <string>DroidSans-Bold</string>
         </array>
-        <array key="DroidSansMerged-Regular.ttf">
+        <array key="DroidSans.ttf">
             <string>DroidSans</string>
         </array>
     </customFonts>
@@ -188,20 +188,32 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImage" translatesAutoresizingMaskIntoConstraints="NO" id="2Zb-j2-l3j">
-                                                    <rect key="frame" x="133" y="50" width="80" height="80"/>
+                                                    <rect key="frame" x="133" y="70" width="80" height="80"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="GW9-Lh-ukp"/>
                                                         <constraint firstAttribute="height" constant="80" id="RRa-s1-MX3"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYT-Pd-4Rv">
+                                                    <rect key="frame" x="210" y="15" width="120" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="120" id="QnA-d8-lSq"/>
+                                                        <constraint firstAttribute="height" constant="43" id="awN-6M-xEG"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
+                                                    <state key="normal" image="Statistics"/>
+                                                    <connections>
+                                                        <action selector="showStatisticsPage:" destination="Xx2-uh-t1F" eventType="touchUpInside" id="rkm-ls-fy8"/>
+                                                    </connections>
+                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWU-Kg-iT2">
-                                                    <rect key="frame" x="172.5" y="140" width="0.0" height="0.0"/>
+                                                    <rect key="frame" x="172.5" y="160" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qUi-fq-lTs">
-                                                    <rect key="frame" x="153" y="150" width="40" height="11"/>
+                                                    <rect key="frame" x="153" y="170" width="40" height="11"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ex-8G-fb0">
                                                             <rect key="frame" x="20" y="6" width="0.0" height="0.0"/>
@@ -219,7 +231,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uxa-kv-cJ6">
-                                                    <rect key="frame" x="152.5" y="171" width="40" height="9"/>
+                                                    <rect key="frame" x="152.5" y="191" width="40" height="9"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BRM-ze-bKj">
                                                             <rect key="frame" x="30" y="4" width="0.0" height="0.0"/>
@@ -247,13 +259,13 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gri-M1-kLl">
-                                                    <rect key="frame" x="173" y="190" width="0.0" height="0.0"/>
+                                                    <rect key="frame" x="173" y="210" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="14"/>
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8p2-iv-ILc">
-                                                    <rect key="frame" x="133" y="50" width="80" height="80"/>
+                                                    <rect key="frame" x="133" y="70" width="80" height="80"/>
                                                     <connections>
                                                         <action selector="showUserPhotoGallery" destination="Xx2-uh-t1F" eventType="touchUpInside" id="TNU-EM-KBu"/>
                                                     </connections>
@@ -265,19 +277,22 @@
                                                 <constraint firstItem="qUi-fq-lTs" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="Aal-4V-RCS"/>
                                                 <constraint firstItem="gri-M1-kLl" firstAttribute="top" secondItem="Uxa-kv-cJ6" secondAttribute="bottom" constant="10" id="P45-pG-jaL"/>
                                                 <constraint firstItem="gri-M1-kLl" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="RtY-D1-aEk"/>
+                                                <constraint firstItem="SYT-Pd-4Rv" firstAttribute="top" secondItem="a3W-xo-AU7" secondAttribute="top" constant="15" id="UyS-Pe-PfB"/>
                                                 <constraint firstItem="Uxa-kv-cJ6" firstAttribute="top" secondItem="qUi-fq-lTs" secondAttribute="bottom" constant="10" id="Vh5-qK-sgk"/>
-                                                <constraint firstItem="2Zb-j2-l3j" firstAttribute="top" secondItem="a3W-xo-AU7" secondAttribute="top" constant="50" id="W86-8L-n8t"/>
+                                                <constraint firstItem="2Zb-j2-l3j" firstAttribute="top" secondItem="a3W-xo-AU7" secondAttribute="top" constant="70" id="W86-8L-n8t"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gri-M1-kLl" secondAttribute="bottom" id="Wh8-o2-c72"/>
                                                 <constraint firstItem="8p2-iv-ILc" firstAttribute="leading" secondItem="2Zb-j2-l3j" secondAttribute="leading" id="acD-Dm-LBh"/>
                                                 <constraint firstItem="qUi-fq-lTs" firstAttribute="top" secondItem="sWU-Kg-iT2" secondAttribute="bottom" constant="10" id="cbh-7S-aP3"/>
                                                 <constraint firstItem="Uxa-kv-cJ6" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="iAc-of-Xcz"/>
                                                 <constraint firstItem="sWU-Kg-iT2" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="j8J-Fr-acl"/>
                                                 <constraint firstItem="2Zb-j2-l3j" firstAttribute="centerX" secondItem="a3W-xo-AU7" secondAttribute="centerX" id="nbx-VZ-63B"/>
+                                                <constraint firstAttribute="trailing" secondItem="SYT-Pd-4Rv" secondAttribute="trailing" constant="15" id="pl9-uE-31K"/>
                                                 <constraint firstItem="sWU-Kg-iT2" firstAttribute="top" secondItem="2Zb-j2-l3j" secondAttribute="bottom" constant="10" id="tgf-t7-VgY"/>
                                                 <constraint firstItem="8p2-iv-ILc" firstAttribute="width" secondItem="2Zb-j2-l3j" secondAttribute="width" id="xej-Kw-GAg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="btnStatistics" destination="SYT-Pd-4Rv" id="kdV-Fo-9cy"/>
                                             <outlet property="imgUser" destination="2Zb-j2-l3j" id="nTE-tG-yLF"/>
                                             <outlet property="lblEmail" destination="gri-M1-kLl" id="Zd6-24-Tuv"/>
                                             <outlet property="lblLoc" destination="BRM-ze-bKj" id="eWh-ff-cdB"/>
@@ -338,7 +353,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFR-N2-7Qb">
-                                                    <rect key="frame" x="113" y="20" width="119.5" height="276"/>
+                                                    <rect key="frame" x="113.5" y="20" width="119.5" height="276"/>
                                                     <fontDescription key="fontDescription" name="DroidSans" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="1" green="0.50588235290000005" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1009,7 +1024,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAa-g9-rLC">
-                                                    <rect key="frame" x="153" y="140" width="39.5" height="18"/>
+                                                    <rect key="frame" x="153.5" y="140" width="39.5" height="18"/>
                                                     <fontDescription key="fontDescription" name="DroidSans-Bold" family="Droid Sans" pointSize="15"/>
                                                     <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1257,6 +1272,7 @@
         <image name="Nav_Bg" width="360" height="230"/>
         <image name="NoImage" width="193" height="129"/>
         <image name="PhoneIcon" width="30" height="30"/>
+        <image name="Statistics" width="120" height="43"/>
         <image name="Tick" width="40" height="40"/>
     </resources>
 </document>

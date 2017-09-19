@@ -25,7 +25,6 @@ typedef enum{
 #import <AddressBook/ABAddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import <MessageUI/MessageUI.h>
-#import "ChatComposeViewController.h"
 #import "Base64.h"
 #import<CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
@@ -142,7 +141,7 @@ typedef enum{
     CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
     CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
     NBPhoneNumberUtil *phoneUtil = [[NBPhoneNumberUtil alloc] init];
-    NSMutableArray *arrContacts = [NSMutableArray new];
+    NSMutableArray *contacts = [NSMutableArray new];
     for (int i=0;i < nPeople;i++) {
         ABRecordRef ref = CFArrayGetValueAtIndex(allPeople,i);
         ABMultiValueRef phones =(__bridge ABMultiValueRef)((__bridge NSString*)ABRecordCopyValue(ref, kABPersonPhoneProperty));
@@ -173,21 +172,21 @@ typedef enum{
                 [dOfPerson setObject:[phoneUtil format:myNumber
                                           numberFormat:NBEPhoneNumberFormatE164
                                                  error:&anError] forKey:@"phone"];
-                [arrContacts addObject:dOfPerson];
+                [contacts addObject:dOfPerson];
             }
         }
         
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        [self sendContactsToBakendWith:arrContacts];
+        [self syncContacts:contacts];
     });
     
     
 }
 
 
--(void)sendContactsToBakendWith:(NSMutableArray*)arrContacts{
+-(void)syncContacts:(NSMutableArray*)arrContacts{
     
     if (arrContacts.count) {
         NSDictionary *jsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:arrContacts,@"contacts", nil];
@@ -466,18 +465,7 @@ typedef enum{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(IBAction)composeChat:(UIButton*)btn{
-    
-    ChatComposeViewController *chatCompose =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForChatComposer];
-    if (btn.tag < arrFiltered.count) {
-        NSDictionary *details = arrFiltered[btn.tag];
-        if ([details objectForKey:@"user_id"]) {
-            chatCompose.strUserID = [details objectForKey:@"user_id"];
-        }
-    }
-    [[self navigationController]pushViewController:chatCompose animated:YES];
-    
-}
+
 
 
 
