@@ -85,22 +85,34 @@ typedef enum{
 #import "ContactPickerViewController.h"
 #import "FriendRequestsViewController.h"
 #import "ChatListViewController.h"
+#import "SharedVideoCell.h"
+#import "CommentComposeViewController.h"
+#import "CommunityGalleryViewController.h"
+#import "FriendRequestManager.h"
+#import "GameRequestViewController.h"
+#import "NotificationsViewController.h"
 
-@interface HomeViewController ()<SWRevealViewControllerDelegate,UITabBarControllerDelegate,RadialMenuDelegate,CreateGamePopUpDelegate>{
+@interface HomeViewController ()<SWRevealViewControllerDelegate,UITabBarControllerDelegate,RadialMenuDelegate,CreateGamePopUpDelegate,EMEmojiableBtnDelegate,CommentPopUpDelegate,CommunityGalleryPopUpDelegate>{
     
+    IBOutlet UIView* vwPagination;
     IBOutlet UIView *vwOverLay;
     IBOutlet UIImageView *imgNotifn;
     IBOutlet UIButton* btnSlideMenu;
     IBOutlet UITableView* tableView;
     IBOutlet UIButton *btnCreateGame;
-    NSMutableArray *arrPeople;
-    NSArray *arrRecentGame;
-    NSMutableArray *arrGameRequests;
+    NSMutableArray *arrCommunity;
     UIRefreshControl *refreshController;
     NSInteger bgImgHeight;
-    NSDictionary *userInfo;
     NSString *strAPIErrorMsg;
     CreateGameViewController *createGame;
+    
+    NSMutableArray *arrDataSource;
+    BOOL isDataAvailable;
+    BOOL isPageRefresing;
+    NSInteger totalPages;
+    NSInteger currentPage;
+    CommentComposeViewController *comments;
+    CommunityGalleryViewController *galleryView;
   
 }
 
@@ -114,7 +126,7 @@ typedef enum{
     [super viewDidLoad];
     [self setUpInitials];
     [self customSetup];
-    [self loadDashBoard];
+    [self loadDashBoardWithPageNumber:currentPage isPagination:NO];
     
 
 }
@@ -133,18 +145,19 @@ typedef enum{
 
 -(void)setUpInitials{
     
-    [tableView setContentInset:UIEdgeInsetsMake(0,0,60,0)];
+    arrDataSource = [NSMutableArray new];
+    currentPage = 1;
     tableView.hidden = true;
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 500;
+    tableView.estimatedRowHeight = 700;
     refreshController = [[UIRefreshControl alloc] init];
     [refreshController addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
     [tableView addSubview:refreshController];
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate enablePushNotification];
     float width = 720;
-    float height = 480;
+    float height = 256;
     float ratio = width / height;
     bgImgHeight = (self.view.frame.size.width) / ratio;
    
@@ -178,23 +191,30 @@ typedef enum{
 
 -(void)handleRefresh{
     
-    [self loadDashBoard];
+    [arrDataSource removeAllObjects];
+    currentPage = 1;
+    [self loadDashBoardWithPageNumber:currentPage isPagination:NO];
 }
--(void)loadDashBoard{
+-(void)loadDashBoardWithPageNumber:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
     
     [Utility hideLoadingScreenFromView:self.view];
-    [Utility showLoadingScreenOnView:self.view withTitle:@"Loading"];
-    [APIMapper getDashboardOnsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if (!isPagination) [Utility showLoadingScreenOnView:self.view withTitle:@"Loading"];
+    
+    [APIMapper getAllSharedVideosWithPageNumber:pageNumber OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        isPageRefresing = false;
         tableView.hidden = false;
-        if ([responseObject objectForKey:@"data"]) userInfo = [responseObject objectForKey:@"data"];
         [Utility hideLoadingScreenFromView:self.view];
         [self parseResponds:responseObject];
         [refreshController endRefreshing];
+        [UIView animateWithDuration:1.0 animations:^(void) {
+            vwPagination.alpha = 0;
+        }];
+
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
-        userInfo = nil;
+        isPageRefresing = false;
         if (task.responseData)
             [self displayErrorMessgeWithDetails:task.responseData];
         else
@@ -203,231 +223,225 @@ typedef enum{
         [Utility hideLoadingScreenFromView:self.view];
         [refreshController endRefreshing];
         [tableView reloadData];
+        [UIView animateWithDuration:1.0 animations:^(void) {
+            vwPagination.alpha = 0;
+        }];
+        
     }];
 }
 
 -(void)parseResponds:(NSDictionary*)responds{
     
-    if ([[responds objectForKey:@"data"] objectForKey:@"people"]) {
-        arrPeople = [NSMutableArray arrayWithArray:[[responds objectForKey:@"data"] objectForKey:@"people"]];
-    }
-    if ([[responds objectForKey:@"data"] objectForKey:@"people"]) {
-        arrRecentGame = [[responds objectForKey:@"data"] objectForKey:@"recent"];
-    }
-    arrRecentGame = nil;
-    if ([[responds objectForKey:@"data"] objectForKey:@"game_request"]) {
-        arrGameRequests = [NSMutableArray arrayWithArray:[[responds objectForKey:@"data"] objectForKey:@"game_request"]];
-    }
-    
+    isDataAvailable = false;
+    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"community"]))
+        [arrDataSource addObjectsFromArray:[[responds objectForKey:@"data"] objectForKey:@"community"]];
+    if (arrDataSource.count > 0) isDataAvailable = true;
+    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
+        totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
+    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
+        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
     [tableView reloadData];
+    
+    
 }
+
 
 #pragma mark - UITableViewDataSource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)_tableView {
     
-    if (userInfo) {
-        return 3;
+    if (!isDataAvailable) {
+        return 1;
     }
-    return 1;
+    return 2;
     
 }
 
 
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (!userInfo) {
-        return 1;
-    }
     NSInteger rows = 0;
-    switch (section) {
-        case eSectionUserInfo:
-            rows = 0;
-            break;
-        case eSectionPlayReq:
-            rows = arrGameRequests.count;
-            break;
-        case eSectionPeople:
-            rows = arrPeople.count;
-            break;
-            
-        default:
-            break;
+    if (!isDataAvailable) {
+        rows = 1;
     }
+    if (section == 1) {
+        rows = arrDataSource.count;
+    }
+    
     return rows;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    if (!userInfo) {
-        UITableViewCell *cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strAPIErrorMsg];
+    if (!isDataAvailable) {
+        cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strAPIErrorMsg];
         return cell;
     }
     
-    if (indexPath.section == eSectionPeople) {
+    if (indexPath.row < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[indexPath.row];
+        NSString *msg;
+        NSString *CellIdentifier = @"SharedVideoCell";
+        if (NULL_TO_NIL( [details objectForKey:@"share_msg"]))msg = [details objectForKey:@"share_msg"];
+        if (!msg.length) CellIdentifier = @"SharedVideoCellWithNoText";
+        SharedVideoCell *cell = (SharedVideoCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
-        static NSString *CellIdentifier = @"PlayerListTableViewCell";
-        PlayerListTableViewCell *cell = (PlayerListTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.btnComment.tag = indexPath.row;
+        cell.btnVideo.tag = indexPath.row;
+        cell.btnDelete.tag = indexPath.row;
+        cell.btnDelete.hidden = true;
+        cell.btnProfile.tag = indexPath.row;
+        cell.btnShare.tag = indexPath.row;
+        cell.btnMoreGallery.tag = indexPath.row;
+        cell.btnVideo.hidden = true;
+        [cell.indicator stopAnimating];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (indexPath.row < arrPeople.count) {
+       
+        cell.lblName.text = [details objectForKey:@"name"];
+        cell.lblLoc.text = @"";
+        cell.lblFriends.text = @"";
+        
+        if (NULL_TO_NIL([details objectForKey:@"location"]) ){
+            NSMutableAttributedString *myString = [NSMutableAttributedString new];
+            NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+            UIImage *icon = [UIImage imageNamed:@"Location_Thin"];
+            attachment.image = icon;
+            attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblLoc.font.descender + 2), icon.size.width, icon.size.height);
+            NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+            [myString appendAttributedString:attachmentString];
+            NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[details objectForKey:@"location"]];
+            [myString appendAttributedString:myText];
+            cell.lblLoc.attributedText = myString;
             
-            cell.btnAddFrnd.tag = indexPath.row;
-            cell.btnCancel.tag = indexPath.row;
-            cell.btnAcept.tag = indexPath.row;
+        }
+        
+        if (NULL_TO_NIL([details objectForKey:@"tagged_users"]) ){
             
-            cell.btnCancelReq.tag = indexPath.row;
-            cell.btnReject.tag = indexPath.row;
-            
-            cell.contrsintForCancelReq.priority = 998;
-            cell.contrsintForCreateReq.priority = 998;
-            cell.contrsintForConfirmation.priority = 998;
-            cell.contrsintForEnd.priority = 998;
-            cell.vwCancelReq.hidden = true;
-            cell.vwCreatereq.hidden = true;
-            cell.vwConfirmation.hidden = true;
-            NSDictionary *people = arrPeople[indexPath.row];
-            cell.lblName.text = [people objectForKey:@"name"];
-            cell.lblLocation.text = [people objectForKey:@"location"];
-            [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[people objectForKey:@"profileurl"]]
-                            placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                       
-                                   }];
-            
-            NSInteger reqType = [[people objectForKey:@"friend_status"] integerValue];
-            switch (reqType) {
-                case eTypeCreateReq:
-                    [self configureCreateReqWithCell:cell];
-                    break;
-                case eTypeRequested:
-                    [self configureRequestedCell:cell];
-                    break;
-                case eTypeAccept:
-                    [self configureConfirmCell:cell];
-                    break;
-                case eTypeFriends:
-                    [self configureConfirmedCell:cell];
-                    break;
-                    
-                default:
-                    break;
+            NSString *conatcts = [details objectForKey:@"tagged_users"];
+            if (conatcts.length) {
+                NSMutableAttributedString *myString = [NSMutableAttributedString new];
+                NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+                UIImage *icon = [UIImage imageNamed:@"Contact_Thin"];
+                attachment.image = icon;
+                attachment.bounds = CGRectMake(0, (-(icon.size.height / 2) -  cell.lblFriends.font.descender + 2), icon.size.width, icon.size.height);
+                NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+                [myString appendAttributedString:attachmentString];
+                NSAttributedString *myText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[details objectForKey:@"tagged_users"]]];
+                [myString appendAttributedString:myText];
+                cell.lblFriends.attributedText = myString;
             }
             
-            
-            
-            
         }
-        return cell;
-    }
-    if (indexPath.section == eSectionPlayReq) {
+        cell.trailingToChat.priority = 998;
+        cell.trailingToSuperView.priority = 999;
+        if ([[details objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]){
+            cell.btnDelete.hidden = false;
+            cell.trailingToChat.priority = 999;
+            cell.trailingToSuperView.priority = 998;
+        }
         
-        static NSString *CellIdentifier = @"PlayerReqListCell";
-        PlayerReqListCell *cell = (PlayerReqListCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (indexPath.row < arrGameRequests.count) {
-            [cell.indicator startAnimating];
-            [cell closeExpandedMenu];
-            NSDictionary *game = arrGameRequests[indexPath.row];
-            cell.btnPlayVideo.tag = indexPath.row;
-            cell.btnReply.tag = indexPath.row;
-            cell.btnAcceptInvite.tag = indexPath.row;
-            cell.btnRejectInvite.tag = indexPath.row;
-            cell.btnProfile.tag = indexPath.row;
-            cell.lblKey.text = [Utility getDateDescriptionForChat:[[game objectForKey:@"request_date"] doubleValue]] ;
-            cell.lblName.text = [game objectForKey:@"name"];
-            cell.lblLocation.text = [game objectForKey:@"location"];
-            [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"profileurl"]]
-                              placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
-                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                         
-                                     }];
-            [cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"imageurl"]]
-                            placeholderImage:[UIImage imageNamed:@"NoImage"]
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                       
-                                       [cell.indicator stopAnimating];
-                                   }];
+        [cell.lblCommenCount setText:[NSString stringWithFormat:@"%d Comments",[[details objectForKey:@"comment_total"] integerValue]]];
+        cell.lblTime.text = [Utility getDateDescriptionForChat:[[details objectForKey:@"shared_datetime"] doubleValue]];
+        
+        cell.lblDescription.text = @"";
+        
+        if (msg.length) {
+            cell.lblDescription.text = [details objectForKey:@"share_msg"];
+            cell.imageTopToProfile.priority = 998;
+            cell.imageTopToDescBottom.priority = 999;
+            cell.vwDescHolder.hidden = false;
+        }else{
+            cell.vwDescHolder.hidden = true;
+            cell.imageTopToProfile.priority = 999;
+            cell.imageTopToDescBottom.priority = 998;
         }
+        
+        cell.lblMediaCount.text = @"";
+        cell.imgMore.hidden = true;
+        if ([details objectForKey:@"media"]) {
+            NSArray *media = [details objectForKey:@"media"];
+            if (media.count > 1) {
+                cell.imgMore.hidden = false;
+                cell.lblMediaCount.text = [NSString stringWithFormat:@"%u+",media.count - 1];
+            }
+            
+        }
+        cell.topForImage.constant = 0;
+        cell.constraintForHeight.constant = 0;
+        cell.imgThumb.hidden = true;
+        if (NULL_TO_NIL([details objectForKey:@"display_image"])) {
+            cell.imgThumb.hidden = false;
+            cell.btnVideo.hidden = false;
+            cell.topForImage.constant = 10;
+            if ([[details objectForKey:@"display_type"] isEqualToString:@"image"]) {
+                cell.btnVideo.hidden = true;
+            }
+            [cell.indicator startAnimating];
+            float width = [[details objectForKey:@"image_width"] integerValue];
+            float height = [[details objectForKey:@"image_height"] integerValue];;
+            float ratio = width / height;
+            float imageHeight = (self.view.frame.size.width) / ratio;
+            cell.constraintForHeight.constant = 200;
+            [cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
+                             placeholderImage:[UIImage imageNamed:@"NoImage"]
+                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                        [cell.indicator stopAnimating];
+                                    }];
+        }
+        [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"profileurl"]]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
+                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                   
+                               }];
+        
+        cell.btnEmoji.delegate = self;
+        cell.btnEmoji.dataset = @[
+                                  [[EMEmojiableOption alloc] initWithImage:@"Like_Blue" withName:@" Like"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Haha" withName:@" Haha"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Wow" withName:@" Wow"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Sad" withName:@" Sad"],
+                                  [[EMEmojiableOption alloc] initWithImage:@"Angry" withName:@" Angry"],
+                                  ];
+        [cell.btnDisplayEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
+        [cell.btnDisplayEmoji setTitle:[NSString stringWithFormat:@" %d",[[details objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
+        if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
+            EMEmojiableOption *option = [cell.btnEmoji.dataset objectAtIndex:[[details objectForKey:@"emoji_code"] integerValue]];
+            [cell.btnDisplayEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
+        }
+        cell.btnEmoji.vwBtnSuperView = self.view;
+        cell.btnEmoji.tag = indexPath.row;
+        [cell.btnEmoji privateInit];
+        
         return cell;
     }
     
-   return cell;
+    return cell;
+    
+    
     
 }
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.section == eSectionPeople) {
-        if (indexPath.row < arrPeople.count) {
-            NSDictionary *user = arrPeople[indexPath.row];
-                [self showProfilePageWithID:[user objectForKey:@"user_id"]];
-        }
-    }
 }
 
 - (nullable UIView *)tableView:(UITableView *)_tableView viewForHeaderInSection:(NSInteger)section{
     
-    if (!userInfo) {
-        return nil;
-    }
-    if (section == eSectionUserInfo) {
+   
+    if (section == 0) {
+        
         NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"TableHeader" owner:self options:nil];
         TableHeader *header = [viewArray objectAtIndex:0];
         header.delegate = self;
-        header.lblName.text = [userInfo objectForKey:@"name"];
-        header.lblRegDate.text = [NSString stringWithFormat:@"Member since %@",[self getDayFromSeconds:[[userInfo objectForKey:@"reg_date"] doubleValue]]];
+        header.lblName.text = [[User sharedManager] name];
+        header.lblRegDate.text = [NSString stringWithFormat:@"Member since %@",[[User sharedManager] regDate]];
         header.imgHeight.constant = bgImgHeight;
-        [header.imgUser sd_setImageWithURL:[NSURL URLWithString:[userInfo objectForKey:@"profileurl"]]
+        [header.imgUser sd_setImageWithURL:[NSURL URLWithString:[User sharedManager].profileurl]
                         placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                    
                                }];
-        header.vwRecentRight.hidden = false;
-        header.vwRecentLeft.hidden = false;
-        header.vwRecentItems.hidden = (arrRecentGame <= 0) ? true : false;
-        header.recentWidth.constant = arrRecentGame.count == 1 ? 110 : 240;
-        header.lblRecentTitle.hidden = (arrRecentGame <= 0) ? true : false;
-        header.vwRecentRight.hidden = (arrRecentGame.count == 1) ? true : false;
-        
-        for (int i = 0 ; i < arrRecentGame.count ; i ++) {
-            NSDictionary *details = arrRecentGame[i];
-            if (i == 0) {
-                [header.imgPrviewLeft sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"imageurl"]]
-                                        placeholderImage:[UIImage imageNamed:@"NoImage"]
-                                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                                   
-                                               }];
-                header.lblPrevwTitlelft.text = [details objectForKey:@"gameId"];
-            }else{
-                [header.imgPrviewRight sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"imageurl"]]
-                                        placeholderImage:[UIImage imageNamed:@"NoImage"]
-                                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                                   
-                                               }];
-                header.lblPrevwTitleRight.text = [details objectForKey:@"gameId"];
-            }
-        }
-        
-        
-        
-
-        return header;
-    }
-    if (section == eSectionPlayReq) {
-        if (arrGameRequests.count <= 0) {
-            return nil;
-        }
-        NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"ReqListHeader" owner:self options:nil];
-        ReqListHeader *header = [viewArray objectAtIndex:0];
-        return header;
-    }
-    if (section == eSectionPeople) {
-        if (arrPeople.count <= 0) {
-            return nil;
-        }
-        NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"PeopleListHeader" owner:self options:nil];
-        PeopleListHeader *header = [viewArray objectAtIndex:0];
         return header;
     }
     return nil;
@@ -441,26 +455,8 @@ typedef enum{
 
 - (CGFloat)tableView:(UITableView *)_tableView heightForHeaderInSection:(NSInteger)section{
     
-    if (!userInfo) {
-        return 0;
-    }
-    if (section == eSectionUserInfo) {
-        if (arrRecentGame.count <= 0) {
-            return bgImgHeight;
-        }
-        return bgImgHeight + 110;
-    }
-    if (section == eSectionPlayReq) {
-        if (arrGameRequests.count <= 0) {
-            return 0;
-        }
-        return 40;
-    }
-    if (section == eSectionPeople) {
-        if (arrPeople.count <= 0) {
-            return 0;
-        }
-        return 40;
+    if (section == 0) {
+        return bgImgHeight;
     }
     return 0;
     
@@ -469,6 +465,32 @@ typedef enum{
     
     return 0.01;
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.row == arrDataSource.count - 1) {
+        [self loadPagination];
+    }
+}
+
+-(void)loadPagination{
+    
+    if (isDataAvailable) {
+        if(isPageRefresing == NO){ // no need to worry about threads because this is always on main thread.
+            
+            NSInteger nextPage = currentPage ;
+            nextPage += 1;
+            if (nextPage  <= totalPages) {
+                isPageRefresing = YES;
+                [UIView animateWithDuration:1.0 animations:^(void) {
+                    vwPagination.alpha = 1;
+                }];
+                [self loadDashBoardWithPageNumber:nextPage isPagination:YES];
+            }
+        }
+    }
+}
+
 
 
 #pragma mark - Slider View Setup and Delegates Methods
@@ -522,7 +544,7 @@ typedef enum{
 
 }
 
--(void)listAllGames{
+-(IBAction)listAllGames{
     
      ListGamesViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForListGames];
     [[self navigationController]pushViewController:games animated:YES];
@@ -585,8 +607,23 @@ typedef enum{
 
 -(IBAction)showContactPicker{
     
+   
     ContactPickerViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForContactPicker];
     [[self navigationController]pushViewController:games animated:YES];
+    
+    
+}
+
+-(IBAction)showFriendManagerView{
+    
+    FriendRequestManager *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequestsManager];
+    [[self navigationController]pushViewController:games animated:YES];
+    
+    /*
+     ContactPickerViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForContactPicker];
+     [[self navigationController]pushViewController:games animated:YES];*/
+    
+    
 }
 
 
@@ -667,28 +704,112 @@ typedef enum{
 
 #pragma mark - Chat manage
 
--(void)refreshGameZoneWithInfo:(NSDictionary*)info{
+-(void)refreshGameZoneWithInfo:(NSDictionary*)info isBBg:(BOOL)isBG;{
     
-    BOOL isGameOpen = false;
-    for (UIViewController*vc in [self.navigationController viewControllers]) {
-        if ([vc isKindOfClass: [GameZoneViewController class]]){
-            isGameOpen = true;
-            GameZoneViewController *gameZone = (GameZoneViewController*)vc;
-            if ([gameZone.strGameID isEqualToString:[[info objectForKey:@"data"] objectForKey:@"id"]]) {
-                [gameZone getGameZoneDetails];
-                [gameZone showToastWithMessage:[[info objectForKey:@"aps"] objectForKey:@"alert"]];
+    GameZoneViewController *gameZone;
+    NSMutableArray *viewcontrollers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    for (UIViewController *vc in viewcontrollers) {
+        if ([vc isKindOfClass:[GameZoneViewController class]]) {
+            gameZone = (GameZoneViewController*)vc;
+        }
+    }
+    if (isBG) {
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[GameZoneViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            GameZoneViewController *_gameZone = (GameZoneViewController*)[self.navigationController.viewControllers lastObject];
+            
+            if ([_gameZone.strGameID isEqualToString:[[info objectForKey:@"data"] objectForKey:@"game_id"]]) {
+                [_gameZone getGameZoneDetails];
+                [_gameZone showToastWithMessage:[[info objectForKey:@"aps"] objectForKey:@"alert"]];
+            }
+            else{
+                
+                /*! If chat notification comes with a defefrent user !*/
+                
+                if ([[info objectForKey:@"data"] objectForKey:@"game_id"]) {
+                    if (gameZone) {
+                        [viewcontrollers removeObjectIdenticalTo:gameZone];
+                        self.navigationController.viewControllers = viewcontrollers;
+                    }
+                    [self goToGameZoneWithGameID:[[info objectForKey:@"data"] objectForKey:@"game_id"]];
+                }
+                
             }
             
-            break;
+        }else
+        {
+            /*! All other pages !*/
+            
+            if (gameZone) {
+                [viewcontrollers removeObjectIdenticalTo:gameZone];
+                self.navigationController.viewControllers = viewcontrollers;
+            }
+            
+            if ([[info objectForKey:@"data"] objectForKey:@"game_id"]) {
+                [self goToGameZoneWithGameID:[[info objectForKey:@"data"] objectForKey:@"game_id"]];
+            }
+            
+            
+        }
+        
+    }else{
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[GameZoneViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            GameZoneViewController *_gameZone = (GameZoneViewController*)[self.navigationController.viewControllers lastObject];
+            if ([_gameZone.strGameID isEqualToString:[[info objectForKey:@"data"] objectForKey:@"game_id"]]) {
+                [_gameZone getGameZoneDetails];
+                [_gameZone showToastWithMessage:[[info objectForKey:@"aps"] objectForKey:@"alert"]];
+            }else{
+                
+                /*! If chat notification comes with a defefrent user !*/
+                
+                
+                NSString *appName = PROJECT_NAME;
+                NSString *message = [NSString stringWithFormat:@"%@",[[info objectForKey:@"aps"] objectForKey:@"alert"]];
+                [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+                [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        if (gameZone) {
+                            [viewcontrollers removeObjectIdenticalTo:gameZone];
+                            self.navigationController.viewControllers = viewcontrollers;
+                        }
+                        [self goToGameZoneWithGameID:[[info objectForKey:@"data"] objectForKey:@"game_id"]];
+                    });
+                    
+                }];
+                
+            }
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            NSString *appName = PROJECT_NAME;
+            NSString *message = [NSString stringWithFormat:@"%@",[[info objectForKey:@"aps"] objectForKey:@"alert"]];
+            [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+            [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    
+                    if (gameZone) {
+                        [viewcontrollers removeObjectIdenticalTo:gameZone];
+                        self.navigationController.viewControllers = viewcontrollers;
+                    }
+                    
+                    [self goToGameZoneWithGameID:[[info objectForKey:@"data"] objectForKey:@"game_id"]];
+                });
+                
+            }];
+            
+            
+            
         }
     }
-    if (!isGameOpen) {
-        if ([[info objectForKey:@"data"] objectForKey:@"game_id"]) {
-             [self goToGameZoneWithGameID:[[info objectForKey:@"data"] objectForKey:@"game_id"]];
-        }
-       
-    }
-   
 }
 
 -(void)manageGroupChatInfoFromForeGround:(NSDictionary*)_userInfo isBBg:(BOOL)isBG{
@@ -980,21 +1101,35 @@ typedef enum{
 
 -(void)manageFriendReqNotificatinWith:(NSDictionary*)_userInfo isBBg:(BOOL)isBG{
     
+    
+    FriendRequestManager *gameRequests;
+    NSMutableArray *viewcontrollers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    for (UIViewController *vc in viewcontrollers) {
+        if ([vc isKindOfClass:[FriendRequestManager class]]) {
+            gameRequests = (FriendRequestManager*)vc;
+        }
+    }
+    
     UIViewController *vc = [self.navigationController.viewControllers lastObject];
     NSString *message = [NSString stringWithFormat:@"%@",[[_userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
     [ALToastView toastInView:vc.view withText:message];
     
     if (isBG) {
         
-        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[FriendRequestsViewController class]]) {
-            FriendRequestsViewController *friendList = (FriendRequestsViewController*) [self.navigationController.viewControllers lastObject];
-            [friendList refreshPage];
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[FriendRequestManager class]]) {
+            FriendRequestManager *friendList = (FriendRequestManager*) [self.navigationController.viewControllers lastObject];
+            [friendList enableFriendRequestTabFromNotifications];
             
         }else
         {
+            if (gameRequests) {
+                [viewcontrollers removeObjectIdenticalTo:gameRequests];
+                self.navigationController.viewControllers = viewcontrollers;
+            }
+            
             /*! All other pages !*/
-            FriendRequestsViewController *friendList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequest];
-            [self.navigationController pushViewController:friendList animated:YES];
+            FriendRequestManager *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequestsManager];
+            [self.navigationController pushViewController:games animated:YES];
             
             
         }
@@ -1003,8 +1138,8 @@ typedef enum{
         
         if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[FriendRequestsViewController class]]) {
             
-            FriendRequestsViewController *friendList = (FriendRequestsViewController*) [self.navigationController.viewControllers lastObject];
-            [friendList refreshPage];
+            FriendRequestManager *friendList = (FriendRequestManager*) [self.navigationController.viewControllers lastObject];
+            [friendList enableFriendRequestTabFromNotifications];
             
         }else
         {
@@ -1017,8 +1152,14 @@ typedef enum{
                 
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
                     
-                    FriendRequestsViewController *friendList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequest];
-                    [self.navigationController pushViewController:friendList animated:YES];
+                    if (gameRequests) {
+                        [viewcontrollers removeObjectIdenticalTo:gameRequests];
+                        self.navigationController.viewControllers = viewcontrollers;
+                    }
+                    
+                    /*! All other pages !*/
+                    FriendRequestManager *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequestsManager];
+                    [self.navigationController pushViewController:games animated:YES];
                 });
                 
             }];
@@ -1028,122 +1169,242 @@ typedef enum{
 
 }
 
-#pragma mark - Configure Cell
+-(void)manageGameRequestWith:(NSDictionary*)_userInfo isBBg:(BOOL)isBG{
+    
+    GameRequestViewController *gameRequests;
+    NSMutableArray *viewcontrollers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    for (UIViewController *vc in viewcontrollers) {
+        if ([vc isKindOfClass:[GameRequestViewController class]]) {
+            gameRequests = (GameRequestViewController*)vc;
+        }
+    }
+    
+    if (isBG) {
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[GameRequestViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            GameRequestViewController *gameRequset = (GameRequestViewController*)[self.navigationController.viewControllers lastObject];
+            [gameRequset handleRefresh];
+                        
+        }else
+        {
+            /*! All other pages !*/
+            
+            if (gameRequests) {
+                [viewcontrollers removeObjectIdenticalTo:gameRequests];
+                self.navigationController.viewControllers = viewcontrollers;
+            }
+            GameRequestViewController *gameRequset =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForGameRequest];
+            [self.navigationController pushViewController:gameRequset animated:YES];
+            
+            
+        }
+        
+    }else{
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[GameRequestViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            GameRequestViewController *gameRequset = (GameRequestViewController*)[self.navigationController.viewControllers lastObject];
+            [gameRequset handleRefresh];
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            NSString *appName = PROJECT_NAME;
+            NSString *message = [NSString stringWithFormat:@"%@",[[_userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+            [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+            [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    
+                    if (gameRequests) {
+                        [viewcontrollers removeObjectIdenticalTo:gameRequests];
+                        self.navigationController.viewControllers = viewcontrollers;
+                    }
+                    
+                    GameRequestViewController *gameRequset =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForGameRequest];
+                    [self.navigationController pushViewController:gameRequset animated:YES];
+                });
+                
+            }];
+            
+            
+            
+        }
+    }
+    
+    
+}
 
--(void)configureCreateReqWithCell:(PlayerListTableViewCell*)cell{
+-(void)manageGameReplyByAdminWith:(NSDictionary*)_userInfo isBBg:(BOOL)isBG{
     
-    cell.contrsintForCreateReq.priority = 999;
-    cell.vwCreatereq.hidden = false;
+    NotificationsViewController *gameRequests;
+    NSMutableArray *viewcontrollers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    for (UIViewController *vc in viewcontrollers) {
+        if ([vc isKindOfClass:[NotificationsViewController class]]) {
+            gameRequests = (NotificationsViewController*)vc;
+        }
+    }
     
-}
--(void)configureRequestedCell:(PlayerListTableViewCell*)cell{
+    if (isBG) {
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[NotificationsViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            NotificationsViewController *gameRequset = (NotificationsViewController*)[self.navigationController.viewControllers lastObject];
+            [gameRequset enableGameRequestTabByNotification];
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            if (gameRequests) {
+                [viewcontrollers removeObjectIdenticalTo:gameRequests];
+                self.navigationController.viewControllers = viewcontrollers;
+            }
+            
+            NotificationsViewController *gameRequset =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
+            gameRequset.menuType = eTypeGameReq;
+            [self.navigationController pushViewController:gameRequset animated:YES];
+            
+        }
+        
+    }else{
+        
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[NotificationsViewController class]]) {
+            
+            /*! If the user standing in the  chat page !*/
+            NotificationsViewController *gameRequset = (NotificationsViewController*)[self.navigationController.viewControllers lastObject];
+            [gameRequset enableGameRequestTabByNotification];
+            
+        }else
+        {
+            /*! All other pages !*/
+            
+            NSString *appName = PROJECT_NAME;
+            NSString *message = [NSString stringWithFormat:@"%@",[[_userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+            [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+            [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    
+                    if (gameRequests) {
+                        [viewcontrollers removeObjectIdenticalTo:gameRequests];
+                        self.navigationController.viewControllers = viewcontrollers;
+                    }
+                    
+                    NotificationsViewController *gameRequset =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
+                    gameRequset.menuType = eTypeGameReq;
+                    [self.navigationController pushViewController:gameRequset animated:YES];
+                    
+                });
+                
+            }];
+            
+            
+            
+        }
+    }
     
-    cell.contrsintForCancelReq.priority = 999;
-    cell.vwCancelReq.hidden = false;
-}
--(void)configureConfirmCell:(PlayerListTableViewCell*)cell{
     
-    cell.contrsintForConfirmation.priority = 999;
-    cell.vwConfirmation.hidden = false;
-}
--(void)configureConfirmedCell:(PlayerListTableViewCell*)cell{
-    
-    cell.contrsintForEnd.priority = 999;
-    
-}
-
-#pragma mark - Radial Menu Methods
-
--(void)radialMenuClickedWithIndex:(NSInteger)index{
-    
-    [self showSelectedCategoryDetailsFromMenuList:index];
 }
 
 
 #pragma mark - IBActions
 
--(IBAction)replyToAGameReq:(UIButton*)sender{
+-(IBAction)showAllGameRequestsPage{
     
-    if (sender.tag < arrGameRequests.count) {
-        NSDictionary *details = arrGameRequests[sender.tag];
+    GameRequestViewController *friendList =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForGameRequest];
+    [self.navigationController pushViewController:friendList animated:YES];
+}
+
+
+-(IBAction)deleteSharedVideo:(UIButton*)sender{
+    
+    if (sender.tag < arrDataSource.count) {
+        
+        NSDictionary *details = arrDataSource[sender.tag];
+
         UIAlertController* alertController = [UIAlertController
-                                              alertControllerWithTitle:@"GAME REQUEST"
-                                              message:@"Join game"
+                                              alertControllerWithTitle:@"DELETE"
+                                              message:@"Really want to delete shared post?"
                                               preferredStyle:UIAlertControllerStyleActionSheet];
         
-        UIAlertAction* item1 = [UIAlertAction actionWithTitle:@"Join now"
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) {
-                                                         [alertController dismissViewControllerAnimated:YES completion:nil];
-                                                         [self replyToAGameReqWithStatus:@"Join now" andReqID:[details objectForKey:@"request_id"] atIndex:sender.tag];
-                                                     }];
-        UIAlertAction* item2 = [UIAlertAction actionWithTitle:@"I can play in 15 min"
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) {
-                                                        [self replyToAGameReqWithStatus:@"I can play in 15 min" andReqID:[details objectForKey:@"request_id"] atIndex:sender.tag];
-                                                        [alertController dismissViewControllerAnimated:YES completion:nil];
-                                                     }];
-        UIAlertAction* item3 = [UIAlertAction actionWithTitle:@"I can play in 30 min"
+        UIAlertAction* item1 = [UIAlertAction actionWithTitle:@"Delete"
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action) {
-                                                        [self replyToAGameReqWithStatus:@"I can play in 30 min" andReqID:[details objectForKey:@"request_id"] atIndex:sender.tag];
-                                                        [alertController dismissViewControllerAnimated:YES completion:nil];
-                                                      }];
-        UIAlertAction* item4 = [UIAlertAction actionWithTitle:@"Sorry,I'll let you know when i can play later"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action) {
-                                                          [self replyToAGameReqWithStatus:@"Sorry,I'll let you know when i can play later" andReqID:[details objectForKey:@"request_id"] atIndex:sender.tag];
                                                           [alertController dismissViewControllerAnimated:YES completion:nil];
+                                                          if ([details objectForKey:@"community_id"]) {
+                                                              [Utility showLoadingScreenOnView:self.view withTitle:@"Deleting.."];
+                                                              [APIMapper deleteSharedVideoWithVideoID:[details objectForKey:@"community_id"] OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                  
+                                                                  [arrDataSource removeObjectAtIndex:sender.tag];
+                                                                  [tableView reloadData];
+                                                                  [Utility hideLoadingScreenFromView:self.view];
+                                                                  
+                                                              } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                                                                  
+                                                                  [Utility hideLoadingScreenFromView:self.view];
+                                                              }];
+                                                          }
                                                       }];
+        
         
         UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:nil];
         }];
         
         [alertController addAction:item1];
-        [alertController addAction:item2];
-        [alertController addAction:item3];
-        [alertController addAction:item4];
         [alertController addAction:cancelAction];
         [self presentViewController:alertController animated:YES completion:nil];
-    
+        
+        
+        
     }
+    
 }
 
-
--(IBAction)playRequestedVideos:(UIButton*)sender{
+-(IBAction)shareVideoToPublic:(UIButton*)sender{
     
-    NSURL *videoURL;
-    if (sender.tag < arrGameRequests.count) {
-        NSDictionary *details = arrGameRequests[sender.tag];
-        videoURL = [NSURL URLWithString:[details objectForKey:@"videourl"]];
-        if (videoURL) {
-            AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-            playerViewController.player = [AVPlayer playerWithURL:videoURL];
-            [playerViewController.player play];
-            [self presentViewController:playerViewController animated:YES completion:nil];
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(videoDidFinish:)
-                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-                                                       object:[playerViewController.player currentItem]];
+    if (sender.tag < arrDataSource.count) {
+        
+        NSMutableArray *arrShare = [NSMutableArray new];
+        NSDictionary *details = arrDataSource[sender.tag];
+        NSString * title;
+        if ([details objectForKey:@"share_msg"]) {
+            title = [details objectForKey:@"share_msg"];
         }
+        title = [NSString stringWithFormat:@"%@\nSent from HorseApp",title];
+        [arrShare addObject:title];
+        UIActivityViewController* activityViewController =[[UIActivityViewController alloc] initWithActivityItems:arrShare applicationActivities:nil];
+        activityViewController.excludedActivityTypes = @[UIActivityTypeAirDrop];
+        [self presentViewController:activityViewController animated:YES completion:^{}];
         
+    }
+    
+    
+}
+
+-(IBAction)playVideo:(UIButton*)sender{
+    
+    if (sender.tag < arrDataSource.count) {
+        
+        NSDictionary *details = arrDataSource[sender.tag];
+        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        playerViewController.player = [AVPlayer playerWithURL:[NSURL URLWithString:[details objectForKey:@"media_url"]]];
+        [playerViewController.player play];
+        [self presentViewController:playerViewController animated:YES completion:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(videoDidFinish:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:[playerViewController.player currentItem]];
     }
     
 }
 
-
--(IBAction)playRecentplyAddedVideo:(UIButton*)sender{
-
-    if (sender.tag < arrRecentGame.count) {
-        PlayedGameDetailPageViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForPlayedGameDetail];
-        NSDictionary *details = arrRecentGame[sender.tag];
-        games.strGameID = [details objectForKey:@"id"];
-        
-        [[self navigationController]pushViewController:games animated:YES];
-    }
-    
-}
 
 - (void)videoDidFinish:(id)notification
 {
@@ -1155,107 +1416,201 @@ typedef enum{
 }
 
 
-
--(IBAction)addFriend:(UIButton*)sender{
+-(IBAction)likeVideo:(EMEmojiableBtn *)sender{
     
-    if (sender.tag < arrPeople.count) {
-        NSDictionary *people = arrPeople[sender.tag];
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Requesting.."];
-        [APIMapper addFriendWithFriendID:[people objectForKey:@"user_id"] OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if (sender.tag < arrDataSource.count) {
+        
+        NSDictionary *details = arrDataSource[sender.tag];
+        NSInteger value = 0;
+        if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
+            value = -1;
+        }
+        
+        [self updateDetailsWithEmojiIndex:value position:sender.tag];
+        [APIMapper likeVideoWithVideoID:[details objectForKey:@"community_id"] type:@"share" emojiCode:value OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            [Utility hideLoadingScreenFromView:self.view];
-            if ([[responseObject objectForKey:@"data"] objectForKey:@"request_id"]) {
+        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+            
+        }];
+    }
+    
+}
+
+#pragma mark - Emoji Methods
+
+
+
+- (void)EMEmojiableBtn:( EMEmojiableBtn* _Nonnull)button selectedOption:(NSUInteger)index{
+    
+       if (button.tag < arrDataSource.count) {
+        
+        [self updateDetailsWithEmojiIndex:index position:button.tag];
+        NSDictionary *details = arrDataSource[button.tag];
+        [APIMapper likeVideoWithVideoID:[details objectForKey:@"community_id"] type:@"share" emojiCode:index OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+            
+        }];
+    }
+    
+    
+}
+
+- (void)EMEmojiableBtnCanceledAction:(EMEmojiableBtn* _Nonnull)button{
+    
+}
+- (void)EMEmojiableBtnSingleTap:(EMEmojiableBtn* _Nonnull)button{
+    
+}
+
+
+-(void)updateDetailsWithEmojiIndex:(NSInteger)emojiCode position:(NSInteger)position{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //UI Updating code here.
+        if (position < arrDataSource.count) {
+            NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDataSource[position]];
+            NSInteger oldCode = [[details objectForKey:@"emoji_code"] integerValue];
+            [details setObject:[NSNumber numberWithInteger:emojiCode] forKey:@"emoji_code"];
+            NSInteger count = [[details objectForKey:@"like_total"] integerValue];
+            if (oldCode >= 0 && emojiCode >= 0) {
                 
-                NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:people];
-                [dictUpdated setObject:[[responseObject objectForKey:@"data"] objectForKey:@"request_id"] forKey:@"request_id"];
-                [dictUpdated setObject:[NSNumber numberWithInteger:1] forKey:@"friend_status"];
-                [arrPeople replaceObjectAtIndex:sender.tag withObject:dictUpdated];
-                [tableView reloadData];
+            }else if ((oldCode >= 0) && (emojiCode < 0)){
+                count -= 1;
+            }else if ((oldCode < 0) && (emojiCode >= 0)){
+                count += 1;
             }
-            
-        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-            
-        }];
-        
+            count = count < 0 ? 0 : count;
+            [details setObject:[NSNumber numberWithInteger:count] forKey:@"like_total"];
+            [arrDataSource replaceObjectAtIndex:position withObject:details];
+            [tableView reloadData];
+        }
+    });
+    
+    
+    
+}
+
+#pragma mark - Gallery PopUp Methods
+
+-(IBAction)showMoreGalleries:(UIButton*)sender{
+    
+    if (sender.tag < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[sender.tag];
+        if ([details objectForKey:@"media"]) {
+            NSArray *media = [details objectForKey:@"media"];
+            if (media.count > 0) {
+                galleryView =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCommunityGallery];
+                galleryView.gallery = media;
+                UIView *popup = galleryView.view;
+                [self.view addSubview:popup];
+                galleryView.delegate = self;
+                popup.translatesAutoresizingMaskIntoConstraints = NO;
+                [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+                [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+                popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+                [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    // animate it to the identity transform (100% scale)
+                    popup.transform = CGAffineTransformIdentity;
+                } completion:^(BOOL finished){
+                    // if you want to do something once the animation finishes, put it here
+                }];
+                
+            }
+        }
     }
     
 }
 
--(IBAction)cancelAlreadyGivenReq:(UIButton*)sender{
+
+-(void)closeGalleryPopUp;{
     
-    if (sender.tag < arrPeople.count) {
-        NSDictionary *people = arrPeople[sender.tag];
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Cancelling.."];
-        [APIMapper updateFriendRequestWithReqID:[people objectForKey:@"request_id"] status:0 OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-            NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:people];
-            [dictUpdated setObject:[NSNumber numberWithInteger:0] forKey:@"friend_status"];
-            [arrPeople replaceObjectAtIndex:sender.tag withObject:dictUpdated];
-            [tableView reloadData];
-            
-        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-        }];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        galleryView.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [galleryView.view removeFromSuperview];
+        galleryView = nil;
+    }];
+}
+
+
+#pragma mark - Comment PopUp Methods
+
+
+-(IBAction)showCommentsBy:(UIButton*)sender{
+    
+    if (!comments) {
         
+        if (sender.tag < arrDataSource.count) {
+            NSDictionary *details = arrDataSource[sender.tag];
+            comments =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForComments];
+            comments.strCommunityID = [details objectForKey:@"community_id"];
+            comments.objIndex = sender.tag;
+            UIView *popup = comments.view;
+            [self.view addSubview:popup];
+            comments.delegate = self;
+            popup.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                // animate it to the identity transform (100% scale)
+                popup.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished){
+                // if you want to do something once the animation finishes, put it here
+            }];
+            
+        }
+        
+        
+        
+    }
+    
+    [self.view endEditing:YES];
+    
+    
+    
+    
+}
+
+-(void)closePopUp;{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        comments.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [comments.view removeFromSuperview];
+        comments = nil;
+    }];
+}
+
+-(void)updateCommentCountByCount:(NSInteger)count atIndex:(NSInteger)index{
+    
+    if (index < arrDataSource.count) {
+        NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:arrDataSource[index]];
+        [details setObject:[NSNumber numberWithInteger:count] forKey:@"comment_total"];
+        [arrDataSource replaceObjectAtIndex:index withObject:details];
+        [tableView reloadData];
     }
 }
 
--(IBAction)acceptReq:(UIButton*)sender{
-    
-    if (sender.tag < arrPeople.count) {
-        NSDictionary *people = arrPeople[sender.tag];
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Accepting.."];
-        [APIMapper updateFriendRequestWithReqID:[people objectForKey:@"request_id"] status:1 OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-            NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:people];
-            [dictUpdated setObject:[NSNumber numberWithInteger:3] forKey:@"friend_status"];
-            [arrPeople replaceObjectAtIndex:sender.tag withObject:dictUpdated];
-            [tableView reloadData];
-            
-        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-        }];
-        
-    }
-    
-}
 
--(IBAction)rejectRequest:(UIButton*)sender{
-    
-    if (sender.tag < arrPeople.count) {
-        NSDictionary *people = arrPeople[sender.tag];
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Rejecting.."];
-        [APIMapper updateFriendRequestWithReqID:[people objectForKey:@"request_id"] status:0 OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-            NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:people];
-            [dictUpdated setObject:[NSNumber numberWithInteger:0] forKey:@"friend_status"];
-            [arrPeople replaceObjectAtIndex:sender.tag withObject:dictUpdated];
-            [tableView reloadData];
-            
-        } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-            
-            [Utility hideLoadingScreenFromView:self.view];
-        }];
-        
-    }
-    
-}
+
+
+
 
 #pragma mark - Create Game PopUp
 
--(IBAction)createGamePopUp{
+-(void)createGamePopUp{
     
+    // From header
     if (!createGame) {
         
         createGame =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCreateGame];
-         createGame.delegate = self;
+        createGame.delegate = self;
         UIView *popup = createGame.view;
         [self.view addSubview:popup];
         popup.translatesAutoresizingMaskIntoConstraints = NO;
@@ -1272,9 +1627,9 @@ typedef enum{
     }
     
     [self.view endEditing:YES];
-    
-    
 }
+
+
 
 -(void)closeCreateGamePopUp{
     
@@ -1289,58 +1644,6 @@ typedef enum{
 }
 
 
-#pragma mark - Generic Methods
-
--(void)replyToAGameReqWithStatus:(NSString*)statusMsg andReqID:(NSString*)reqId atIndex:(NSInteger)index{
-    
-    [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
-    
-    [APIMapper replyToGameRequestWithMessage:statusMsg requestID:reqId Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        [Utility hideLoadingScreenFromView:self.view];
-        [arrGameRequests removeObjectAtIndex:index];
-        [tableView reloadData];
-        
-    } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-        
-        [Utility hideLoadingScreenFromView:self.view];
-        NSString *title = @"ERROR";
-        NSString *errormsg = error.localizedDescription;
-        if (task.responseData) {
-            if ([task.response statusCode] == kLimitReached) {
-                title = @"LIMIT REACHED";
-                [arrGameRequests removeObjectAtIndex:index];
-                [tableView reloadData];
-            }
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:task.responseData
-                                                                 options:kNilOptions
-                                                                   error:&error];
-            if (NULL_TO_NIL([json objectForKey:@"text"])) errormsg = [json objectForKey:@"text"];
-            
-            
-        }
-        
-        UIAlertController * alert=   [UIAlertController
-                                      alertControllerWithTitle:title
-                                      message:errormsg
-                                      preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* ok = [UIAlertAction
-                             actionWithTitle:@"OK"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                                 
-                             }];
-        
-        
-        [alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-        
-    }];
-}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
@@ -1352,8 +1655,8 @@ typedef enum{
 }
 
 -(IBAction)showUserProfileWithIndex:(UIButton*)sender{
-    if (sender.tag < arrGameRequests.count) {
-        NSDictionary *user = arrGameRequests[sender.tag];
+    if (sender.tag < arrDataSource.count) {
+        NSDictionary *user = arrDataSource[sender.tag];
         ProfileViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GeneralStoryBoard Identifier:StoryBoardIdentifierForProfile];
         [[self navigationController]pushViewController:games animated:YES];
         games.strUserID = [user objectForKey:@"user_id"];

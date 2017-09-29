@@ -157,7 +157,7 @@
                                                   otherButtonTitles:nil];
             [alert show];
 
-        } ];
+        }];
     }
    
 }

@@ -34,7 +34,7 @@ typedef enum{
     IBOutlet UILabel* lblNameOne;
     IBOutlet UILabel* lblNameTwo;
     
-    NSMutableArray *arrDataSource;
+    NSDictionary *userInfo;
     BOOL isDataAvailable;
     BOOL isPageRefresing;
     NSInteger totalPages;
@@ -50,14 +50,12 @@ typedef enum{
     [super viewDidLoad];
     [self setUp];
     [self setUpHeader];
-   // [self getAllFriendRequetsWithPage:currentPage isPagination:NO];
+    [self getStatistics];
     // Do any additional setup after loading the view.
 }
 
 -(void)setUp{
     
-    isDataAvailable = true;
-    currentPage = 1;
     
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     vwBg.clipsToBounds = YES;
@@ -71,28 +69,19 @@ typedef enum{
     float imageHeight = (self.view.frame.size.width) / ratio;
     constraintForNavBg.constant = imageHeight;
     
-    arrDataSource = [NSMutableArray new];
 }
 
--(void)refreshPage{
-    
-    [arrDataSource removeAllObjects];
-    [self getAllFriendRequetsWithPage:currentPage isPagination:NO];
-    
-}
--(void)getAllFriendRequetsWithPage:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
-    
-    if (!isPagination) {
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
-    }
-    
-    [APIMapper getAllFriendRequestsWithpageNumber:pageNumber Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+-(void)getStatistics{
+   
+    [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
+    [APIMapper getStatisticsWithUserID:_userID OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         isPageRefresing = false;
-        [self showAllRequestsWithJSON:responseObject];
+        [self pasreResponds:responseObject];
         [Utility hideLoadingScreenFromView:self.view];
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+        
         if (task.responseData)
             [self displayErrorMessgeWithDetails:task.responseData];
         else
@@ -100,20 +89,38 @@ typedef enum{
         isPageRefresing = false;
         [Utility hideLoadingScreenFromView:self.view];
         [tableView reloadData];
+
     }];
+        
+    
     
 }
 
--(void)showAllRequestsWithJSON:(NSDictionary*)responds{
+-(void)pasreResponds:(NSDictionary*)responds{
     
     isDataAvailable = false;
     if (NULL_TO_NIL([responds objectForKey:@"data"]))
-        [arrDataSource addObjectsFromArray:[responds objectForKey:@"data"]];
-    if (arrDataSource.count > 0) isDataAvailable = true;
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
-//        totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
-//        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
+        userInfo =  [responds objectForKey:@"data"];
+    if (userInfo){
+        
+        isDataAvailable = true;
+        
+        lblNameOne.text = [[userInfo objectForKey:@"from"] objectForKey:@"name"];
+        lblNameTwo.text = [[userInfo objectForKey:@"to"] objectForKey:@"name"];
+        
+        [imgOne sd_setImageWithURL:[NSURL URLWithString:[[userInfo objectForKey:@"from"] objectForKey:@"profileurl"]]
+                        placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
+                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                   
+                               }];
+        [imgTwo sd_setImageWithURL:[NSURL URLWithString:[[userInfo objectForKey:@"to"] objectForKey:@"profileurl"]]
+                  placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
+                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                             
+                         }];
+
+    }
+    
     [tableView reloadData];
     
     
@@ -155,28 +162,43 @@ typedef enum{
         UITableViewCell *cell = [Utility getNoDataCustomCellWith:aTableView withTitle:strAPIErrorMsg];
         return cell;
     }
+    NSString *strValueOne;
+    NSString *strValueTwo;
     NSInteger index = indexPath.row;
     NSString *CellIdentifier = @"PlayedCell";
     switch (index) {
             
         case eCellPlayed:
             CellIdentifier = @"PlayedCell";
+            strValueOne = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"from"] objectForKey:@"played"] integerValue]];
+            strValueTwo = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"to"] objectForKey:@"played"] integerValue]];
             
             break;
         case eCellWon:
             CellIdentifier = @"WonCell";
+            strValueOne = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"from"] objectForKey:@"won"] integerValue]];
+            strValueTwo = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"to"] objectForKey:@"won"] integerValue]];
+            
             break;
             
         case eCellLost:
             CellIdentifier = @"LostCell";
+            strValueOne = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"from"] objectForKey:@"lost"] integerValue]];
+            strValueTwo = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"to"] objectForKey:@"lost"] integerValue]];
+            
             break;
             
         case eCellNoResult:
-            CellIdentifier = @"NoResultCell";
+            CellIdentifier = @"NoResultCell"; strValueOne = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"from"] objectForKey:@"noresult"] integerValue]];
+            strValueTwo = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"to"] objectForKey:@"noresult"] integerValue]];
+            
             break;
             
         case eCellPoint:
             CellIdentifier = @"PointCell";
+            strValueOne = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"from"] objectForKey:@"point"] integerValue]];
+            strValueTwo = [NSString stringWithFormat: @"%ld", [[[userInfo objectForKey:@"to"] objectForKey:@"point"] integerValue]];
+            
             break;
             
         default:
@@ -191,7 +213,7 @@ typedef enum{
         
         if ([vw viewWithTag:3]) {
             UILabel *lblScore = (UILabel*)[vw viewWithTag:3];
-            lblScore.text = @"1";
+            lblScore.text = strValueTwo;
         }
     }
     if ([[cell contentView] viewWithTag:1]) {
@@ -200,7 +222,7 @@ typedef enum{
         vw.layer.borderColor = [UIColor whiteColor].CGColor;
         if ([vw viewWithTag:3]) {
             UILabel *lblScore = (UILabel*)[vw viewWithTag:3];
-            lblScore.text = @"1";
+            lblScore.text = strValueOne;
         }
     }
 
@@ -230,7 +252,6 @@ typedef enum{
             strAPIErrorMsg = [json objectForKey:@"text"];
         
         isDataAvailable = false;
-        [arrDataSource removeAllObjects];
         [tableView reloadData];
         
     }

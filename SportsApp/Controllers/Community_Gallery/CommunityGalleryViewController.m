@@ -16,11 +16,14 @@
 #import "CommunityGalleryCell.h"
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "PhotoBrowser.h"
 
-@interface CommunityGalleryViewController (){
+@interface CommunityGalleryViewController () <PhotoBrowserDelegate>{
     
-     IBOutlet UIView *vwBG;
+    IBOutlet UIView *vwBG;
     IBOutlet UITableView *tableView;
+    PhotoBrowser *photoBrowser;
+    
     
 }
 
@@ -124,11 +127,66 @@
                                                      selector:@selector(videoDidFinish:)
                                                          name:AVPlayerItemDidPlayToEndTimeNotification
                                                        object:[playerViewController.player currentItem]];
+        }else{
+            NSMutableArray *images = [NSMutableArray new];
+            NSString *strURL =  [details objectForKey:@"mediaurl"];
+             [images addObject:strURL];
+            for (NSDictionary *details in _gallery) {
+                if ([[details objectForKey:@"display_type"] isEqualToString:@"image"]) {
+                    NSString *strURL =  [details objectForKey:@"mediaurl"];
+                    if (![images containsObject:strURL]) {
+                        [images addObject:strURL];
+                    }
+                }
+            }
+            if (images.count) {
+                [self presentGalleryWithImages:images];
+            }
+           
         }
-        
-       
     }
 }
+
+
+#pragma mark - Photo Zoom
+
+- (void)presentGalleryWithImages:(NSArray*)images
+{
+    
+    if (!photoBrowser) {
+        photoBrowser = [[[NSBundle mainBundle] loadNibNamed:@"PhotoBrowser" owner:self options:nil] objectAtIndex:0];
+        photoBrowser.delegate = self;
+    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    UIView *vwPopUP = photoBrowser;
+    [app.window.rootViewController.view addSubview:vwPopUP];
+    vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    
+    vwPopUP.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwPopUP.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [photoBrowser setUpWithImages:images];
+    }];
+    
+}
+
+-(void)closePhotoBrowserView{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        photoBrowser.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [photoBrowser removeFromSuperview];
+        photoBrowser = nil;
+    }];
+}
+
 
 
 

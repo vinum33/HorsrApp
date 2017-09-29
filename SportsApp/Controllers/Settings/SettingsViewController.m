@@ -9,9 +9,11 @@
 #import "SettingsViewController.h"
 #import "Constants.h"
 #import "ProfileCell.h"
+#import "PhotoBrowser.h"
 
-@interface SettingsViewController () {
-        
+@interface SettingsViewController () <PhotoBrowserDelegate>{
+    
+    
     IBOutlet NSLayoutConstraint *constraintForNavBg;
     IBOutlet UITableView* tableView;
     BOOL isDataAvailable;
@@ -19,8 +21,10 @@
     NSDictionary *userInfo;
     
     BOOL canNotify;
+    BOOL canSendMail;
     BOOL canInvite;
     
+    PhotoBrowser *photoBrowser;
     
 }
 
@@ -83,6 +87,7 @@
         userInfo =  [responds objectForKey:@"data"];
     canNotify = [[userInfo objectForKey:@"notify_status"] boolValue];
     canInvite = [[userInfo objectForKey:@"invite_status"] boolValue];
+    canSendMail = [[userInfo objectForKey:@"mailnotify_status"] boolValue];
     if (userInfo) isDataAvailable = true;
     [tableView reloadData];
     
@@ -101,7 +106,7 @@
 
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
-     NSInteger rows = 2;
+     NSInteger rows = 3;
     if (!isDataAvailable) {
         rows = 1;
     }
@@ -143,6 +148,16 @@
         if ([[cell contentView] viewWithTag:2]) {
             UISwitch *swtch = (UISwitch*)[[cell contentView] viewWithTag:2];
             [swtch setOn:canInvite];
+        }
+        return cell;
+    }
+    else if (indexPath.row == 2){
+        static NSString *CellIdentifier = @"MailNotify";
+        UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if ([[cell contentView] viewWithTag:3]) {
+            UISwitch *swtch = (UISwitch*)[[cell contentView] viewWithTag:3];
+            [swtch setOn:canSendMail];
         }
         return cell;
     }
@@ -231,6 +246,12 @@
             canInvite = true;
         }
     }
+    else if(sender.tag == 3) {
+        canSendMail = false;
+        if ([sender isOn]) {
+            canSendMail = true;
+        }
+    }
    // [tableView reloadData];
 }
 
@@ -238,7 +259,7 @@
     
     [Utility showLoadingScreenOnView:self.view withTitle:@"Saving.."];
     
-    [APIMapper updateUserSettingsWithNotifyValue:canNotify inviteStatus:canInvite Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper updateUserSettingsWithNotifyValue:canNotify inviteStatus:canInvite mailStatus:canSendMail Onsuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         [Utility hideLoadingScreenFromView:self.view];
         if ([responseObject objectForKey:@"text"]) {
@@ -261,11 +282,58 @@
         [alert show];
         [Utility hideLoadingScreenFromView:self.view];
     }];
-
-
-    
     
 }
+
+-(IBAction)showUserPhotoGallery{
+    
+    if ([userInfo objectForKey:@"profileurl"]) {
+        NSArray *images = [NSArray arrayWithObject:[userInfo objectForKey:@"profileurl"]];
+        [self presentGalleryWithImages:images];
+    }
+    
+}
+
+- (void)presentGalleryWithImages:(NSArray*)images
+{
+    
+    if (!photoBrowser) {
+        photoBrowser = [[[NSBundle mainBundle] loadNibNamed:@"PhotoBrowser" owner:self options:nil] objectAtIndex:0];
+        photoBrowser.delegate = self;
+    }
+    AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    UIView *vwPopUP = photoBrowser;
+    [app.window.rootViewController.view addSubview:vwPopUP];
+    vwPopUP.translatesAutoresizingMaskIntoConstraints = NO;
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    [app.window.rootViewController.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwPopUP]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwPopUP)]];
+    
+    vwPopUP.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwPopUP.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [photoBrowser setUpWithImages:images];
+    }];
+    
+}
+
+-(void)closePhotoBrowserView{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        photoBrowser.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [photoBrowser removeFromSuperview];
+        photoBrowser = nil;
+    }];
+}
+
+
+
+
 -(IBAction)goBack:(id)sender{
     
     [self.view endEditing:YES];

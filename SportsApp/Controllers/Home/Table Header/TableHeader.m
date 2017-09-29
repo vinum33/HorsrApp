@@ -36,11 +36,19 @@
     
     [super awakeFromNib];
     
+    
+    
     _imgUser.clipsToBounds = YES;
-    _imgUser.layer.cornerRadius = 40.f;
+    _imgUser.layer.cornerRadius = 25.f;
     _imgUser.layer.borderWidth = 3.f;
     _imgUser.backgroundColor = [UIColor whiteColor];
     _imgUser.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    _btnStartGame.clipsToBounds = YES;
+    _btnStartGame.layer.cornerRadius = 5.f;
+    _btnStartGame.layer.borderWidth = 1.f;
+    _btnStartGame.backgroundColor = [UIColor getThemeColor];
+    _btnStartGame.layer.borderColor = [UIColor whiteColor].CGColor;
     
     _vwRegHolder.clipsToBounds = YES;
     _vwRegHolder.layer.cornerRadius = 15.f;
@@ -109,7 +117,11 @@
     [[self delegate]radialMenuClickedWithIndex:sender.tag];
 }
 
- 
+-(IBAction)startGame:(UIButton*)sender{
+    
+    [[self delegate]createGamePopUp];
+}
+
 
 
 @end

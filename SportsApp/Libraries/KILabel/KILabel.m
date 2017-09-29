@@ -354,6 +354,7 @@ NSString * const KILabelLinkKey = @"link";
     // Setup paragraph attributes
     NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
     paragraph.alignment = self.textAlignment;
+    [paragraph setLineSpacing:0];
     
     // Create the dictionary
     NSDictionary *attributes = @{NSFontAttributeName : self.font,

@@ -86,7 +86,7 @@
 -(void)loadAllCategories{
     
     [arrCategories addObject:@"Start New Game"];
-    [arrCategories addObject:@"Shared Video"];
+    [arrCategories addObject:@"Community"];
     [arrCategories addObject:@"All Games"];
     [arrCategories addObject:@"Notifications"];
     [arrCategories addObject:@"Chat"];
@@ -156,13 +156,13 @@
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                imgIcon.image = [UIImage imageNamed:@"Create_Game"];
+                imgIcon.image = [UIImage imageNamed:@"Create_Game_Menu"];
                 break;
             case 1:
                 imgIcon.image = [UIImage imageNamed:@"Shared_Video"];
                 break;
             case 2:
-                imgIcon.image = [UIImage imageNamed:@"Create_Game"];
+                imgIcon.image = [UIImage imageNamed:@"Menu_All_Games"];
                 break;
             case 3:
                 imgIcon.image = [UIImage imageNamed:@"Notification_Black"];

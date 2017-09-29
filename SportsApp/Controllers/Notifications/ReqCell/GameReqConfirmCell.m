@@ -27,6 +27,11 @@
     _btnConfirm.layer.borderColor = [UIColor clearColor].CGColor;
     
 }
+-(IBAction)showProfile:(UIButton*)sender{
+    
+    [self.delegate profileButtonClickedWithColumn:_column row:_row];
+    
+}
 
 -(IBAction)acceptOrRejectRequest:(UIButton*)sender{
     

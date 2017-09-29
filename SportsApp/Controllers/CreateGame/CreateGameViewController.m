@@ -355,11 +355,8 @@ typedef enum{
         gameType = eGameTypeHorse;
     }
     [tableView reloadData];
-    if (arrInvites.count <= 0) {
-         [self showInviteOthersPage];
-    }
-   
-    
+    if (arrInvites.count <= 0)
+        [self showInviteOthersPage];
 }
 
 

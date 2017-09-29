@@ -53,7 +53,7 @@
 
 -(void)setUpPopUpForOthersWithWinnerName:(NSString*)winnerName;{
     
-    NSString *statictxt = @"The game is completed, winner is";
+    NSString *statictxt = @"The game completed, winner is";
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",statictxt,winnerName]];
     [text addAttribute:NSForegroundColorAttributeName
                  value:[UIColor colorWithRed:0.30 green:0.64 blue:0.02 alpha:1.0]

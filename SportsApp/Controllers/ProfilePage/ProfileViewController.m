@@ -14,8 +14,9 @@
 #import "PhotoBrowser.h"
 #import "CreateGameViewController.h"
 #import "StatisticsViewController.h"
+#import "StatisticsPopUp.h"
 
-@interface ProfileViewController () <ChangePasswordPopUpDelegate,EditProfileDelegate,PhotoBrowserDelegate,CreateGamePopUpDelegate>{
+@interface ProfileViewController () <ChangePasswordPopUpDelegate,EditProfileDelegate,PhotoBrowserDelegate,CreateGamePopUpDelegate,StatisticsPopUpDelegate>{
     
     ChangePasswordPopUp *changePwdPopUp;
     
@@ -36,6 +37,7 @@
     NSString *strPhoneNumber;
     PhotoBrowser *photoBrowser;
     CreateGameViewController *createGame;
+    StatisticsPopUp *vwStatistisPopUp;
     
 }
 
@@ -290,11 +292,67 @@
 //    
 //}
 
+#pragma mark - Statistics PopUp and Delegates
+
+
+-(IBAction)showStatisticsPopUp{
+    
+    if (!vwStatistisPopUp) {
+        
+        NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"StatisticsPopUp" owner:self options:nil];
+        vwStatistisPopUp = [viewArray objectAtIndex:0];
+        
+        [self.view addSubview:vwStatistisPopUp];
+        vwStatistisPopUp.delegate = self;
+        vwStatistisPopUp.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[vwStatistisPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwStatistisPopUp)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[vwStatistisPopUp]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(vwStatistisPopUp)]];
+        
+        vwStatistisPopUp.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            // animate it to the identity transform (100% scale)
+            vwStatistisPopUp.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished){
+            
+           
+            // if you want to do something once the animation finishes, put it here
+        }];
+        
+        
+    }
+    
+    [self.view endEditing:YES];
+    [vwStatistisPopUp setUp];
+    if (userInfo) {
+        [vwStatistisPopUp setUpPopWithName:[userInfo objectForKey:@"name"] andScore:[NSString stringWithFormat:@"%d W - %d L",[[userInfo objectForKey:@"won"] integerValue],[[userInfo objectForKey:@"lost"] integerValue]]];
+        
+    }
+    
+}
+
+-(void)closeStatisticsPopUp{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        vwStatistisPopUp.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [vwStatistisPopUp removeFromSuperview];
+        vwStatistisPopUp = nil;
+        
+    }];
+}
+
+
+
+
+
 #pragma mark - Create Game PopUp
 
 -(IBAction)showStatisticsPage:(id)sender{
     
     StatisticsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForStatistics];
+    games.userID = [userInfo objectForKey:@"user_id"];
     [[self navigationController]pushViewController:games animated:YES];
 }
 

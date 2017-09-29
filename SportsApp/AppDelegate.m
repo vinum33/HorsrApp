@@ -10,6 +10,8 @@
 #define NOTIFICATION_TYPE_GROUP_CHAT                @"chat"
 #define NOTIFICATION_TYPE_PRIVATE_CHAT              @"privatechat"
 #define NOTIFICATION_TYPE_FRIEND_REQ                @"friend"
+#define NOTIFICATION_TYPE_GAME_REQ                  @"game_request"
+#define NOTIFICATION_TYPE_REPLY_REQ                  @"reply_request"
 
 
 typedef enum{
@@ -275,7 +277,7 @@ typedef enum{
      if (userExists) {
         if (NULL_TO_NIL([userInfo objectForKey:@"data"])) {
             if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_GAME_UPLOAD]){
-                [_homeVC refreshGameZoneWithInfo:userInfo];
+                [_homeVC refreshGameZoneWithInfo:userInfo isBBg:isBackground];
             }
             else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_GROUP_CHAT]){
                 [_homeVC manageGroupChatInfoFromForeGround:[userInfo objectForKey:@"data"] isBBg:isBackground];
@@ -285,7 +287,16 @@ typedef enum{
             }
             else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_FRIEND_REQ]){
                 [_homeVC manageFriendReqNotificatinWith:userInfo isBBg:isBackground];
-            }else{
+            }
+            else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_GAME_REQ]){
+                [_homeVC manageGameRequestWith:userInfo isBBg:isBackground];
+                 //Game reqeust goes to user.
+            }
+            else if ([[[userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:NOTIFICATION_TYPE_REPLY_REQ]){
+                [_homeVC manageGameReplyByAdminWith:userInfo isBBg:isBackground];
+                //When user accpets the game rewuest , notificatin goes to game created user , he will accept or reject it.
+            }
+            else{
                 [_homeVC manageOtherNotificationsWith:userInfo isBBg:isBackground];
             }
         }

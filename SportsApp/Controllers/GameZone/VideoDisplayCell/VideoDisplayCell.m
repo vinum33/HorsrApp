@@ -18,7 +18,12 @@
     _btnRecord.layer.borderWidth = 1.f;
     _btnRecord.layer.borderColor =[UIColor clearColor].CGColor;
     
-
+    _vwNextTurn.clipsToBounds = YES;
+    _vwNextTurn.layer.cornerRadius = 5.f;
+    _vwNextTurn.layer.borderWidth = 1.f;
+    _vwNextTurn.layer.borderColor = [UIColor clearColor].CGColor;
+    _lblNextTurnName.text = @"Its your turn";
+    
     // Initialization code
 }
 

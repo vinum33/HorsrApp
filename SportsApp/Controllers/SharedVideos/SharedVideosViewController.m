@@ -201,7 +201,7 @@ typedef enum{
             cell.trailingToSuperView.priority = 998;
         }
         
-        [cell.btnComment setTitle:[NSString stringWithFormat:@"(%ld)",[[details objectForKey:@"comment_total"] integerValue]]forState:UIControlStateNormal];
+        [cell.lblCommenCount setText:[NSString stringWithFormat:@"%d Comments",[[details objectForKey:@"comment_total"] integerValue]]];
         cell.lblTime.text = [Utility getDateDescriptionForChat:[[details objectForKey:@"shared_datetime"] doubleValue]];
         NSString *msg = [details objectForKey:@"share_msg"];
         cell.lblDescription.text = @"";
@@ -209,8 +209,8 @@ typedef enum{
         cell.desrptionTopToImage.constant = 0;
         if (msg.length) {
             cell.lblDescription.text = [details objectForKey:@"share_msg"];
-            cell.desrptionTopToView.constant = 10;
-            cell.desrptionTopToImage.constant = 10;
+            cell.desrptionTopToView.constant = 15;
+            cell.desrptionTopToImage.constant = 15;
         }
         
         cell.lblMediaCount.text = @"";
@@ -238,7 +238,7 @@ typedef enum{
             float height = [[details objectForKey:@"image_height"] integerValue];;
             float ratio = width / height;
             float imageHeight = (self.view.frame.size.width - 30) / ratio;
-            cell.constraintForHeight.constant = imageHeight;
+            cell.constraintForHeight.constant = 200;
             [cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[details objectForKey:@"display_image"]]
                              placeholderImage:[UIImage imageNamed:@"NoImage"]
                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -259,11 +259,11 @@ typedef enum{
                                   [[EMEmojiableOption alloc] initWithImage:@"Sad" withName:@" Sad"],
                                   [[EMEmojiableOption alloc] initWithImage:@"Angry" withName:@" Angry"],
                                   ];
-        [cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-        [cell.btnEmoji setTitle:[NSString stringWithFormat:@"(%d)",[[details objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
+        [cell.btnDisplayEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
+        [cell.btnDisplayEmoji setTitle:[NSString stringWithFormat:@" %d",[[details objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
         if ([[details objectForKey:@"emoji_code"] integerValue] >= 0) {
             EMEmojiableOption *option = [cell.btnEmoji.dataset objectAtIndex:[[details objectForKey:@"emoji_code"] integerValue]];
-            [cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
+            [cell.btnDisplayEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
         }
         cell.btnEmoji.vwBtnSuperView = self.view;
         cell.btnEmoji.tag = indexPath.row;
@@ -307,43 +307,51 @@ typedef enum{
     
 }
 
+
+
 -(IBAction)deleteSharedVideo:(UIButton*)sender{
     
     if (sender.tag < arrDataSource.count) {
         
         NSDictionary *details = arrDataSource[sender.tag];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete"
-                                                                       message:@"Do you really want to delete the post?"
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"DELETE"
-                                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                  
-                                                                  if ([details objectForKey:@"community_id"]) {
-                                                                       [Utility showLoadingScreenOnView:self.view withTitle:@"Deleting.."];
-                                                                      [APIMapper deleteSharedVideoWithVideoID:[details objectForKey:@"community_id"] OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                          
-                                                                          [arrDataSource removeObjectAtIndex:sender.tag];
-                                                                          [tableView reloadData];
-                                                                           [Utility hideLoadingScreenFromView:self.view];
-                                                                          
-                                                                      } failure:^(AFHTTPRequestOperation *task, NSError *error) {
-                                                                          
-                                                                           [Utility hideLoadingScreenFromView:self.view];
-                                                                      }];
-                                                                  }
-                                                                  
-                                                              }];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"CANCEL"
-                                                              style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-                                                              }];
         
-        [alert addAction:firstAction];
-        [alert addAction:cancelAction];
-        [self presentViewController:alert animated:YES completion:nil];
-
-      
+        UIAlertController* alertController = [UIAlertController
+                                              alertControllerWithTitle:@"DELETE"
+                                              message:@"Really want to delete shared post?"
+                                              preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction* item1 = [UIAlertAction actionWithTitle:@"Delete"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+                                                          [alertController dismissViewControllerAnimated:YES completion:nil];
+                                                          if ([details objectForKey:@"community_id"]) {
+                                                              [Utility showLoadingScreenOnView:self.view withTitle:@"Deleting.."];
+                                                              [APIMapper deleteSharedVideoWithVideoID:[details objectForKey:@"community_id"] OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                  
+                                                                  [arrDataSource removeObjectAtIndex:sender.tag];
+                                                                  [tableView reloadData];
+                                                                  [Utility hideLoadingScreenFromView:self.view];
+                                                                  
+                                                              } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                                                                  
+                                                                  [Utility hideLoadingScreenFromView:self.view];
+                                                              }];
+                                                          }
+                                                      }];
+        
+        
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            [alertController dismissViewControllerAnimated:YES completion:nil];
+        }];
+        
+        [alertController addAction:item1];
+        [alertController addAction:cancelAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        
+        
     }
-
+    
 }
 
 -(IBAction)shareVideoToPublic:(UIButton*)sender{
@@ -418,9 +426,7 @@ typedef enum{
 
 - (void)EMEmojiableBtn:( EMEmojiableBtn* _Nonnull)button selectedOption:(NSUInteger)index{
     
-    EMEmojiableOption *option = [button.dataset objectAtIndex:index];
-    [button setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
-    [button setTitle:@"" forState:UIControlStateNormal];
+
     if (button.tag < arrDataSource.count) {
         
         [self updateDetailsWithEmojiIndex:index position:button.tag];
@@ -560,7 +566,7 @@ typedef enum{
         NSDictionary *details = arrDataSource[sender.tag];
         if ([details objectForKey:@"media"]) {
             NSArray *media = [details objectForKey:@"media"];
-            if (media.count > 1) {
+            if (media.count > 0) {
                 galleryView =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForCommunityGallery];
                 galleryView.gallery = media;
                 UIView *popup = galleryView.view;

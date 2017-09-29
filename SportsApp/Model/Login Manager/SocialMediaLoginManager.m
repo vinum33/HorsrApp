@@ -20,6 +20,7 @@
 }
 
 @end
+
 @implementation SocialMediaLoginManager
 
 -(void)doFBLoginFromViewController:(UIViewController*)viewcontroller{
@@ -59,18 +60,16 @@
                  NSString *email;
                  NSString *fname;
                  NSString *fbID;
-                 if (NULL_TO_NIL([result objectForKey:@"email"])) {
+                 if (NULL_TO_NIL([result objectForKey:@"email"]))
                      email = [result objectForKey:@"email"];
-                 }
-                 if (NULL_TO_NIL([result objectForKey:@"name"])) {
+                 
+                 if (NULL_TO_NIL([result objectForKey:@"name"]))
                      fname = [result objectForKey:@"name"];
-                 }
-                 if (NULL_TO_NIL([result objectForKey:@"id"])) {
+                 
+                 if (NULL_TO_NIL([result objectForKey:@"id"]))
                      fbID = [result objectForKey:@"id"];
-                 }
                  
                   [[self delegate] socialMediaLoginWithName:fname email:email fbiD:fbID];
-                 
              }
          }];
     }

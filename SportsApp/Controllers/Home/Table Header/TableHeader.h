@@ -15,6 +15,12 @@
 
 -(void)radialMenuClickedWithIndex:(NSInteger)index;
 
+-(void)createGamePopUp;
+
+/*!
+ *This method is invoked when user selects a country.The selected Country Details sends back to Registration page
+ */
+
 /*!
  *This method is invoked when user selects a country.The selected Country Details sends back to Registration page
  */
@@ -25,6 +31,7 @@
 
 @interface TableHeader : UIView
 
+@property (nonatomic,weak) IBOutlet UIButton *btnStartGame;
 @property (nonatomic,weak) IBOutlet UILabel *lblName;
 @property (nonatomic,weak) IBOutlet UILabel *lblRegDate;
 @property (nonatomic,weak) IBOutlet UIView *vwRegHolder;

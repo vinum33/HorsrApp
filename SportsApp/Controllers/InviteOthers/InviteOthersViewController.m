@@ -107,7 +107,7 @@ typedef enum{
     searchBar.hidden = true;
     lblTitle.hidden = false;
     btnClose.hidden = true;
-   [self getAllFriendsWithPageNumber:currentPage isPagination:NO];
+    [self getAllFriendsWithPageNumber:currentPage isPagination:NO];
     [self.view endEditing:YES];
 }
 
@@ -124,7 +124,7 @@ typedef enum{
         btnTick.hidden = false;
         tableView.hidden = false;
         isPageRefresing = false;
-        [self showAllUsersWithJSON:responseObject];
+        [self praseResponds:responseObject];
         [Utility hideLoadingScreenFromView:self.view];
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -144,7 +144,7 @@ typedef enum{
     
 }
 
--(void)showAllUsersWithJSON:(NSDictionary*)responds{
+-(void)praseResponds:(NSDictionary*)responds{
     
     [arrDataSource removeAllObjects];
     isDataAvailable = false;
@@ -166,7 +166,15 @@ typedef enum{
         }
         arrDataSource = [NSMutableArray arrayWithArray:arrUsers];
     }
-    
+    if (!_isFromTagFriends) {
+        NSMutableArray *arrActiveUsers = [NSMutableArray new];
+        for (NSDictionary *dict in arrDataSource) {
+            if ([[dict objectForKey:@"invite_status"] boolValue]) {
+                [arrActiveUsers addObject:dict];
+            }
+        }
+        arrDataSource = [NSMutableArray arrayWithArray:arrActiveUsers];
+    }
     
     [tableView reloadData];
     
@@ -314,31 +322,6 @@ typedef enum{
     }];
 }
 
--(void)praseResponds:(NSDictionary*)responds{
-    
-    isDataAvailable = false;
-    [arrDataSource removeAllObjects];
-    if (NULL_TO_NIL([responds objectForKey:@"data"]))
-        [arrDataSource addObjectsFromArray:[responds objectForKey:@"data"]];
-    if (arrDataSource.count > 0) isDataAvailable = true;
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
-//        totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
-//        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
-    NSMutableArray *arrUsers = [NSMutableArray new];
-    if (_selectedUsers.count) {
-        for (NSDictionary *dict in arrDataSource) {
-            NSMutableDictionary *dictUpdated = [NSMutableDictionary dictionaryWithDictionary:dict];
-            if ([_selectedUsers containsObject:[dict objectForKey:@"user_id"]]) {
-                [dictUpdated setObject:[NSNumber numberWithBool:YES] forKey:@"isSelected"];
-            }
-            [arrUsers addObject:dictUpdated];
-        }
-        arrDataSource = [NSMutableArray arrayWithArray:arrUsers];
-    }
-    [tableView reloadData];
-    
-}
 
 -(void)displayErrorMessgeWithDetails:(NSData*)responseData{
     if (responseData.length) {

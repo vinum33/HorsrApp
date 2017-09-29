@@ -17,6 +17,15 @@
     _imgUser.layer.borderWidth = 1.f;
     _imgUser.backgroundColor = [UIColor whiteColor];
     _imgUser.layer.borderColor = [UIColor clearColor].CGColor;
+
+    
+    _vwContainer.layer.cornerRadius = 5.f;
+    _vwContainer.layer.borderWidth = 1.f;
+    _vwContainer.backgroundColor = [UIColor whiteColor];
+    _vwContainer.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+    
+       
+    
     
     _lblDescription.urlLinkTapHandler = ^(KILabel *label, NSString *string, NSRange range) {
         // Open URLs

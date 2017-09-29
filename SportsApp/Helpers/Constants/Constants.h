@@ -53,3 +53,5 @@ extern NSString * const StoryBoardIdentifierForFriendRequest;
 extern NSString * const StoryBoardIdentifierForChatList;
 extern NSString * const StoryBoardIdentifierForParticipantsView ;
 extern NSString * const StoryBoardIdentifierForStatistics ;
+extern NSString * const StoryBoardIdentifierForFriendRequestsManager ;
+extern NSString * const StoryBoardIdentifierForGameRequest ;

@@ -62,7 +62,7 @@
 
 + (void)getAllFriendRequestsWithpageNumber:(NSInteger)pageno Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)updateUserSettingsWithNotifyValue:(BOOL)notifyStatus inviteStatus:(BOOL)inviteStatus Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)updateUserSettingsWithNotifyValue:(BOOL)notifyStatus inviteStatus:(BOOL)inviteStatus mailStatus:(BOOL)mailStatus Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)updateGameRequestWithStatus:(NSInteger)status requestID:(NSString*)reqID Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
@@ -105,5 +105,10 @@
 + (void)getAllMembersInGroupWithGroupID:(NSString*)groupID success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)replyToGameRequestWithMessage:(NSString*)status requestID:(NSString*)reqID Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getAllGameRequetsOnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getStatisticsWithUserID:(NSString*)userID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
 
 @end

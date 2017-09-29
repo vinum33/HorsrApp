@@ -6,14 +6,7 @@
 //  Copyright © 2017 Purpose Code. All rights reserved.
 //
 
-typedef enum{
-    
-    eTypeNotifications      = 0,
-    eTypeGameReq            = 1,
-    eTypePending            = 2,
-    
-    
-}eMenuType;
+
 
 #define kLimitReached           406
 
@@ -22,6 +15,7 @@ typedef enum{
 #import "Constants.h"
 #import "GameReqConfirmCell.h"
 #import "NotificationHeader.h"
+#import "ProfileViewController.h"
 
 @interface NotificationsViewController () <RequestCellDelegate>{
     
@@ -35,7 +29,7 @@ typedef enum{
     NSInteger currentPage;
     NSString *strAPIErrorMsg;
     IBOutlet UISegmentedControl *segmentControll;
-    eMenuType menuType;
+    
 }
 
 @end
@@ -51,7 +45,7 @@ typedef enum{
 
 -(void)setUp{
     
-    menuType = eTypeNotifications;
+    [segmentControll setSelectedSegmentIndex:_menuType];
     tableView.hidden = true;
     btnClaer.hidden = true;
     currentPage = 1;
@@ -83,6 +77,12 @@ typedef enum{
     [segmentControll setTitleTextAttributes:attributes1 forState:UIControlStateNormal];
     [segmentControll setTitleTextAttributes:attributes2 forState:UIControlStateSelected];
 }
+
+-(void)enableGameRequestTabByNotification{
+    
+    [segmentControll setSelectedSegmentIndex:eTypeGameReq];
+    [self segmentChanged:nil];
+}
 -(IBAction)segmentChanged:(id)sender{
     
     btnClaer.hidden = true;
@@ -90,9 +90,9 @@ typedef enum{
     isDataAvailable = false;
     tableView.hidden = true;
     [tableView reloadData];
-    menuType = eTypeNotifications;
+    _menuType = eTypeNotifications;
     if ([segmentControll selectedSegmentIndex] == 1) {
-        menuType = eTypeGameReq;
+        _menuType = eTypeGameReq;
     }
     currentPage = 1;
     [self getAllNotificationsByPage:currentPage isPagination:NO];
@@ -104,7 +104,7 @@ typedef enum{
         [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
     }
     
-    [APIMapper getAllNotificationsPageNumber:pageNumber type:menuType OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper getAllNotificationsPageNumber:pageNumber type:_menuType OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         tableView.hidden = false;
         isPageRefresing = false;
@@ -138,7 +138,7 @@ typedef enum{
 //    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
 //        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
     [tableView reloadData];
-    if (isDataAvailable && menuType == eTypeNotifications) {
+    if (isDataAvailable && _menuType == eTypeNotifications) {
         btnClaer.hidden = false;
     }
     
@@ -151,7 +151,7 @@ typedef enum{
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)_tableView {
     
-    if (menuType == eTypeNotifications || !isDataAvailable) {
+    if (_menuType == eTypeNotifications || !isDataAvailable) {
         return 1;
     }
     return arrDataSource.count;
@@ -161,7 +161,7 @@ typedef enum{
 -(NSInteger)tableView:(UITableView *)_tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger rows =  arrDataSource.count;
-    if (menuType == eTypeNotifications || !isDataAvailable) {
+    if (_menuType == eTypeNotifications || !isDataAvailable) {
         if (!isDataAvailable) {
             rows = 1;
         }
@@ -187,7 +187,7 @@ typedef enum{
         return cell;
     }
     
-    if (menuType == eTypeNotifications) {
+    if (_menuType == eTypeNotifications) {
         NSString *CellIdentifier = @"NotificationCell";
         NotificationsCell *cell = (NotificationsCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -198,6 +198,7 @@ typedef enum{
             [messgae addAttribute:NSFontAttributeName
                             value:[UIFont fontWithName:CommonFontBold size:14]
                             range:NSMakeRange(0, name.length)];
+            cell.btnProfile.tag = indexPath.row;
             cell.lblTitle.attributedText = messgae;
             cell.lblDate.text = [Utility getDaysBetweenTwoDatesWith:[[notification objectForKey:@"notification_date"] doubleValue]] ;
             [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[notification objectForKey:@"profileurl"]]
@@ -237,6 +238,7 @@ typedef enum{
                     statusColor = [UIColor colorWithRed:0.84 green:0.01 blue:0.01 alpha:1.0];;
                 }
                 cell = (GameReqConfirmCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                cell.btnProfile.tag = indexPath.row;
                 cell.lblStatusMessage.text = statusMsg;
                 cell.lblStatusMessage.textColor = statusColor;
                 cell.delegate = self;
@@ -267,7 +269,7 @@ typedef enum{
 
 - (CGFloat)tableView:(UITableView *)_tableView heightForHeaderInSection:(NSInteger)section{
     
-    if (!isDataAvailable || menuType == eTypeNotifications) {
+    if (!isDataAvailable || _menuType == eTypeNotifications) {
         return 0.1;
     }
     return 70;
@@ -275,7 +277,7 @@ typedef enum{
 
 - (nullable UIView *)tableView:(UITableView *)_tableView viewForHeaderInSection:(NSInteger)section{
     
-    if (!isDataAvailable || menuType == eTypeNotifications) {
+    if (!isDataAvailable || _menuType == eTypeNotifications) {
         return nil;
     }
     NSArray *viewArray =  [[NSBundle mainBundle] loadNibNamed:@"NotificationHeader" owner:self options:nil];
@@ -304,6 +306,21 @@ typedef enum{
     return 0.1;
 }
 
+
+-(void)profileButtonClickedWithColumn:(NSInteger)column row:(NSInteger)row{
+    
+    if (column < arrDataSource.count) {
+        NSDictionary *details  = arrDataSource[column];
+        NSArray *items = [details objectForKey:@"game_reply"];
+        if (row < items.count) {
+            NSDictionary *user = items[row];
+            ProfileViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GeneralStoryBoard Identifier:StoryBoardIdentifierForProfile];
+            [[self navigationController]pushViewController:games animated:YES];
+            games.strUserID = [user objectForKey:@"user_id"];
+        }
+    }
+   
+}
 
 -(void)cellClickedWithColumn:(NSInteger)column row:(NSInteger)row type:(NSInteger)type{
     
@@ -434,6 +451,15 @@ typedef enum{
 
 
     
+}
+
+-(IBAction)showUserProfileWithIndex:(UIButton*)sender{
+    if (sender.tag < arrDataSource.count) {
+        NSDictionary *user = arrDataSource[sender.tag];
+        ProfileViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GeneralStoryBoard Identifier:StoryBoardIdentifierForProfile];
+        [[self navigationController]pushViewController:games animated:YES];
+        games.strUserID = [user objectForKey:@"user_id"];
+    }
 }
 
 

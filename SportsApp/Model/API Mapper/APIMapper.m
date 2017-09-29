@@ -1,4 +1,4 @@
-//
+ //
 //  APIMapper.m
 //  SignSpot
 //
@@ -725,7 +725,7 @@
     
 }
 
-+ (void)updateUserSettingsWithNotifyValue:(BOOL)notifyStatus inviteStatus:(BOOL)inviteStatus Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)updateUserSettingsWithNotifyValue:(BOOL)notifyStatus inviteStatus:(BOOL)inviteStatus mailStatus:(BOOL)mailStatus Onsuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@settings",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -735,6 +735,7 @@
     }
     NSDictionary *params = @{@"notify_status": [NSNumber numberWithBool:notifyStatus],
                              @"invite_status":  [NSNumber numberWithBool:inviteStatus],
+                             @"mailnotify_status":  [NSNumber numberWithBool:mailStatus],
                              };
 
     [manager PUT:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1254,6 +1255,55 @@
     }];
     
 }
+
++ (void)getAllGameRequetsOnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@game/request",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"type": @"gamerequest"
+                             };
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
++ (void)getStatisticsWithUserID:(NSString*)userID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@stats",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"user_id": userID
+                             };
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
+
 
 
 @end

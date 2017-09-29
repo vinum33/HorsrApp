@@ -254,10 +254,6 @@ typedef enum{
     [self.navigationController pushViewController:friendList animated:YES];
 }
 
-
-
-
-
 -(void)gameZoneCompleted{
     
     [segmentControll setSelectedSegmentIndex:0];

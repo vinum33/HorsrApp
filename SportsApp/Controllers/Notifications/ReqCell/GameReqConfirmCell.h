@@ -8,11 +8,13 @@
 
 @protocol RequestCellDelegate <NSObject>
 
+@optional
 /*!
  *This method is invoked when user taps the 'Close' Button.
  */
 
 -(void)cellClickedWithColumn:(NSInteger)column row:(NSInteger)row type:(NSInteger)type;
+-(void)profileButtonClickedWithColumn:(NSInteger)column row:(NSInteger)row;
 
 /*!
  *This method is invoked when user selects a country.The selected Country Details sends back to Registration page
@@ -30,6 +32,8 @@
 @property (nonatomic,weak) IBOutlet UIImageView *imgUser;
 @property (nonatomic,weak) IBOutlet UIButton *btnConfirm;
 @property (nonatomic,weak) IBOutlet UIButton *btnCancel;
+@property (nonatomic,weak) IBOutlet UIButton *btnProfile;
+
 @property (nonatomic,assign) NSInteger column;
 @property (nonatomic,assign) NSInteger row;
 

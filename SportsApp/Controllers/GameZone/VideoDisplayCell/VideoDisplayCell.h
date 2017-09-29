@@ -19,4 +19,8 @@
 @property (nonatomic,weak) IBOutlet UIButton *btnSuccess;
 @property (nonatomic,weak) IBOutlet UIButton *btnFailure;
 
+@property (nonatomic,weak) IBOutlet UIView *vwNextTurn;
+@property (nonatomic,weak) IBOutlet UILabel *lblNextTurnName;
+
+
 @end

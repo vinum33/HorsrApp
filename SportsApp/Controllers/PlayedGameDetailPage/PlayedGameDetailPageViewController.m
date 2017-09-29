@@ -280,7 +280,7 @@ typedef enum{
             GameUserInfoCell *_cell = (GameUserInfoCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             NSDictionary *game = arrDataSource[currentPlayIndex];
             _cell.lblName.text = [game objectForKey:@"name"];
-            _cell.lblGameID.text = [game objectForKey:@"gameId"];
+            _cell.lblGameID.text = [Utility getDateDescriptionForChat:[[game objectForKey:@"gameadded_date"] doubleValue]] ;
             [_cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[game objectForKey:@"profileurl"]]
                              placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -298,7 +298,7 @@ typedef enum{
         NSDictionary *game = arrDataSource[indexPath.row];
         _cell.btnShare.hidden = [[game objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId] ? NO:YES;
         _cell.lblName.text = [game objectForKey:@"name"];
-        _cell.lblKey.text = [game objectForKey:@"gameId"];
+        _cell.lblKey.text = [Utility getDateDescriptionForChat:[[game objectForKey:@"gameadded_date"] doubleValue]] ;
         _cell.lblLocation.text = [game objectForKey:@"location"];
          _cell.btnProfile.tag = indexPath.row;
         _cell.btnShare.tag = indexPath.row;

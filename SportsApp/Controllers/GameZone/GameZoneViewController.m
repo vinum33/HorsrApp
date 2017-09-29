@@ -45,6 +45,8 @@
     NSString *strStatusMsg;
     InfoPopUp *vwInfoPopUp;
     WinnerPopUp *vwWinnderPopUp;
+    
+    
 }
 
 @end
@@ -62,6 +64,7 @@
 -(void)setUp{
     
     
+    
     isDataAvailable = false;
     tableView.hidden = true;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -73,6 +76,8 @@
     tableView.layer.borderWidth = 1.f;
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.layer.borderColor = [UIColor getSeperatorColor].CGColor;
+    
+   
     
     float width = 720;
     float height = 460;
@@ -134,9 +139,7 @@
              [self showWinnerPopUpIsByWinner:true andName:nil];
         }else{
             [self showWinnerPopUpIsByWinner:false andName:[[responds objectForKey:@"data"] objectForKey:@"winner_name"]];
-        }
-        
-        
+        }        
     }
     if ([[responds objectForKey:@"data"] objectForKey:@"gameId"]) {
         lblTitle.text = [[responds objectForKey:@"data"] objectForKey:@"gameId"];
@@ -216,10 +219,12 @@
         _cell.constarintImgHeight.constant = self.view.frame.size.height - 300;
         if (clickedIndex < arrUsers.count) {
             NSDictionary *user = arrUsers[clickedIndex];
+            
             if ([user objectForKey:@"video"]) {
                 NSArray *videos = [user objectForKey:@"video"];
                 if (videos.count) {
-                     _cell.btnVideoPlay.hidden = false;
+                    _cell.btnVideoPlay.hidden = false;
+                    
                     NSDictionary *video = [videos lastObject];
                     if (![[video objectForKey:@"verify_status"] boolValue] && [strGameCreatedUserID isEqualToString:[User sharedManager].userId]) {
                         _cell.btnSuccess.hidden = false;
@@ -246,6 +251,9 @@
             }else{
                 if ([[user objectForKey:@"turn"] boolValue] && [[user objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) {
                     _cell.btnRecord.hidden = false;
+                    _cell.lblNextTurnName.text = @"Its your turn";
+                }else{
+                    [self displayTurnedUserName:_cell.lblNextTurnName];
                 }
             }
            
@@ -330,6 +338,19 @@
 
 #pragma mark - Verify Video Methods
 
+-(void)displayTurnedUserName:(UILabel*)lbl{
+    
+    if (arrUsers.count) {
+        for (NSDictionary *dict in arrUsers) {
+            if ([[dict objectForKey:@"turn"] boolValue]) {
+                lbl.text = [NSString stringWithFormat:@"Its %@'s turn",[dict objectForKey:@"name"]];
+                break;
+            }
+        }
+    }
+    
+}
+
 -(IBAction)verifyVideoWithTag:(UIButton*)sender{
     
     BOOL success = true;
@@ -341,16 +362,17 @@
         NSInteger nextUser = 0;
         NSString *nextUsrID ;
         if (arrUsers.count) {
-            if (clickedIndex + 1 < arrUsers.count) {
-               nextUser = clickedIndex + 1;
-                while (nextUser < arrUsers.count) {
+            if (clickedIndex < arrUsers.count) {
+              nextUser = clickedIndex + 1;
+              nextUser =   [self findNextUserWithLimit:arrUsers.count nextIndex:nextUser];
+               /* while (nextUser < arrUsers.count) {
                     NSDictionary *user = arrUsers[nextUser];
                     if ([[user objectForKey:@"player_status"] isEqualToString:@"out"]) {
                     }else{
                         break;
                     }
                     nextUser ++;
-                }
+                }*/
             }
             NSDictionary *user = arrUsers[nextUser];
             nextUsrID = [user objectForKey:@"user_id"];
@@ -371,6 +393,28 @@
             
         }
     }
+}
+
+-(NSInteger)findNextUserWithLimit:(NSInteger)limit nextIndex:(NSInteger)nextIndex{
+    
+    while (nextIndex < limit) {
+        NSDictionary *user = arrUsers[nextIndex];
+        if ([[user objectForKey:@"player_status"] isEqualToString:@"out"]) {
+        }else{
+            return nextIndex;
+            break;
+        }
+        nextIndex ++;
+    }
+    if (nextIndex == clickedIndex) {
+        nextIndex = 0;
+        return nextIndex;
+    }
+    if (nextIndex == limit - 1) {
+        nextIndex = 0;
+        [self findNextUserWithLimit:limit nextIndex:nextIndex];
+    }
+    return 0;
 }
 
 #pragma mark - Custom Cell Deleagtes

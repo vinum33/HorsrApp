@@ -174,7 +174,12 @@ typedef enum{
         NSDictionary *people = arrDataSource[indexPath.row];
         cell.lblName.text = [people objectForKey:@"firstname"];
         cell.lblChatMessge.text = [people objectForKey:@"msg"];
-        cell.lblDate.text = [Utility getDateDescriptionForChat:[[people objectForKey:@"chat_datetime"] doubleValue]] ;
+        if (NULL_TO_NIL([people objectForKey:@"msg"])){
+            NSString *msg = [people objectForKey:@"msg"];
+            if (msg.length) {
+                cell.lblDate.text = [Utility getDateDescriptionForChat:[[people objectForKey:@"chat_datetime"] doubleValue]] ;
+            }
+        }
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[people objectForKey:@"profileimage"]]
                           placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -287,7 +292,6 @@ typedef enum{
             [self displayErrorMessgeWithDetails:task.responseData];
         else
             strAPIErrorMsg = error.localizedDescription;
-        
     }];
     
    

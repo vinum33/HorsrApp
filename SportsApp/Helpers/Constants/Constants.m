@@ -49,3 +49,5 @@ NSString * const StoryBoardIdentifierForFriendRequest = @"FriendRequest";
 NSString * const StoryBoardIdentifierForChatList = @"ChatList";
 NSString * const StoryBoardIdentifierForParticipantsView = @"ParticipantsView";
 NSString * const StoryBoardIdentifierForStatistics = @"Statistics";
+NSString * const StoryBoardIdentifierForFriendRequestsManager = @"FriendRequestsManager";
+NSString * const StoryBoardIdentifierForGameRequest = @"GameRequest";

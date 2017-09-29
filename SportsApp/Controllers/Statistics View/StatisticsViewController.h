@@ -10,5 +10,7 @@
 
 @interface StatisticsViewController : UIViewController
 
+@property (nonatomic,strong)NSString *userID;
+
 
 @end

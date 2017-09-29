@@ -173,7 +173,6 @@
             cell.btnRemove.hidden = false;
         }
         
-        
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -181,11 +180,8 @@
     cell.backgroundColor = [UIColor clearColor];
     cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
-
    
 }
-
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -198,7 +194,6 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
     
     
 }

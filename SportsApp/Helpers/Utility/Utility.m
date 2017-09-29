@@ -50,7 +50,7 @@
     lblTitle.translatesAutoresizingMaskIntoConstraints = NO;
     lblTitle.textAlignment = NSTextAlignmentCenter;
     lblTitle.font = [UIFont fontWithName:CommonFont size:17];
-    lblTitle.textColor = [UIColor lightGrayColor];
+    lblTitle.textColor = [UIColor clearColor];
     [noDataScreen addSubview:lblTitle];
     [noDataScreen addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[lblTitle]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblTitle)]];
     [noDataScreen addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[lblTitle]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(lblTitle)]];
@@ -76,7 +76,7 @@
     cell.textLabel.font = [UIFont fontWithName:CommonFont size:15];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];
-    cell.backgroundColor = [UIColor getBackgroundOffWhiteColor];
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
 
