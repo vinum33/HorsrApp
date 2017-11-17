@@ -70,7 +70,7 @@
 
 + (void)submitGameWithGameID:(NSString*)gameID mediaFileName:(NSString*)mediaFileName thumbFileName:(NSString*)thumbFileName trickID:(NSString*)trickID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
-+ (void)verifyVideoWithTrickID:(NSString*)trickID status:(BOOL)status videoID:(NSString*)videoID gameID:(NSString*)gameID nextUserID:(NSString*)nextID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
++ (void)verifyVideoWithTrickID:(NSString*)trickID status:(BOOL)status videoID:(NSString*)videoID gameID:(NSString*)gameID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 + (void)deleteChatWithIDs:(NSArray*)ids success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
@@ -110,5 +110,12 @@
 
 + (void)getStatisticsWithUserID:(NSString*)userID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
++ (void)getCommentedAndLikedUsersWithType:(NSInteger)type communityID:(NSString*)strCommunityID onSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)getNotificationDetailPageWithID:(NSString*)pageID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)exitGameWithGameID:(NSString*)gameID trickID:(NSString*)trickID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
+
++ (void)continueGameBy:(NSString*)gameID userID:(NSString*)userID trickID:(NSString*)trickID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;
 
 @end

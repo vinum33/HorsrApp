@@ -164,6 +164,12 @@
     
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    
+    [self.parentViewController.view endEditing:YES];
+}
+
+
 -(void)displayErrorMessgeWithDetails:(NSData*)responseData{
     if (responseData.length) {
         NSError* error;

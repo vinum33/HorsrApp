@@ -49,6 +49,7 @@
 @property (nonatomic,weak) IBOutlet NSLayoutConstraint *topForImage;
 
 @property (nonatomic,weak) IBOutlet UIButton *btnDisplayEmoji;
+@property (nonatomic,weak) IBOutlet UIButton *btnDisplayComnt;
 
 @property (nonatomic,weak) IBOutlet EMEmojiableBtn *btnEmoji;
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView *indicator;

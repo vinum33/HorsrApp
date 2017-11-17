@@ -167,6 +167,7 @@
     friendReqVC.view.hidden = true;
     searchVC.view.hidden = true;
     searchBar.hidden = true;
+    [self.view endEditing:YES];
 }
 
 -(IBAction)goBack:(id)sender{

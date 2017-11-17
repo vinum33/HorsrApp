@@ -91,12 +91,15 @@ typedef enum{
 #import "FriendRequestManager.h"
 #import "GameRequestViewController.h"
 #import "NotificationsViewController.h"
+#import "LikedUserListViewConbtroller.h"
+#import "NotificationDetailViewController.h"
 
-@interface HomeViewController ()<SWRevealViewControllerDelegate,UITabBarControllerDelegate,RadialMenuDelegate,CreateGamePopUpDelegate,EMEmojiableBtnDelegate,CommentPopUpDelegate,CommunityGalleryPopUpDelegate>{
+@interface HomeViewController ()<SWRevealViewControllerDelegate,UITabBarControllerDelegate,RadialMenuDelegate,CreateGamePopUpDelegate,EMEmojiableBtnDelegate,CommentPopUpDelegate,CommunityGalleryPopUpDelegate,LikeOrCommentUsersPopUpDelegate>{
     
     IBOutlet UIView* vwPagination;
     IBOutlet UIView *vwOverLay;
     IBOutlet UIImageView *imgNotifn;
+    IBOutlet UILabel *lblBadge;
     IBOutlet UIButton* btnSlideMenu;
     IBOutlet UITableView* tableView;
     IBOutlet UIButton *btnCreateGame;
@@ -113,6 +116,7 @@ typedef enum{
     NSInteger currentPage;
     CommentComposeViewController *comments;
     CommunityGalleryViewController *galleryView;
+    LikedUserListViewConbtroller *likedUsers;
   
 }
 
@@ -288,6 +292,8 @@ typedef enum{
         SharedVideoCell *cell = (SharedVideoCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
         cell.btnComment.tag = indexPath.row;
+        cell.btnDisplayComnt.tag = indexPath.row;
+        cell.btnDisplayEmoji.tag = indexPath.row;
         cell.btnVideo.tag = indexPath.row;
         cell.btnDelete.tag = indexPath.row;
         cell.btnDelete.hidden = true;
@@ -1045,8 +1051,6 @@ typedef enum{
                 
             }];
             
-            
-            
         }
     }
     
@@ -1060,41 +1064,91 @@ typedef enum{
     [ALToastView toastInView:vc.view withText:message];
     [self handleRefresh];
     
-    if (isBG) {
+    if ([[[_userInfo objectForKey:@"data"] objectForKey:@"notification_type"] isEqualToString:@"community"]){
         
-        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[HomeViewController class]]) {
-            
-            
-        }else
-        {
-            /*! All other pages !*/
-           
-            [self.navigationController popToRootViewControllerAnimated:YES];
-           
+        NotificationDetailViewController *notfn;
+        NSMutableArray *viewcontrollers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+        for (UIViewController *vc in viewcontrollers) {
+            if ([vc isKindOfClass:[NotificationDetailViewController class]]) {
+                notfn = (NotificationDetailViewController*)vc;
+            }
         }
         
-    }else{
-        
-        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[HomeViewController class]]) {
-            
+        if (isBG) {
            
+            if (notfn) {
+                [viewcontrollers removeObjectIdenticalTo:notfn];
+                self.navigationController.viewControllers = viewcontrollers;
+            }
+            NotificationDetailViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotificationDetail];
+            games.strNotificationID = [[_userInfo objectForKey:@"data"] objectForKey:@"id"];
+            [self.navigationController pushViewController:games animated:YES];
             
-        }else
-        {
-            /*! All other pages !*/
+        }else{
             
             NSString *appName = PROJECT_NAME;
             NSString *message = [NSString stringWithFormat:@"%@",[[_userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
             [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
             [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    if (notfn) {
+                        [viewcontrollers removeObjectIdenticalTo:notfn];
+                        self.navigationController.viewControllers = viewcontrollers;
+                    }
+                    NotificationDetailViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotificationDetail];
+                    games.strNotificationID = [[_userInfo objectForKey:@"data"] objectForKey:@"id"];
+                    [self.navigationController pushViewController:games animated:YES];
+                    
+                    
                 });
                 
             }];
+        }
+      
+    }else{
+        
+        if (isBG) {
             
+            if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[HomeViewController class]]) {
+                
+                
+            }else
+            {
+                /*! All other pages !*/
+                
+                [self.navigationController popToRootViewControllerAnimated:YES];
+                
+            }
+            
+        }else{
+            
+            if ([[self.navigationController.viewControllers lastObject] isKindOfClass:[HomeViewController class]]) {
+                
+                
+                
+            }else
+            {
+                /*! All other pages !*/
+                
+                NSString *appName = PROJECT_NAME;
+                NSString *message = [NSString stringWithFormat:@"%@",[[_userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+                [JCNotificationCenter sharedCenter].presenter = [JCNotificationBannerPresenterIOSStyle new];
+                [JCNotificationCenter enqueueNotificationWithTitle:appName message:message tapHandler:^{
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                    });
+                    
+                }];
+                
+            }
         }
     }
+        
+    
+    
+    
+    
+   
 
     
 }
@@ -1311,9 +1365,58 @@ typedef enum{
     
     
 }
+#pragma mark Like & Comment User PopUp Methods
+
+-(IBAction)showLikedUsers:(UIButton*)sender{
+    
+    likedUsers =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForUserLikesView];
+    if (sender.tag < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[sender.tag];
+        if ( [[details objectForKey:@"like_total"] integerValue] > 0) {
+            likedUsers.isTypeLiked = YES;
+            likedUsers.strCommunityID = [details objectForKey:@"community_id"];
+            [self addChildViewController:likedUsers];
+            [likedUsers didMoveToParentViewController:self];
+            UIView *popup = likedUsers.view;
+            [self.view addSubview:popup];
+            likedUsers.delegate = self;
+            popup.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                // animate it to the identity transform (100% scale)
+                popup.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished){
+                // if you want to do something once the animation finishes, put it here
+            }];
+            
+        }
+        
+    }
+   
+}
+
+
+
+-(void)closeComentOrLikeUserPopUp{
+    
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // animate it to the identity transform (100% scale)
+        likedUsers.view.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    } completion:^(BOOL finished){
+        // if you want to do something once the animation finishes, put it here
+        [likedUsers removeFromParentViewController];
+        [likedUsers didMoveToParentViewController:nil];
+        [likedUsers.view removeFromSuperview];
+        likedUsers = nil;
+    }];
+
+}
 
 
 #pragma mark - IBActions
+
 
 -(IBAction)showAllGameRequestsPage{
     
@@ -1540,6 +1643,8 @@ typedef enum{
 
 
 -(IBAction)showCommentsBy:(UIButton*)sender{
+    
+    
     
     if (!comments) {
         

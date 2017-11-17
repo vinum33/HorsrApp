@@ -11,6 +11,7 @@
 @interface InviteOthersCell : UITableViewCell
 
 @property (nonatomic,weak) IBOutlet UILabel *lblName;
+@property (nonatomic,weak) IBOutlet UILabel *lblDateTime;
 @property (nonatomic,weak) IBOutlet UILabel *lblLoc;
 @property (nonatomic,weak) IBOutlet UILabel *lblType;
 @property (nonatomic,weak) IBOutlet UIImageView *imgUser;

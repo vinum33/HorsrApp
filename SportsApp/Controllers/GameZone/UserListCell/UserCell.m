@@ -17,8 +17,8 @@
     int totalPages;
     int _currentPage;
     NSArray *players;
-    NSInteger selectedIndex;
-    
+   
+
 }
 
 @end
@@ -52,8 +52,11 @@
     if (pages > 1) {
         btnNext.enabled = true;
     }
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedIndex inSection:0];
-    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    if (_selectedIndex < players.count) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedIndex inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+    }
+    
 
 }
 
@@ -71,10 +74,16 @@
     UserCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserCollectionViewCell" forIndexPath:indexPath];
     if (indexPath.row < players.count) {
         NSDictionary *userInfo = players[indexPath.row];
-        cell.imgBall.hidden = [[userInfo objectForKey:@"turn"] boolValue] ? false : true;
+        cell.imgBall.hidden = [[userInfo objectForKey:@"trick_owner"] boolValue] ? false : true;
         cell.imgUser.layer.borderColor = [UIColor colorWithRed:0.97 green:0.89 blue:0.82 alpha:1.0].CGColor;
         cell.imgHorseOrPig.hidden = true;
+        cell.btnRemove.hidden = true;
+        cell.btnRemove.tag = indexPath.row;
         cell.imgUser.alpha = 1;
+        if ([[userInfo objectForKey:@"player_status"] isEqualToString:@"in"] && [_trickOwnerID isEqualToString:[User sharedManager].userId]){
+              cell.btnRemove.hidden = !cell.imgBall.hidden ;
+        }
+
         if ([[userInfo objectForKey:@"player_status"] isEqualToString:@"out"]){
             cell.imgUser.alpha = 0.5;
             cell.imgHorseOrPig.hidden = false;
@@ -84,8 +93,8 @@
                 cell.imgHorseOrPig.image = [UIImage imageNamed:@"Horse"];
             }
             
-            
         }
+        
         [[cell indicator] startAnimating];
         [cell.imgUser sd_setImageWithURL:[NSURL URLWithString:[userInfo objectForKey:@"profileurl"]]
                         placeholderImage:[UIImage imageNamed:@"UserProfilePic.png"]
@@ -194,6 +203,13 @@
     }
 
 }
+
+-(IBAction)skipUser:(UIButton*)sender{
+    
+    [[self delegate]skipUserWithIndex:sender.tag];
+}
+
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

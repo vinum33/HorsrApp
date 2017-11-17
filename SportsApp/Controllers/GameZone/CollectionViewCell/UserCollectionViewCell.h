@@ -14,5 +14,6 @@
 @property (nonatomic,weak) IBOutlet UIImageView *imgBall;
 @property (nonatomic,weak) IBOutlet UIImageView *imgHorseOrPig;
 @property (nonatomic,weak) IBOutlet UIActivityIndicatorView *indicator;
+@property (nonatomic,weak) IBOutlet UIButton *btnRemove;
 
 @end

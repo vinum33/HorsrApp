@@ -28,8 +28,11 @@
     
     arrPlayers = source;
     [_collectionView reloadData];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedIndex inSection:0];
-    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    if (_selectedIndex < arrPlayers.count) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_selectedIndex inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    }
+   
 }
 
 -(void)setUpPagingWithFrame:(float)width{

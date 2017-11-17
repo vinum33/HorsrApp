@@ -571,7 +571,7 @@
     [currentTimeLabel setText:nil];
     [remainingTimeLabel setText:nil];
     [progressIndicator setHidden:YES];
-    [liveLabel setHidden:NO];
+    [liveLabel setHidden:YES];
   }
   
   else {
@@ -597,6 +597,7 @@ progressIndicator.value * duration :         // If seeking, reflects the positio
     [progressIndicator setHidden:NO];
     [liveLabel setHidden:YES];
   }
+    [liveLabel setHidden:YES];
 }
 
 - (void)showControllers {

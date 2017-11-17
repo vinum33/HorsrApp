@@ -16,6 +16,10 @@
 #import "GameReqConfirmCell.h"
 #import "NotificationHeader.h"
 #import "ProfileViewController.h"
+#import "NotificationDetailViewController.h"
+#import "FriendRequestManager.h"
+#import "GameRequestViewController.h"
+#import "GameZoneViewController.h"
 
 @interface NotificationsViewController () <RequestCellDelegate>{
     
@@ -29,6 +33,7 @@
     NSInteger currentPage;
     NSString *strAPIErrorMsg;
     IBOutlet UISegmentedControl *segmentControll;
+     UIRefreshControl *refreshController;
     
 }
 
@@ -59,6 +64,9 @@
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.layer.borderColor = [UIColor getSeperatorColor].CGColor;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    refreshController = [[UIRefreshControl alloc] init];
+    [refreshController addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
+    [tableView addSubview:refreshController];
     
     float width = 720;
     float height = 460;
@@ -98,8 +106,18 @@
     [self getAllNotificationsByPage:currentPage isPagination:NO];
 }
 
+-(void)handleRefresh{
+    
+    [arrDataSource removeAllObjects];
+    isDataAvailable = false;
+    currentPage = 1;
+    [self getAllNotificationsByPage:currentPage isPagination:NO];
+    
+}
+
 -(void)getAllNotificationsByPage:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
     
+    [Utility hideLoadingScreenFromView:self.view];
     if (!isPagination) {
         [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
     }
@@ -110,6 +128,7 @@
         isPageRefresing = false;
         [self showAllUsersWithJSON:responseObject];
         [Utility hideLoadingScreenFromView:self.view];
+        [refreshController endRefreshing];
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
@@ -122,6 +141,7 @@
         isPageRefresing = false;
         [Utility hideLoadingScreenFromView:self.view];
         [tableView reloadData];
+        [refreshController endRefreshing];
     }];
     
 }
@@ -263,8 +283,35 @@
 }
 
 - (void)tableView:(UITableView *)_tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
+    if (isDataAvailable && _menuType == eTypeNotifications) {
+        if (indexPath.row < arrDataSource.count) {
+            NSDictionary *details  = arrDataSource[indexPath.row];
+            if ([[details objectForKey:@"notification_type"] isEqualToString:@"community"]) {
+                NotificationDetailViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotificationDetail];
+                games.strNotificationID = [details objectForKey:@"id"];
+                [[self navigationController]pushViewController:games animated:YES];
+            }
+            else if ([[details objectForKey:@"notification_type"] isEqualToString:@"friend"]) {
+                FriendRequestManager *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForFriendRequestsManager];
+                [[self navigationController]pushViewController:games animated:YES];
+            }
+            else if ([[details objectForKey:@"notification_type"] isEqualToString:@"game"]) {
+                GameRequestViewController *gameRequset =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForGameRequest];
+                [self.navigationController pushViewController:gameRequset animated:YES];
+
+            }
+            else if ([[details objectForKey:@"notification_type"] isEqualToString:@"game_upload"]) {
+                GameZoneViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForPlayedGameZone];
+                games.strGameID = [details objectForKey:@"id"];;
+                [[self navigationController]pushViewController:games animated:YES];
+                
+            }
+            else if ([[details objectForKey:@"notification_type"] isEqualToString:@"reply_request"]) {
+                [self enableGameRequestTabByNotification];
+            }
+            
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)_tableView heightForHeaderInSection:(NSInteger)section{
@@ -343,7 +390,7 @@
                 [items replaceObjectAtIndex:row withObject:updatedInfo];
                 [details setObject:items forKey:@"game_reply"];
                 [Utility hideLoadingScreenFromView:self.view];
-                [arrDataSource replaceObjectAtIndex:column withObject:details];
+                if (column < arrDataSource.count)[arrDataSource replaceObjectAtIndex:column withObject:details];
                 [tableView reloadData];
                 
             } failure:^(AFHTTPRequestOperation *task, NSError *error) {

@@ -33,18 +33,22 @@
     IBOutlet UITableView* tableView;
     IBOutlet UILabel* lblTitle;
     IBOutlet UIButton* btnInfo;
+    IBOutlet UIButton* btnExit;
     NSMutableArray *arrUsers;
     BOOL isDataAvailable;
     NSString *strAPIErrorMsg;
     UIImage *thumbImage;
     NSURL *recordedVideoURL;
     NSInteger clickedIndex;
-    NSString *strGameCreatedUserID;
+    NSString *strTrickCreatedUserID;
     NSString *strOwnerID;
     NSString *strTrickID;
     NSString *strStatusMsg;
     InfoPopUp *vwInfoPopUp;
     WinnerPopUp *vwWinnderPopUp;
+    NSInteger timeLeft;
+    NSTimer *timer;
+    UILabel *lblTimeLeft;
     
     
 }
@@ -63,8 +67,8 @@
 
 -(void)setUp{
     
-    
-    
+    timeLeft = 0;
+    btnExit.hidden = true;
     isDataAvailable = false;
     tableView.hidden = true;
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -78,7 +82,6 @@
     tableView.layer.borderColor = [UIColor getSeperatorColor].CGColor;
     
    
-    
     float width = 720;
     float height = 460;
     float ratio = width / height;
@@ -107,6 +110,7 @@
         
     } failure:^(AFHTTPRequestOperation *task, NSError *error) {
         
+         btnExit.hidden = true;
         tableView.hidden = false;
         if (task.responseData)
             [self displayErrorMessgeWithDetails:task.responseData];
@@ -121,14 +125,34 @@
 -(void)showAllGamesWithJSON:(NSDictionary*)responds{
     
     isDataAvailable = false;
+     btnExit.hidden = false;
     if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"player"]))
         arrUsers = [NSMutableArray arrayWithArray:[[responds objectForKey:@"data"]objectForKey:@"player"]];
     if ([[responds objectForKey:@"data"] objectForKey:@"user_id"]) {
-        strGameCreatedUserID = [[responds objectForKey:@"data"] objectForKey:@"user_id"];
+        strTrickCreatedUserID = [[responds objectForKey:@"data"] objectForKey:@"user_id"];
     }
     if ([[responds objectForKey:@"data"] objectForKey:@"trick_id"]) {
         strTrickID = [[responds objectForKey:@"data"] objectForKey:@"trick_id"];
     }
+    
+    if ([[responds objectForKey:@"data"] objectForKey:@"time_left"]) {
+        timeLeft = [[[responds objectForKey:@"data"] objectForKey:@"time_left"] integerValue];
+    }
+    
+    //if (timeLeft > 0)[self startTimer];
+    
+    if ([[responds objectForKey:@"data"] objectForKey:@"player_status"]) {
+        if ([[[responds objectForKey:@"data"] objectForKey:@"player_status"] isEqualToString:@"out"]) {
+            btnExit.hidden = true;
+        }
+        //Hide exit button if user is already pig or horse
+    }
+    
+    if ([strTrickCreatedUserID isEqualToString:[User sharedManager].userId]) {
+        btnExit.hidden = true;
+        //Trick created user cannot exit from the game.
+    }
+    
     if ([[responds objectForKey:@"data"] objectForKey:@"status_message"]) {
         strStatusMsg = [[responds objectForKey:@"data"] objectForKey:@"status_message"];
         btnInfo.hidden = strStatusMsg.length ? false : true;
@@ -148,20 +172,14 @@
         strOwnerID = [[responds objectForKey:@"data"] objectForKey:@"owner_id"];
     }
     
-    
-    if (arrUsers.count > 0) isDataAvailable = true;
-    clickedIndex = 0;
-    if (arrUsers.count) {
-        for (NSDictionary *dict in arrUsers) {
-            if ([[dict objectForKey:@"turn"] boolValue]) {
-                break;
-            }
-             clickedIndex ++;
-        }
+    if (clickedIndex < arrUsers.count) {
+         clickedIndex =  clickedIndex > 0 ? clickedIndex : 0;
+    }else{
+         clickedIndex = 0;
     }
-    if (clickedIndex >= arrUsers.count) clickedIndex = 0;
-    
+    if (arrUsers.count > 0) isDataAvailable = true;
     [tableView reloadData];
+   
     
  
 }
@@ -201,6 +219,7 @@
         static NSString *CellIdentifier = @"UserCell";
         UserCell *_cell = (UserCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         _cell.selectedIndex = clickedIndex;
+        _cell.trickOwnerID = strTrickCreatedUserID;
         [_cell setDataSourceWithArray:arrUsers];
         _cell.delegate = self;
         float width = self.view.frame.size.width;
@@ -217,16 +236,19 @@
         _cell.btnFailure.hidden = true;
         _cell.btnRecord.hidden = true;
         _cell.constarintImgHeight.constant = self.view.frame.size.height - 300;
+        _cell.lblTimer.hidden = true;
+        //_cell.lblTimer.text = [self timeFormatted:timeLeft];
+        lblTimeLeft = _cell.lblTimer;
         if (clickedIndex < arrUsers.count) {
+
             NSDictionary *user = arrUsers[clickedIndex];
-            
             if ([user objectForKey:@"video"]) {
                 NSArray *videos = [user objectForKey:@"video"];
                 if (videos.count) {
                     _cell.btnVideoPlay.hidden = false;
                     
                     NSDictionary *video = [videos lastObject];
-                    if (![[video objectForKey:@"verify_status"] boolValue] && [strGameCreatedUserID isEqualToString:[User sharedManager].userId]) {
+                    if (![[video objectForKey:@"verify_status"] boolValue] && [strTrickCreatedUserID isEqualToString:[User sharedManager].userId]) {
                         _cell.btnSuccess.hidden = false;
                         _cell.btnFailure.hidden = false;
                         
@@ -238,7 +260,7 @@
                     [_cell.imgThumb sd_setImageWithURL:[NSURL URLWithString:[video objectForKey:@"imageurl"]]
                                       placeholderImage:[UIImage imageNamed:@"NoImage"]
                                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                                   [_cell.indicator stopAnimating];
+                                                 [_cell.indicator stopAnimating];
                                                  [UIView transitionWithView:_cell.imgThumb
                                                                    duration:0.3f
                                                                     options:UIViewAnimationOptionTransitionCrossDissolve
@@ -246,17 +268,26 @@
                                                                      _cell.imgThumb.image = image;
                                                                  } completion:nil];
                                              }];
-
+                    
                 }
+                
             }else{
-                if ([[user objectForKey:@"turn"] boolValue] && [[user objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) {
-                    _cell.btnRecord.hidden = false;
-                    _cell.lblNextTurnName.text = @"Its your turn";
-                }else{
-                    [self displayTurnedUserName:_cell.lblNextTurnName];
+                
+                _cell.btnRecord.hidden = true;
+                if ([[user objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId] && [[user objectForKey:@"player_status"] isEqualToString:@"in"]) {
+                    
+                    if ([strTrickID isEqualToString:@"0"] && ![strTrickCreatedUserID isEqualToString:[User sharedManager].userId]){
+                        
+                        _cell.btnRecord.hidden = true;
+                        
+                    }else{
+                        _cell.lblTimer.hidden = false;
+                        _cell.btnRecord.hidden = false;
+                    }
+                   
                 }
             }
-           
+
         }
        cell = _cell;
     }
@@ -277,10 +308,11 @@
         _cell.btnShare.hidden = true;
         [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
         [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %dLikes",0]forState:UIControlStateNormal];
+        
         if (clickedIndex < arrUsers.count) {
             NSDictionary *user = arrUsers[clickedIndex];
             if ([user objectForKey:@"video"]) {
-                 [_cell.btnEmoji setEnabled:true];
+                [_cell.btnEmoji setEnabled:true];
                 NSArray *videos = [user objectForKey:@"video"];
                 NSDictionary *video = [videos lastObject];
                 [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
@@ -291,9 +323,11 @@
                 }
             }
             if ([user objectForKey:@"video"]) {
-                  if ([[user objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) _cell.btnShare.hidden = false;
+                if ([[user objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) _cell.btnShare.hidden = false;
             }
         }
+        
+        
         cell = _cell;
         
     }
@@ -338,19 +372,6 @@
 
 #pragma mark - Verify Video Methods
 
--(void)displayTurnedUserName:(UILabel*)lbl{
-    
-    if (arrUsers.count) {
-        for (NSDictionary *dict in arrUsers) {
-            if ([[dict objectForKey:@"turn"] boolValue]) {
-                lbl.text = [NSString stringWithFormat:@"Its %@'s turn",[dict objectForKey:@"name"]];
-                break;
-            }
-        }
-    }
-    
-}
-
 -(IBAction)verifyVideoWithTag:(UIButton*)sender{
     
     BOOL success = true;
@@ -359,30 +380,11 @@
     }
     if (clickedIndex < arrUsers.count) {
         NSDictionary *user = arrUsers[clickedIndex];
-        NSInteger nextUser = 0;
-        NSString *nextUsrID ;
-        if (arrUsers.count) {
-            if (clickedIndex < arrUsers.count) {
-              nextUser = clickedIndex + 1;
-              nextUser =   [self findNextUserWithLimit:arrUsers.count nextIndex:nextUser];
-               /* while (nextUser < arrUsers.count) {
-                    NSDictionary *user = arrUsers[nextUser];
-                    if ([[user objectForKey:@"player_status"] isEqualToString:@"out"]) {
-                    }else{
-                        break;
-                    }
-                    nextUser ++;
-                }*/
-            }
-            NSDictionary *user = arrUsers[nextUser];
-            nextUsrID = [user objectForKey:@"user_id"];
-        }
-
         if ([user objectForKey:@"video"]) {
             NSArray *videos = [user objectForKey:@"video"];
              NSDictionary *video = [videos lastObject];
             [Utility showLoadingScreenOnView:self.view withTitle:@"Verifying.."];
-            [APIMapper verifyVideoWithTrickID:strTrickID status:success videoID:[video objectForKey:@"video_id"] gameID:_strGameID nextUserID:nextUsrID OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [APIMapper verifyVideoWithTrickID:strTrickID status:success videoID:[video objectForKey:@"video_id"] gameID:_strGameID OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 [self getGameZoneDetails];
                 [Utility hideLoadingScreenFromView:self.view];
                 
@@ -395,30 +397,44 @@
     }
 }
 
--(NSInteger)findNextUserWithLimit:(NSInteger)limit nextIndex:(NSInteger)nextIndex{
-    
-    while (nextIndex < limit) {
-        NSDictionary *user = arrUsers[nextIndex];
-        if ([[user objectForKey:@"player_status"] isEqualToString:@"out"]) {
-        }else{
-            return nextIndex;
-            break;
-        }
-        nextIndex ++;
-    }
-    if (nextIndex == clickedIndex) {
-        nextIndex = 0;
-        return nextIndex;
-    }
-    if (nextIndex == limit - 1) {
-        nextIndex = 0;
-        [self findNextUserWithLimit:limit nextIndex:nextIndex];
-    }
-    return 0;
-}
 
 #pragma mark - Custom Cell Deleagtes
 
+-(void)skipUserWithIndex:(NSInteger)index{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"SKIP"
+                                                                   message:@"Do you really want to skip this player?"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"SKIP"
+                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                              
+                                                              [Utility showLoadingScreenOnView:self.view withTitle:@"Skipping.."];
+                                                              if (index < arrUsers.count) {
+                                                                  NSDictionary *user = arrUsers [index];
+                                                                  [APIMapper continueGameBy:_strGameID userID:[user objectForKey:@"user_id"] trickID:strTrickID OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                      
+                                                                      [Utility hideLoadingScreenFromView:self.view];
+                                                                      [self getGameZoneDetails];
+                                                                      
+                                                                  } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                                                                      
+                                                                      [Utility hideLoadingScreenFromView:self.view];
+                                                                  }];
+                                                              }
+
+                                                              
+                                                          }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                           style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                           }];
+    
+    [alert addAction:firstAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+    
+}
 -(IBAction)playVideo:(id)sender{
     
     if (clickedIndex < arrUsers.count) {
@@ -699,6 +715,7 @@
                                                               otherButtonTitles:nil];
                         [alert show];
                         [self resetIfNeeded];
+                       // [self disableTimer];
                     }
                     
                 } failure:^(AFHTTPRequestOperation *task, NSError *error) {
@@ -852,6 +869,38 @@
 
 #pragma mark - IBActions
 
+-(IBAction)exitGame{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Exit Game"
+                                                                   message:@"Do you really want to exit game?"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Exit"
+                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                              
+                                                            [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
+                                                              [APIMapper exitGameWithGameID:_strGameID trickID:strTrickID OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                 [[self delegate]gameZoneCompleted];
+                                                                 [Utility hideLoadingScreenFromView:self.view];
+                                                                  [self goBack:nil];
+                                                                
+                                                            } failure:^(AFHTTPRequestOperation *task, NSError *error) {
+                                                                
+                                                                [Utility hideLoadingScreenFromView:self.view];
+                                                                if (task.responseData) [self displayErrorMessgeWithDetails:task.responseData];
+                                                                else [self showAlertWithMessage:error.localizedDescription];
+                                                            }];
+                                                                                                                          
+                                                          }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                           }];
+    
+    [alert addAction:firstAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
 -(IBAction)showNotifications{
     
     NotificationsViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForNotifications];
@@ -873,6 +922,56 @@
 
 #pragma mark - Generic Methods
 
+-(void)startTimer{
+    
+    BOOL isAlreadyUploaded = false;
+    if (arrUsers.count) {
+        
+        for (NSDictionary *dict in arrUsers) {
+            if ([[dict objectForKey:@"user_id"] isEqualToString:[User sharedManager].userId]) {
+                if ([dict objectForKey:@"video"]) {
+                    isAlreadyUploaded = true;
+                }
+                break;
+            }
+            
+        }
+    }
+    if (!isAlreadyUploaded) {
+        [timer invalidate];
+        timer = nil;
+        timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                 target:self
+                                               selector:@selector(calculateRemainingTime)
+                                               userInfo:nil
+                                                repeats:YES];
+    }
+   
+}
+
+-(void)disableTimer{
+    
+    [timer invalidate];
+    timer = nil;
+}
+
+-(void)calculateRemainingTime{
+    
+}
+
+- (NSString *)timeFormatted:(NSInteger)totalSeconds
+{
+    if (totalSeconds > 0) {
+        NSInteger seconds = totalSeconds % 60;
+        NSInteger minutes = (totalSeconds / 60) % 60;
+        NSInteger hours = totalSeconds / 3600;
+        
+        return [NSString stringWithFormat:@"%02ld:%02ld:%02ld",(long)hours, (long)minutes, (long)seconds];
+    }
+    return @"00:00:00";
+    
+    
+}
 
 -(void)showAlertWithMessage:(NSString*)message{
     
@@ -930,10 +1029,16 @@
 
 
 
-
+-(void)dealloc{
+    
+    [timer invalidate];
+    timer = nil;
+}
 
 -(IBAction)goBack:(id)sender{
     
+    [timer invalidate];
+    timer = nil;
     [[self navigationController]popViewControllerAnimated:YES];
 }
 

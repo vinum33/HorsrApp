@@ -856,7 +856,7 @@
     
 }
 
-+ (void)verifyVideoWithTrickID:(NSString*)trickID status:(BOOL)status videoID:(NSString*)videoID gameID:(NSString*)gameID nextUserID:(NSString*)nextID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
++ (void)verifyVideoWithTrickID:(NSString*)trickID status:(BOOL)status videoID:(NSString*)videoID gameID:(NSString*)gameID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
     
     NSString *urlString = [NSString stringWithFormat:@"%@game/verify",BaseURLString];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -869,7 +869,6 @@
                              @"trick_id": trickID,
                              @"status": [NSNumber numberWithBool:status],
                              @"video_id": videoID,
-                             @"next_userid": nextID,
                              };
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -1304,6 +1303,109 @@
     
 }
 
++ (void)getCommentedAndLikedUsersWithType:(NSInteger)type communityID:(NSString*)strCommunityID onSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    NSString *strType = @"comment";
+    if (type == 1) {
+        strType = @"like";
+    }
+    NSString *urlString = [NSString stringWithFormat:@"%@users/",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    NSDictionary *params = @{@"type": strType,
+                             @"community_id": strCommunityID
+                             };
 
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+}
 
++ (void)getNotificationDetailPageWithID:(NSString*)pageID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@community",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"community_id": pageID
+                             };
+    [manager GET:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+    
+}
++ (void)exitGameWithGameID:(NSString*)gameID trickID:(NSString*)trickID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure;{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@game/exit",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"game_id": gameID,
+                             @"trick_id": trickID
+                             
+                             };
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+
+    
+}
+
++ (void)continueGameBy:(NSString*)gameID userID:(NSString*)userID trickID:(NSString*)trickID OnSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *task, NSError *error))failure{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@game/skip",BaseURLString];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", nil];;
+    if ( [User sharedManager].token) {
+        [manager.requestSerializer setValue:[User sharedManager].token forHTTPHeaderField:@"Authorization"];
+    }
+    NSDictionary *params = @{@"game_id": gameID,
+                             @"user_id": userID,
+                              @"trick_id": trickID,
+                             };
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([operation.response statusCode] == kUnAuthorized) {
+            AppDelegate *app = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            [app logoutSinceUnAuthorized:operation.responseObject];
+        }
+        failure (operation,error);
+    }];
+
+    
+}
 @end

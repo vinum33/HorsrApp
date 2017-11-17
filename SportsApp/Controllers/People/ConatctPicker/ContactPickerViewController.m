@@ -304,7 +304,7 @@ typedef enum{
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     
-    [self.view endEditing:YES];
+    [self.parentViewController.view endEditing:YES];
 }
 
 -(IBAction)sendSMS:(UIButton*)sender{

@@ -18,7 +18,7 @@ typedef enum{
     
 }eSectionType;
 
-#import "SharedVideosViewController.h"
+#import "NotificationDetailViewController.h"
 #import "Constants.h"
 #import "SharedVideoCell.h"
 #import <AVKit/AVKit.h>
@@ -32,7 +32,7 @@ typedef enum{
 #import "FriendRequestsViewController.h"
 #import "LikedUserListViewConbtroller.h"
 
-@interface SharedVideosViewController () <EMEmojiableBtnDelegate,CommentPopUpDelegate,CommunityGalleryPopUpDelegate,LikeOrCommentUsersPopUpDelegate>{
+@interface NotificationDetailViewController () <EMEmojiableBtnDelegate,CommentPopUpDelegate,CommunityGalleryPopUpDelegate,LikeOrCommentUsersPopUpDelegate>{
     
     IBOutlet NSLayoutConstraint *constraintForNavBg;
     IBOutlet UITableView* tableView;
@@ -50,12 +50,12 @@ typedef enum{
 
 @end
 
-@implementation SharedVideosViewController
+@implementation NotificationDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUp];
-    [self getAllFriendRequetsWithPage:currentPage isPagination:NO];
+    [self getNotificationDetailPage];
     // Do any additional setup after loading the view.
 }
 
@@ -81,13 +81,11 @@ typedef enum{
     
     arrDataSource = [NSMutableArray new];
 }
--(void)getAllFriendRequetsWithPage:(NSInteger)pageNumber isPagination:(BOOL)isPagination{
+-(void)getNotificationDetailPage{
     
-    if (!isPagination) {
-        [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
-    }
+    [Utility showLoadingScreenOnView:self.view withTitle:@"Loading.."];
     
-    [APIMapper getAllSharedVideosWithPageNumber:pageNumber OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [APIMapper getNotificationDetailPageWithID:_strNotificationID OnSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         tableView.hidden = false;
         isPageRefresing = false;
@@ -115,10 +113,6 @@ typedef enum{
     if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"community"]))
         [arrDataSource addObjectsFromArray:[[responds objectForKey:@"data"] objectForKey:@"community"]];
     if (arrDataSource.count > 0) isDataAvailable = true;
-    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
-        totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
-    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
-        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
     [tableView reloadData];
     
     
@@ -439,6 +433,34 @@ typedef enum{
     
 }
 
+-(IBAction)showCommentedUsers:(UIButton*)sender{
+    
+    likedUsers =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:StoryboardForSlider Identifier:StoryBoardIdentifierForUserLikesView];
+    if (sender.tag < arrDataSource.count) {
+        NSDictionary *details = arrDataSource[sender.tag];
+        if ( [[details objectForKey:@"comment_total"] integerValue] > 0) {
+            likedUsers.isTypeLiked = NO;
+            likedUsers.strCommunityID = [details objectForKey:@"community_id"];
+            [self addChildViewController:likedUsers];
+            [likedUsers didMoveToParentViewController:self];
+            UIView *popup = likedUsers.view;
+            [self.view addSubview:popup];
+            likedUsers.delegate = self;
+            popup.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[popup]-0-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(popup)]];
+            popup.transform = CGAffineTransformMakeScale(0.01, 0.01);
+            [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                // animate it to the identity transform (100% scale)
+                popup.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished){
+                // if you want to do something once the animation finishes, put it here
+            }];
+            
+        }
+        
+    }
+}
 
 -(void)closeComentOrLikeUserPopUp{
     
@@ -557,15 +579,9 @@ typedef enum{
             
         }
         
-        
-        
     }
     
     [self.view endEditing:YES];
-
-    
-    
-   
 }
 
 -(void)closePopUp;{

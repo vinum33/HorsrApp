@@ -246,8 +246,9 @@
     if (index < _users.count) {
         NSDictionary *user = _users[index];
         ProfileViewController *games =  [UIStoryboard get_ViewControllerFromStoryboardWithStoryBoardName:GeneralStoryBoard Identifier:StoryBoardIdentifierForProfile];
-        [[self navigationController]pushViewController:games animated:YES];
         games.strUserID = [user objectForKey:@"user_id"];
+        [[self navigationController]pushViewController:games animated:YES];
+        
     }
     
    

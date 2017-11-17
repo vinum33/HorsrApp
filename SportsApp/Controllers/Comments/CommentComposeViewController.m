@@ -337,7 +337,7 @@
     
     if (textView.text.length > 0) {
         NSString *message = textView.text;
-        
+        [self showLoadingScreen];
         [APIMapper postCommentWithCommunityID:_strCommunityID message:message success:^(AFHTTPRequestOperation *operation, id responseObject){
             
             textView.text = @"";
@@ -346,9 +346,11 @@
             [tableView reloadData];
             [[self delegate]updateCommentCountByCount:arrMessages.count atIndex:_objIndex];
             [self tableScrollToLastCell];
+            [self hideLoadingScreen];
             
         } failure:^(AFHTTPRequestOperation *task, NSError *error) {
             
+            [self hideLoadingScreen];
             if (task.responseData)
                 [self displayErrorMessgeWithDetails:task.responseData];
             
@@ -445,13 +447,14 @@
 
 -(void)tableScrollToLastCell{
     
+    [self.view endEditing:YES];
     if (arrMessages.count ) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:arrMessages.count - 1 inSection:0];
         [tableView scrollToRowAtIndexPath:indexPath
                          atScrollPosition:UITableViewScrollPositionBottom
-                                 animated:YES];
+                                 animated:NO];
     }
-    [self.view endEditing:YES];
+    
     
 
 }

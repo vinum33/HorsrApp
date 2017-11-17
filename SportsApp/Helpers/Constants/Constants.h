@@ -55,3 +55,7 @@ extern NSString * const StoryBoardIdentifierForParticipantsView ;
 extern NSString * const StoryBoardIdentifierForStatistics ;
 extern NSString * const StoryBoardIdentifierForFriendRequestsManager ;
 extern NSString * const StoryBoardIdentifierForGameRequest ;
+extern NSString * const StoryBoardIdentifierForUserLikesView ;
+extern NSString * const StoryBoardIdentifierForNotificationDetail ;
+
+

@@ -66,7 +66,7 @@
     //longPressGesture.cancelsTouchesInView = NO;
     singleTapGesture.cancelsTouchesInView = NO;
     [self addGestureRecognizer:singleTapGesture];
-    [self addGestureRecognizer:longPressGesture];
+   // [self addGestureRecognizer:longPressGesture];
     
     self.layer.masksToBounds = NO;
 }
