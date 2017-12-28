@@ -121,10 +121,6 @@ typedef enum{
     if (NULL_TO_NIL([responds objectForKey:@"data"]))
         [arrDataSource addObjectsFromArray:[responds objectForKey:@"data"]];
     if (arrDataSource.count > 0) isDataAvailable = true;
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"pageCount"]))
-//        totalPages =  [[[responds objectForKey:@"data"] objectForKey:@"pageCount"] integerValue];
-//    if (NULL_TO_NIL([[responds objectForKey:@"data"] objectForKey:@"currentPage"]))
-//        currentPage =  [[[responds objectForKey:@"data"] objectForKey:@"currentPage"] integerValue];
     [tableView reloadData];
     
     
