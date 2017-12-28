@@ -49,6 +49,7 @@
     NSInteger timeLeft;
     NSTimer *timer;
     UILabel *lblTimeLeft;
+    NSInteger videoRecordLength;
     
     
 }
@@ -67,6 +68,7 @@
 
 -(void)setUp{
     
+    videoRecordLength = 9;
     timeLeft = 0;
     btnExit.hidden = true;
     isDataAvailable = false;
@@ -237,6 +239,7 @@
         _cell.btnRecord.hidden = true;
         _cell.constarintImgHeight.constant = self.view.frame.size.height - 300;
         _cell.lblTimer.hidden = true;
+        videoRecordLength = 8;
         //_cell.lblTimer.text = [self timeFormatted:timeLeft];
         lblTimeLeft = _cell.lblTimer;
         if (clickedIndex < arrUsers.count) {
@@ -278,11 +281,15 @@
                     
                     if ([strTrickID isEqualToString:@"0"] && ![strTrickCreatedUserID isEqualToString:[User sharedManager].userId]){
                         
+                        // New trick and created user is not equal to me, then hide record button
                         _cell.btnRecord.hidden = true;
                         
                     }else{
                         _cell.lblTimer.hidden = false;
                         _cell.btnRecord.hidden = false;
+                        if ([strTrickID isEqualToString:@"0"]) {
+                            videoRecordLength = 14;
+                        }
                     }
                    
                 }
@@ -307,7 +314,7 @@
         [_cell.btnEmoji setEnabled:false];
         _cell.btnShare.hidden = true;
         [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-        [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %dLikes",0]forState:UIControlStateNormal];
+        [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %d Likes",0]forState:UIControlStateNormal];
         
         if (clickedIndex < arrUsers.count) {
             NSDictionary *user = arrUsers[clickedIndex];
@@ -316,7 +323,7 @@
                 NSArray *videos = [user objectForKey:@"video"];
                 NSDictionary *video = [videos lastObject];
                 [_cell.btnEmoji setImage:[UIImage imageNamed:@"Like_Inactive"] forState:UIControlStateNormal];
-                [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %dLikes",[[video objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
+                [_cell.btnEmoji setTitle:[NSString stringWithFormat:@" %d Likes",[[video objectForKey:@"like_total"] integerValue]]forState:UIControlStateNormal];
                 if ([[video objectForKey:@"emoji_code"] integerValue] >= 0) {
                     EMEmojiableOption *option = [_cell.btnEmoji.dataset objectAtIndex:[[video objectForKey:@"emoji_code"] integerValue]];
                     [_cell.btnEmoji setImage: [UIImage imageNamed:option.imageName] forState:UIControlStateNormal];
@@ -643,7 +650,7 @@
     
     CameraViewcontroller *recordView = [[CameraViewcontroller alloc] initWithNibName:nil bundle:nil];
     recordView.delegate = self;
-    recordView.timeLength = 9;
+    recordView.timeLength = videoRecordLength;
     [[self navigationController]presentViewController:recordView animated:YES completion:nil];
 }
 

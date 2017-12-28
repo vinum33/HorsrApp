@@ -565,7 +565,7 @@ typedef enum{
 -(IBAction)recordVideo:(id)sender{
     
     CameraViewcontroller *recordView = [[CameraViewcontroller alloc] initWithNibName:nil bundle:nil];
-    recordView.timeLength = 15;
+    recordView.timeLength = 14;
     recordView.delegate = self;
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate.window.rootViewController  presentViewController:recordView animated:YES completion:nil];

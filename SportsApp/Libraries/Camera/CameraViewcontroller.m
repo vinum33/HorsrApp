@@ -141,7 +141,7 @@
     lblTimer = [UILabel new];
     lblTimer.translatesAutoresizingMaskIntoConstraints = NO;
     [blackView addSubview:lblTimer];
-    lblTimer.text = [NSString stringWithFormat:@"%ld",(long)_timeLength - 1];
+    lblTimer.text = [NSString stringWithFormat:@"%ld",(long)_timeLength];
     lblTimer.textAlignment = NSTextAlignmentCenter;
     lblTimer.font = [UIFont fontWithName:CommonFont size:18];
     lblTimer.textColor = [UIColor whiteColor];
@@ -246,6 +246,7 @@
     if(!self.camera.isRecording) {
         
     self.switchButton.hidden = YES;
+    [self countStart];
        timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                          target:self
                                        selector:@selector(countStart)
@@ -272,13 +273,13 @@
 }
 -(void)countStart{
     
-    counter --;
     lblTimer.text = [NSString stringWithFormat:@"%ld",(long)counter];;
     if (counter == 00) {
         [self.camera stopRecording];
         lblTimer.text = @"";
         [timer invalidate];
     }
+     counter --;
 }
 -(void)stpRecordingApplied{
     [timer invalidate];

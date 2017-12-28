@@ -81,7 +81,6 @@ typedef enum{
 
 -(void)handleRefresh{
     
-    [arrDataSource removeAllObjects];
     [self getAllGameRequests];
     
 }
@@ -117,6 +116,7 @@ typedef enum{
 
 -(void)showAllRequestsWithJSON:(NSDictionary*)responds{
     
+    [arrDataSource removeAllObjects];
     isDataAvailable = false;
     if (NULL_TO_NIL([responds objectForKey:@"data"]))
         [arrDataSource addObjectsFromArray:[responds objectForKey:@"data"]];
